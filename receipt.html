@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt - FarmLink</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .receipt { max-width: 400px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; }
+        .header { text-align: center; border-bottom: 2px dashed #333; padding-bottom: 15px; }
+        .details { margin: 20px 0; }
+        .item { display: flex; justify-content: space-between; margin: 5px 0; }
+        .total { border-top: 2px solid #333; padding-top: 10px; margin-top: 20px; }
+        @media print { button { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="header">
+            <h2>FarmLink Marketplace</h2>
+            <p>Receipt</p>
+        </div>
+        
+        <div class="details">
+            <p><strong>Transaction ID:</strong> {{ order.transaction_id }}</p>
+            <p><strong>Date:</strong> {{ order.timestamp }}</p>
+            <p><strong>Customer:</strong> {{ order.customer.name }}</p>
+            <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
+            <p><strong>Address:</strong> {{ order.customer.address }}, {{ order.customer.city }} - {{ order.customer.pincode }}</p>
+        </div>
+        
+        <div class="items">
+            <h4>Items:</h4>
+            {% for item in order.cart %}
+            <div class="item">
+                <span>{{ item.quantity }} x {{ item.title }}</span>
+                <span>₹{{ item.price * item.quantity }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="total">
+            <div class="item">
+                <strong>Total Amount:</strong>
+                <strong>₹{{ order.total }}</strong>
+            </div>
+            <div class="item">
+                <span>Payment Method:</span>
+                <span>{{ order.payment_method|upper }}</span>
+            </div>
+            <div class="item">
+                <span>Status:</span>
+                <span>{{ order.status|upper }}</span>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <p>Thank you for shopping with FarmLink!</p>
+            <p>Contact: +91 9840994649 | support@farmlink.com</p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.print()">Print Receipt</button>
+        <button onclick="window.close()">Close</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,5201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmLink - Direct Farmer to Buyer Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FF9800;
+            --dark: #2E7D32;
+            --light: #F1F8E9;
+            --gray: #757575;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+       header {
+    background-color: white;
+    box-shadow: var(--shadow);
+    position: fixed; /* Changed from sticky to fixed */
+    top: 0;
+    width: 100%; /* Add this */
+    z-index: 100;
+}
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-left: 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin: 0 1rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-large {
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Cart Button */
+        .cart-btn {
+            position: relative;
+            margin-right: 1rem;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+      .hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    color: var(--white);
+    padding: 10rem 0 5rem; /* Remove margin-top from here */
+    /* margin-top: 70px; ← DELETE THIS LINE */
+}
+        .hero-content {
+            flex: 1;
+            padding-right: 2rem;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--gray);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+                /* Language Selector Styles */
+        .language-selector {
+            margin-right: 1rem;
+        }
+        
+        .language-selector select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        /* Farmer Name Styling */
+        .farmer-name {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .farmer-name i {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+
+        /* Date Info Styling */
+        .date-info {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .date-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+        
+        .date-item i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .expiry-soon {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        
+        .expiry-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .expiry-soon-badge {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .expiry-fresh-badge {
+            background-color: #e8f5e9;
+            color: var(--dark);
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 3rem 0;
+            background-color: var(--primary);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Listings Section */
+        .listings {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--dark);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filters select, .filters input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 150px;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .listing-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .listing-content {
+            padding: 1.5rem;
+        }
+
+        .listing-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .listing-details {
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+
+        .listing-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .listing-quality {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .quality-organic {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .quality-premium {
+            background-color: #FFF3E0;
+            color: #EF6C00;
+        }
+
+        .quality-standard {
+            background-color: #E0E0E0;
+            color: #616161;
+        }
+
+        .listing-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Quantity Selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background-color: var(--light);
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .quantity-input {
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            margin: 0 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 4rem 0;
+            background-color: var(--light);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* About Section */
+        .about {
+            padding: 4rem 0;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 4rem 0;
+            background-color: var(--light);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .contact-info p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: var(--white);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            font-size: 1.5rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #555;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cart Modal */
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 500;
+        }
+
+        .cart-item-price {
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            padding-top: 1rem;
+            border-top: 2px solid #eee;
+        }
+
+        /* Payment Gateway Styles */
+.payment-method-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.payment-method-details i {
+    font-size: 1.2rem;
+    color: #4CAF50;
+}
+
+/* Payment Gateway Layout */
+.payment-gateway {
+    padding: 20px;
+}
+
+.payment-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.payment-header h2 {
+    color: #2E7D32;
+    margin-bottom: 10px;
+}
+
+.payment-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+}
+
+.merchant-info {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.merchant-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+/* UPI Payment Styles */
+.upi-payment {
+    text-align: center;
+}
+
+.upi-qr-container {
+    margin: 20px 0;
+    padding: 20px;
+    background: white;
+    border: 2px dashed #4CAF50;
+    border-radius: 10px;
+}
+
+.upi-qr-placeholder {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.upi-qr-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.upi-apps {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.upi-app {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.upi-app:hover {
+    transform: scale(1.1);
+}
+
+.upi-app.phonepe {
+    background: #5F259F;
+    color: white;
+}
+
+.upi-app.gpay {
+    background: #4285F4;
+    color: white;
+}
+
+.upi-app.paytm {
+    background: #1BA6F1;
+    color: white;
+}
+
+.upi-id-input {
+    margin: 20px 0;
+}
+
+.upi-id-input input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.payment-timer {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 10px 0;
+}
+
+.timer {
+    color: #e53935;
+    font-weight: bold;
+}
+
+/* Card Payment Styles */
+.card-payment {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.card-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card-input-group {
+    margin-bottom: 20px;
+}
+
+.card-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+}
+
+.card-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.card-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.card-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.card-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.card-icons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.card-icons img {
+    height: 30px;
+    filter: grayscale(100%);
+}
+
+.card-icons img.active {
+    filter: none;
+}
+
+/* OTP/PIN Verification */
+.otp-verification {
+    text-align: center;
+}
+
+.otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0;
+}
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.otp-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.pin-keypad {
+    margin: 20px 0;
+}
+
+.keypad-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.pin-key {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background: #f0f0f0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.pin-key:hover {
+    background: #4CAF50;
+    color: white;
+}
+
+.pin-key.clear {
+    background: #ff4444;
+    color: white;
+}
+
+/* Payment Status */
+.payment-status {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.status-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.status-icon.success {
+    color: #4CAF50;
+}
+
+.status-icon.failed {
+    color: #f44336;
+}
+
+.status-message h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.status-message p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.payment-details {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.payment-detail {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+/* Loading Animation */
+.payment-loading {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #4CAF50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Action Buttons */
+.payment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.payment-actions .btn {
+    flex: 1;
+}
+
+/* Transaction ID */
+.transaction-id {
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 20px 0;
+    font-family: monospace;
+    font-size: 0.9rem;
+    word-break: break-all;
+}
+
+        /* Checkout Styles */
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+        }
+        
+        .checkout-summary {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            height: fit-content;
+        }
+        
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .checkout-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--dark);
+            text-align: right;
+            font-size: 1.2rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+            background-color: var(--light);
+        }
+        
+        .payment-option input {
+            margin-right: 0.5rem;
+        }
+
+        /* Contact Form Spinner */
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .contact-image {
+            transition: transform 0.3s;
+        }
+        
+        .contact-image:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .notification.error {
+            background-color: #f44336;
+        }
+        
+        .notification.success {
+            background-color: var(--primary);
+        }
+        
+        /* No Listings Message */
+        .no-listings {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+            
+            .listing-action {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .quantity-selector {
+                margin-bottom: 1rem;
+            }
+            
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .language-selector {
+                margin: 0.5rem 0;
+                order: 3;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .navbar {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+  <!-- Header & Navigation -->
+<header>
+    <div class="container">
+        <nav class="navbar">
+            <!-- Logo on the left -->
+            <a href="#" class="logo">
+                <i class="fas fa-tractor"></i>
+                <span>FarmLink</span>
+            </a>
+            
+            <!-- Navigation menu -->
+            <ul class="nav-menu">
+                <li><a href="#home" class="active" data-i18n="home">Home</a></li>
+                <li><a href="#listings" data-i18n="listings">Listings</a></li>
+                <li><a href="#how-it-works" data-i18n="how-it-works">How It Works</a></li>
+                <li><a href="#about" data-i18n="about">About</a></li>
+                <li><a href="#contact" data-i18n="contact">Contact</a></li>
+            </ul>
+            
+            <!-- Auth buttons and language selector -->
+            <div class="auth-buttons">
+                <button class="btn cart-btn" id="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+                <button class="btn btn-outline" id="login-btn" data-i18n="login">Login</button>
+                <button class="btn btn-primary" id="signup-btn" data-i18n="signup">Sign Up</button>
+            </div>
+            <div class="language-selector">
+                <select id="language-select">
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+            </div>
+        </nav>
+    </div>
+</header>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-i18n="hero-title">Connect Directly with Buyers</h1>
+                <p data-i18n="hero-text">FarmLink eliminates middlemen, reduces post-harvest losses, and provides better prices for farmers while ensuring quality produce for buyers.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-large btn-primary" id="create-listing-btn" data-i18n="list-product">List Your Produce</button>
+                    <button class="btn btn-large btn-secondary" id="find-produce-btn" data-i18n="find-product">Find Produce</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stat-item">
+                <h3>30%</h3>
+                <p data-i18n="higher-prices">Higher Prices for Farmers</p>
+            </div>
+            <div class="stat-item">
+                <h3>45%</h3>
+                <p data-i18n="reduced-spoilage">Reduced Spoilage</p>
+            </div>
+            <div class="stat-item">
+                <h3>1200+</h3>
+                <p data-i18n="active-farmers">Active Farmers</p>
+            </div>
+            <div class="stat-item">
+                <h3>850+</h3>
+                <p data-i18n="verified-buyers">Verified Buyers</p>
+            </div>
+        </div>
+    </section>
+
+   <!-- Listings Section -->
+<section id="listings" class="listings">
+    <div class="container">
+        <h2 class="section-title" data-i18n="fresh-produce">Fresh Product Listings</h2>
+        <div class="filters">
+            <select id="category-filter">
+                <option value="" data-i18n="all-categories">All Categories</option>
+                <option value="vegetables" data-i18n="vegetables">Vegetables</option>
+                <option value="fruits" data-i18n="fruits">Fruits</option>
+                <option value="grains" data-i18n="grains">Grains</option>
+                <option value="dairy" data-i18n="dairy">Dairy</option>
+                <option value="spices" data-i18n="spices">Spices</option>
+                <option value="nuts" data-i18n="nuts">Nuts</option>
+            </select>
+            <select id="quality-filter">
+                <option value="" data-i18n="all-quality">All Quality Grades</option>
+                <option value="organic" data-i18n="organic">Organic</option>
+                <option value="premium" data-i18n="premium">Premium</option>
+                <option value="standard" data-i18n="standard">Standard</option>
+            </select>
+            <input type="text" placeholder="Search by location..." id="location-search" data-i18n-placeholder="search-location">
+            <button class="btn btn-primary" id="apply-filters" data-i18n="apply-filters">Apply Filters</button>
+            <button class="btn btn-outline" id="clear-filters-btn" data-i18n="clear-filters">Clear Filters</button>
+        </div>
+        
+        <div class="listings-grid" id="listings-container">
+            <!-- Listings will be loaded here by JavaScript -->
+        </div>
+        <div style="text-align: center; margin-top: 30px;" id="show-more-container">
+            <button class="btn btn-outline" id="show-more-btn" data-i18n="show-more">Show More Products</button>
+        </div>
+    </div>
+</section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title" data-i18n="how-it-works-title">How FarmLink Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">1</div>
+                    <h3 data-i18n="step1-title">Create Listing</h3>
+                    <p data-i18n="step1-text">Farmers list their produce with quality grading and quantity details.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">2</div>
+                    <h3 data-i18n="step2-title">Browse & Select</h3>
+                    <p data-i18n="step2-text">Buyers browse available produce and add items to their cart.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <h3 data-i18n="step3-title">Match Logistics</h3>
+                    <p data-i18n="step3-text">Select from available cold-chain and transportation options.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">4</div>
+                    <h3 data-i18n="step4-title">Secure Payment</h3>
+                    <p data-i18n="step4-text">Complete transactions with built-in dispute resolution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title" data-i18n="why-choose">Why Choose FarmLink</h2>
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3 data-i18n="better-prices">Better Prices</h3>
+                    <p data-i18n="better-prices-text">Eliminate middlemen and get fair prices for your produce.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-truck"></i>
+                    <h3 data-i18n="logistics">Logistics Support</h3>
+                    <p data-i18n="logistics-text">Access to reliable cold-chain and transportation options.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3 data-i18n="quality-assurance">Quality Assurance</h3>
+                    <p data-i18n="quality-assurance-text">Graded listings and dispute resolution for quality issues.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-users"></i>
+                    <h3 data-i18n="cooperative-pooling">Cooperative Pooling</h3>
+                    <p data-i18n="cooperative-pooling-text">Small farmers can pool resources for better bargaining power.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title" data-i18n="contact-title">Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3 data-i18n="get-in-touch">Get in Touch</h3>
+                    <p><i class="fas fa-envelope"></i> support@farmlink.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9840994649</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Tirunelvelli, Agriculture City</p>
+                    <div class="contact-image" style="margin-top: 2rem;">
+                        <!-- Contact image could be added here -->
+                    </div>
+                </div>
+                <form class="contact-form" id="contact-form">
+                    <input type="text" id="contact-name" placeholder="Your Name" required data-i18n-placeholder="your-name">
+                    <input type="email" id="contact-email" placeholder="Your Email" required data-i18n-placeholder="your-email">
+                    <input type="text" id="contact-subject" placeholder="Subject" required>
+                    <textarea id="contact-message" placeholder="Your Message" rows="5" required data-i18n-placeholder="your-message"></textarea>
+                    <button type="submit" class="btn btn-primary" id="contact-submit">
+                        <span id="submit-text" data-i18n="send-message">Send Message</span>
+                        <div id="submit-spinner" class="spinner" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FarmLink</h3>
+                    <p>Connecting farmers directly with buyers for better prices and reduced food waste.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="quick-links">Quick Links</h4>
+                    <ul>
+                        <li><a href="#home" data-i18n="home">Home</a></li>
+                        <li><a href="#listings" data-i18n="listings">Listings</a></li>
+                        <li><a href="#how-it-works" data-i18n="how-it-works">How It Works</a></li>
+                        <li><a href="#about" data-i18n="about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="legal">Legal</h4>
+                    <ul>
+                        <li><a href="#" data-i18n="privacy-policy">Privacy Policy</a></li>
+                        <li><a href="#" data-i18n="terms-of-service">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="connect">Connect</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook" target="_blank"></i></a>
+                        <a href="#"><i class="fab fa-twitter" target="_blank"></i></a>
+                        <a href="https://www.instagram.com/vel_raj_04/"><i class="fab fa-instagram" target="_blank"></i></a>
+                        <a href="https://www.linkedin.com/in/velrajA018/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FarmLink. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Listing Modal -->
+    <div id="listing-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 data-i18n="create-listing-title">Create New Listing</h2>
+            <form id="listing-form">
+                <div class="form-group">
+                    <label for="farmer-name" data-i18n="your-name">Your Name</label>
+                    <input type="text" id="farmer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-name" data-i18n="product-name">Product Name</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="category" data-i18n="category">Category</label>
+                    <select id="category" required>
+                        <option value="" data-i18n="select-category">Select Category</option>
+                        <option value="vegetables" data-i18n="vegetables">Vegetables</option>
+                        <option value="fruits" data-i18n="fruits">Fruits</option>
+                        <option value="grains" data-i18n="grains">Grains</option>
+                        <option value="dairy" data-i18n="dairy">Dairy</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity" data-i18n="quantity-kg">Quantity (kg)</label>
+                    <input type="number" id="quantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="price" data-i18n="price-kg">Price per kg (₹)</label>
+                    <input type="number" id="price" min="0.01" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="quality" data-i18n="quality">Quality Grade</label>
+                    <select id="quality" required>
+                        <option value="" data-i18n="select-quality">Select Quality</option>
+                        <option value="organic" data-i18n="organic">Organic</option>
+                        <option value="premium" data-i18n="premium">Premium</option>
+                        <option value="standard" data-i18n="standard">Standard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="manufactured-date">Manufactured/Harvest Date</label>
+                    <input type="date" id="manufactured-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiry-date">Expiry Date (Best Before)</label>
+                    <input type="date" id="expiry-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" required>
+                </div>
+                <div class="form-group">
+                    <label for="description" data-i18n="description">Description</label>
+                    <textarea id="description" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login to Your Account</h2>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="login" data-i18n="login">Login</button>
+                <button class="tab-btn" data-tab="signup" data-i18n="signup">Sign Up</button>
+            </div>
+            <div class="tab-content active" id="login-tab">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-i18n="login">Login</button>
+                </form>
+            </div>
+            <div class="tab-content" id="signup-tab">
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-type">I am a:</label>
+                        <select id="user-type" required>
+                            <option value="farmer">Farmer</option>
+                            <option value="buyer">Buyer</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-i18n="signup">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 data-i18n="your-cart">Your Cart</h2>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div class="cart-total">
+                <span data-i18n="total">Total:</span>
+                <span id="cart-total-price">₹0.00</span>
+            </div>
+            <button class="btn btn-primary btn-large" id="checkout-btn" style="width: 100%;" data-i18n="proceed-checkout">Proceed to Checkout</button>
+        </div>
+    </div>
+
+   <!-- Checkout Modal -->
+<div id="checkout-modal" class="modal">
+    <div class="modal-content" style="max-width: 700px;">
+        <span class="close" id="close-checkout">&times;</span>
+        <h2 style="text-align: center; margin-bottom: 1.5rem;">Checkout</h2>
+        
+        <div class="checkout-container">
+            <div class="checkout-summary">
+                <h3>Order Summary</h3>
+                <div id="checkout-items">
+                    <!-- Order items will be populated here -->
+                </div>
+                <div class="checkout-total">
+                    <strong>Total: <span id="checkout-total-price">₹0.00</span></strong>
+                </div>
+            </div>
+            
+            <div class="checkout-form">
+                <h3>Payment Information</h3>
+                <form id="shipping-form">
+                    <div class="form-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" id="full-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <textarea id="address" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pincode">PIN Code</label>
+                            <input type="text" id="pincode" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Payment Method</label>
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="payment-method" value="card" required>
+                                <div class="payment-method-details">
+                                    <i class="fas fa-credit-card"></i>
+                                    <span>Credit/Debit Card</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment-method" value="upi">
+                                <div class="payment-method-details">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>UPI (PhonePe, GPay, Paytm)</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment-method" value="netbanking">
+                                <div class="payment-method-details">
+                                    <i class="fas fa-university"></i>
+                                    <span>Net Banking</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment-method" value="cod">
+                                <div class="payment-method-details">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>Cash on Delivery</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;">
+                        Proceed to Payment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Gateway Modal -->
+<div id="payment-modal" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <span class="close" id="close-payment">&times;</span>
+        <div id="payment-content">
+            <!-- Payment content will be dynamically loaded here -->
+        </div>
+    </div>
+</div>
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const listingsContainer = document.getElementById('listings-container');
+            const listingModal = document.getElementById('listing-modal');
+            const loginModal = document.getElementById('login-modal');
+            const cartModal = document.getElementById('cart-modal');
+            const checkoutModal = document.getElementById('checkout-modal');
+            const listingForm = document.getElementById('listing-form');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const contactForm = document.getElementById('contact-form');
+            const shippingForm = document.getElementById('shipping-form');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalPrice = document.getElementById('cart-total-price');
+            const closeButtons = document.querySelectorAll('.close');
+            const createListingBtn = document.getElementById('create-listing-btn');
+            const applyFiltersBtn = document.getElementById('apply-filters');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const notification = document.getElementById('notification');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const closeCheckout = document.getElementById('close-checkout');
+            const findProduceBtn = document.getElementById('find-produce-btn');
+
+            // Language translation data
+            const translations = {
+                en: {
+                    // Navigation
+                    "home": "Home",
+                    "listings": "Listings",
+                    "how-it-works": "How It Works",
+                    "about": "About",
+                    "contact": "Contact",
+                    "login": "Login",
+                    "signup": "Sign Up",
+                    "logout": "Logout",
+                    
+                    // Hero Section
+                    "hero-title": "Connect Directly with Buyers",
+                    "hero-text": "FarmLink eliminates middlemen, reduces post-harvest losses, and provides better prices for farmers while ensuring quality produce for buyers.",
+                    "list-product": "List Your Produce",
+                    "find-product": "Find Produce",
+                    
+                    // Stats Section
+                    "higher-prices": "Higher Prices for Farmers",
+                    "reduced-spoilage": "Reduced Spoilage",
+                    "active-farmers": "Active Farmers",
+                    "verified-buyers": "Verified Buyers",
+                    
+                    // Listings Section
+                    "fresh-produce": "Fresh Produce Listings",
+                    "all-categories": "All Categories",
+                    "vegetables": "Vegetables",
+                    "fruits": "Fruits",
+                    "grains": "Grains",
+                    "dairy": "Dairy",
+                    "all-quality": "All Quality Grades",
+                    "organic": "Organic",
+                    "premium": "Premium",
+                    "standard": "Standard",
+                    "search-location": "Search by location...",
+                    "apply-filters": "Apply Filters",
+                    
+                    // How It Works
+                    "how-it-works-title": "How FarmLink Works",
+                    "step1-title": "Create Listing",
+                    "step1-text": "Farmers list their produce with quality grading and quantity details.",
+                    "step2-title": "Browse & Select",
+                    "step2-text": "Buyers browse available produce and add items to their cart.",
+                    "step3-title": "Match Logistics",
+                    "step3-text": "Select from available cold-chain and transportation options.",
+                    "step4-title": "Secure Payment",
+                    "step4-text": "Complete transactions with built-in dispute resolution.",
+                    
+                    // About Section
+                    "why-choose": "Why Choose FarmLink",
+                    "better-prices": "Better Prices",
+                    "better-prices-text": "Eliminate middlemen and get fair prices for your produce.",
+                    "logistics": "Logistics Support",
+                    "logistics-text": "Access to reliable cold-chain and transportation options.",
+                    "quality-assurance": "Quality Assurance",
+                    "quality-assurance-text": "Graded listings and dispute resolution for quality issues.",
+                    "cooperative-pooling": "Cooperative Pooling",
+                    "cooperative-pooling-text": "Small farmers can pool resources for better bargaining power.",
+                    
+                    // Contact Section
+                    "contact-title": "Contact Us",
+                    "get-in-touch": "Get in Touch",
+                    "your-name": "Your Name",
+                    "your-email": "Your Email",
+                    "your-message": "Your Message",
+                    "send-message": "Send Message",
+                    
+                    // Footer
+                    "quick-links": "Quick Links",
+                    "legal": "Legal",
+                    "privacy-policy": "Privacy Policy",
+                    "terms-of-service": "Terms of Service",
+                    "connect": "Connect",
+                    
+                    // Modals
+                    "create-listing-title": "Create New Listing",
+                    "your-name": "Your Name",
+                    "product-name": "Product Name",
+                    "category": "Category",
+                    "select-category": "Select Category",
+                    "quantity-kg": "Quantity (kg)",
+                    "price-kg": "Price per kg (₹)",
+                    "quality": "Quality Grade",
+                    "select-quality": "Select Quality",
+                    "description": "Description",
+                    
+                    // Notifications
+                    "message-sent": "Your message has been sent successfully!",
+                    "listing-created": "Your listing has been created successfully!",
+                    "logged-in": "Logged in successfully!",
+                    "account-created": "Account created successfully!",
+                    "logged-out": "Logged out successfully!",
+                    "item-added": "kg added to cart!",
+                    "item-removed": "Item removed from cart",
+                    "order-placed": "Order placed successfully!",
+                    
+                    // Cart
+                    "your-cart": "Your Cart",
+                    "empty-cart": "Your cart is empty",
+                    "remove": "Remove",
+                    "total": "Total",
+                    "proceed-checkout": "Proceed to Checkout",
+                    
+                    // Checkout
+                    "checkout": "Checkout",
+                    "order-summary": "Order Summary",
+                    "shipping-info": "Shipping Information",
+                    "full-name": "Full Name",
+                    "phone-number": "Phone Number",
+                    "delivery-address": "Delivery Address",
+                    "city": "City",
+                    "pincode": "PIN Code",
+                    "payment-method": "Payment Method",
+                    "credit-debit": "Credit/Debit Card",
+                    "upi-netbanking": "UPI/Net Banking",
+                    "place-order": "Place Order"
+                },
+                es: {
+                    // Spanish translations
+                    "home": "Inicio",
+                    "listings": "Productos",
+                    "how-it-works": "Cómo Funciona",
+                    "about": "Acerca de",
+                    "contact": "Contacto",
+                    "login": "Iniciar Sesión",
+                    "signup": "Registrarse",
+                    "logout": "Cerrar Sesión",
+                    
+                    "hero-title": "Conéctate Directamente con Compradores",
+                    "hero-text": "FarmLink elimina intermediarios, reduce las pérdidas posteriores a la cosecha y ofrece mejores precios para los agricultores, garantizando productos de calidad para los compradores.",
+                    "list-product": "Lista Tus Productos",
+                    "find-product": "Encontrar Productos",
+                    
+                    // Add more Spanish translations as needed
+                },
+                fr: {
+                    // French translations
+                    "home": "Accueil",
+                    "listings": "Annonces",
+                    "how-it-works": "Comment ça Marche",
+                    "about": "À Propos",
+                    "contact": "Contact",
+                    "login": "Connexion",
+                    "signup": "S'inscrire",
+                    "logout": "Déconnexion",
+                    
+                    "hero-title": "Connectez-vous Directement avec les Acheteurs",
+                    "hero-text": "FarmLink élimine les intermédiaires, réduit les pertes après récolte et offre de meilleurs prix aux agriculteurs tout en garantissant des produits de qualité aux acheteurs.",
+                    "list-product": "Lister Vos Produits",
+                    "find-product": "Trouver des Produits",
+                    
+                    // Add more French translations as needed
+                },
+                hi: {
+                    // Hindi translations
+                    "home": "होम",
+                    "listings": "लिस्टिंग",
+                    "how-it-works": "कैसे काम करता है",
+                    "about": "अबाउट",
+                    "contact": "संपर्क",
+                    "login": "लॉगिन",
+                    "signup": "साइनअप",
+                    "logout": "लॉगआउट",
+                    
+                    "hero-title": "सीधे खरीदारों से जुड़ें",
+                    "hero-text": "FarmLink मध्यस्थों को खत्म करता है, कटाई के बाद के नुकसान को कम करता है, और किसानों के लिए बेहतर कीमतें प्रदान करता है while खरीदारों के लिए गुणवत्तापूर्ण उपज सुनिश्चित करता है।",
+                    "list-product": "अपनी उपज सूचीबद्ध करें",
+                    "find-product": "उपज खोजें",
+                    
+                    // Add more Hindi translations as needed
+                },
+                ta: {
+                    // Tamil translations
+                    "home": "முகப்பு",
+                    "listings": "பட்டியல்கள்",
+                    "how-it-works": "எவ்வாறு இது செயல்படுகிறது",
+                    "about": "எங்களைப் பற்றி",
+                    "contact": "தொடர்பு",
+                    "login": "உள்நுழைய",
+                    "signup": "பதிவு செய்ய",
+                    "logout": "வெளியேறு",
+                    
+                    "hero-title": "நேரடியாக வாங்குபவர்களுடன் இணைக்கவும்",
+                    "hero-text": "FarmLink மத்தரவர்களை நீக்குகிறது, அறுவடைக்குப் பின் இழப்புகளைக் குறைக்கிறது, மற்றும் விவசாயிகளுக்கு சிறந்த விலைகளை வழங்குகிறது while வாங்குபவர்களுக்கு தரமான பொருட்களை உறுதி செய்கிறது.",
+                    "list-product": "உங்கள் பொருட்களை பட்டியலிடுங்கள்",
+                    "find-product": "பொருட்களை கண்டுபிடி",
+                    
+                    // Add more Tamil translations as needed
+                }
+            };
+
+            // Global variables
+            let cart = [];
+            let currentUser = null;
+            let listings = [];
+            let isFiltered = false;
+let productsPerPage = 6;
+let displayedCount = 0;
+            // Sample data for demonstration
+// Function to generate future dates
+function generateFutureDate(daysFromNow) {
+    const date = new Date();
+    date.setDate(date.getDate() + daysFromNow);
+    return date.toISOString().split('T')[0];
+}
+
+// Update your sample listings to use dynamic dates
+// Extended sample data with 15 products per category
+const sampleListings = [
+    // Vegetables (15 products)
+    {
+        id: 1,
+        title: 'Organic Tomatoes',
+        farmer: 'Rajesh Kumar',
+        category: 'vegetables',
+        quantity: 100,
+        price: 35,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(8),
+        location: 'Springfield',
+        description: 'Fresh organic tomatoes, harvested yesterday. Grown without pesticides or synthetic fertilizers.',
+        image: 'https://images.unsplash.com/photo-1561136594-7f68413baa99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 2,
+        title: 'Fresh Potatoes',
+        farmer: 'Green Farms',
+        category: 'vegetables',
+        quantity: 200,
+        price: 25,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-10),
+        expiryDate: generateFutureDate(60),
+        location: 'Potato Valley',
+        description: 'Freshly harvested potatoes, perfect for cooking and storage.',
+        image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 3,
+        title: 'Capcicum',
+        farmer: 'Colorful Harvest',
+        category: 'vegetables',
+        quantity: 80,
+        price: 45,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(10),
+        location: 'Green Valley',
+        description: 'Colorful bell peppers in red, yellow, and green varieties.',
+        image: 'https://images.pexels.com/photos/594137/pexels-photo-594137.jpeg'
+    },
+    {
+        id: 4,
+        title: 'Organic Carrots',
+        farmer: 'Green Farms Co-op',
+        category: 'vegetables',
+        quantity: 120,
+        price: 40,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(17),
+        location: 'Springfield',
+        description: 'Sweet organic carrots, freshly harvested. Rich in vitamins and minerals.',
+        image: 'https://images.unsplash.com/photo-1445282768818-728615cc910a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 5,
+        title: 'Fresh Onions',
+        farmer: 'Spice Farmers',
+        category: 'vegetables',
+        quantity: 300,
+        price: 20,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-15),
+        expiryDate: generateFutureDate(180),
+        location: 'Onion City',
+        description: 'Fresh onions with good shelf life, perfect for daily cooking.',
+        image: 'https://media.istockphoto.com/id/690404352/photo/spanish-onions-on-black-slate-background.jpg?s=1024x1024&w=is&k=20&c=m05RvoCCJCK3Ox-jBTB_jShVK8WtxI9-ngbswA_ztk0='
+    },
+    {
+        id: 6,
+        title: 'Broccoli',
+        farmer: 'Healthy Greens',
+        category: 'vegetables',
+        quantity: 60,
+        price: 55,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(7),
+        location: 'Green Fields',
+        description: 'Fresh organic broccoli, packed with nutrients.',
+        image: 'https://images.pexels.com/photos/47347/broccoli-vegetable-food-healthy-47347.jpeg'
+    },
+    {
+        id: 7,
+        title: 'Spinach',
+        farmer: 'Leafy Greens Farm',
+        category: 'vegetables',
+        quantity: 40,
+        price: 30,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(0),
+        expiryDate: generateFutureDate(5),
+        location: 'Green Valley',
+        description: 'Fresh spinach leaves, perfect for salads and cooking.',
+        image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 8,
+        title: 'Cauliflower',
+        farmer: 'White Harvest',
+        category: 'vegetables',
+        quantity: 70,
+        price: 35,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(10),
+        location: 'Springfield',
+        description: 'Fresh white cauliflower, perfect for curries and snacks.',
+        image: 'https://images.pexels.com/photos/6631953/pexels-photo-6631953.jpeg'
+    },
+    {
+        id: 9,
+        title: 'Cabbage',
+        farmer: 'Round Veggies',
+        category: 'vegetables',
+        quantity: 90,
+        price: 28,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-3),
+        expiryDate: generateFutureDate(20),
+        location: 'Vegetable Town',
+        description: 'Fresh green cabbage, great for salads and cooking.',
+        image: 'https://static.vecteezy.com/system/resources/previews/030/657/553/large_2x/cabbage-with-transparent-background-high-quality-ultra-hd-free-photo.jpg'
+    },
+    {
+        id: 10,
+        title: 'Brinjal',
+        farmer: 'Salad Greens',
+        category: 'vegetables',
+        quantity: 50,
+        price: 40,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(0),
+        expiryDate: generateFutureDate(7),
+        location: 'Salad Valley',
+        description: 'Fresh organic lettuce, perfect for healthy salads.',
+        image: 'https://images.pexels.com/photos/34346365/pexels-photo-34346365.jpeg'
+    },
+    {
+        id: 11,
+        title: 'Eggplant',
+        farmer: 'Purple Harvest',
+        category: 'vegetables',
+        quantity: 80,
+        price: 32,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(12),
+        location: 'Purple Valley',
+        description: 'Fresh purple eggplants, perfect for curries and dishes.',
+        image: 'https://images.pexels.com/photos/321551/pexels-photo-321551.jpeg'
+    },
+    {
+        id: 12,
+        title: 'Beetroort',
+        farmer: 'Summer Veggies',
+        category: 'vegetables',
+        quantity: 60,
+        price: 38,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(8),
+        location: 'Summer Fields',
+        description: 'Fresh zucchini, great for grilling and cooking.',
+        image: 'https://images.pexels.com/photos/7511800/pexels-photo-7511800.jpeg'
+    },
+    {
+        id: 13,
+        title: 'Green Beans',
+        farmer: 'Bean Farmers',
+        category: 'vegetables',
+        quantity: 70,
+        price: 42,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(9),
+        location: 'Bean Valley',
+        description: 'Fresh green beans, perfect for stir-fries.',
+        image: 'https://images.pexels.com/photos/3004798/pexels-photo-3004798.jpeg'
+    },
+    {
+        id: 14,
+        title: 'Radish',
+        farmer: 'Root Veggies',
+        category: 'vegetables',
+        quantity: 50,
+        price: 25,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(15),
+        location: 'Root Town',
+        description: 'Fresh radishes, great for salads and garnishing.',
+        image: 'https://media.istockphoto.com/id/1155443992/photo/daikon-radish-on-the-wood-background.jpg?s=1024x1024&w=is&k=20&c=ZIGgT2A42nOmmG_oH4XiFDmWC7i2cA4prm2_me8lKts='
+    },
+    {
+        id: 15,
+        title: 'Cucumber',
+        farmer: 'Cool Crops',
+        category: 'vegetables',
+        quantity: 100,
+        price: 22,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(10),
+        location: 'Cool Valley',
+        description: 'Fresh cucumbers, perfect for salads and raita.',
+        image: 'https://images.pexels.com/photos/2329440/pexels-photo-2329440.jpeg'
+    },
+
+    // Fruits (15 products)
+    {
+        id: 16,
+        title: 'Premium Apples',
+        farmer: 'Priya Singh',
+        category: 'fruits',
+        quantity: 150,
+        price: 120,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-5),
+        expiryDate: generateFutureDate(25),
+        location: 'Apple Hills',
+        description: 'Sweet and crisp premium apples. Perfect for eating fresh or baking.',
+        image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 17,
+        title: 'Strawberries',
+        farmer: 'Berry Good Farms',
+        category: 'fruits',
+        quantity: 40,
+        price: 140,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(0),
+        expiryDate: generateFutureDate(7),
+        location: 'Berrytown',
+        description: 'Juicy sweet strawberries, picked at peak ripeness.',
+        image: 'https://images.unsplash.com/photo-1464454709131-ffd692591ee5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 18,
+        title: 'Organic Bananas',
+        farmer: 'Tropical Fruits',
+        category: 'fruits',
+        quantity: 200,
+        price: 35,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(5),
+        location: 'Tropical Valley',
+        description: 'Fresh organic bananas, rich in potassium.',
+        image: 'https://images.unsplash.com/photo-1603833665858-e61d17a86224?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 19,
+        title: 'Mangoes',
+        farmer: 'King Fruits',
+        category: 'fruits',
+        quantity: 120,
+        price: 80,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-3),
+        expiryDate: generateFutureDate(10),
+        location: 'Mango Land',
+        description: 'Sweet Alphonso mangoes, the king of fruits.',
+        image: 'https://images.pexels.com/photos/2294471/pexels-photo-2294471.jpeg'
+    },
+    {
+        id: 20,
+        title: 'Oranges',
+        farmer: 'Citrus Farms',
+        category: 'fruits',
+        quantity: 180,
+        price: 45,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-4),
+        expiryDate: generateFutureDate(14),
+        location: 'Orange Grove',
+        description: 'Juicy oranges, rich in Vitamin C.',
+        image: 'https://images.unsplash.com/photo-1547514701-42782101795e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 21,
+        title: 'Grapes',
+        farmer: 'Vineyard Valley',
+        category: 'fruits',
+        quantity: 60,
+        price: 65,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(6),
+        location: 'Grape Valley',
+        description: 'Sweet seedless grapes, perfect for snacking.',
+        image: 'https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg'
+    },
+    {
+        id: 22,
+        title: 'Pineapples',
+        farmer: 'Tropical Delight',
+        category: 'fruits',
+        quantity: 80,
+        price: 75,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-3),
+        expiryDate: generateFutureDate(12),
+        location: 'Tropical Island',
+        description: 'Sweet tropical pineapples, great for juice.',
+        image: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 23,
+        title: 'Watermelons',
+        farmer: 'Summer Fruits',
+        category: 'fruits',
+        quantity: 50,
+        price: 55,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(10),
+        location: 'Summer Valley',
+        description: 'Juicy watermelons, perfect for hot days.',
+        image: 'https://images.pexels.com/photos/2894205/pexels-photo-2894205.jpeg'
+    },
+    {
+        id: 24,
+        title: 'Papaya',
+        farmer: 'Tropical Health',
+        category: 'fruits',
+        quantity: 70,
+        price: 40,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(7),
+        location: 'Tropical Farm',
+        description: 'Fresh papaya, great for digestion.',
+        image: 'https://images.pexels.com/photos/5507722/pexels-photo-5507722.jpeg'
+    },
+    {
+        id: 25,
+        title: 'Pomegranate',
+        farmer: 'Ruby Fruits',
+        category: 'fruits',
+        quantity: 90,
+        price: 95,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-3),
+        expiryDate: generateFutureDate(20),
+        location: 'Ruby Valley',
+        description: 'Fresh pomegranates, rich in antioxidants.',
+        image: 'https://images.pexels.com/photos/9810910/pexels-photo-9810910.jpeg'
+    },
+    {
+        id: 26,
+        title: 'Kiwi',
+        farmer: 'Exotic Fruits',
+        category: 'fruits',
+        quantity: 40,
+        price: 85,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(14),
+        location: 'Exotic Farms',
+        description: 'Fresh kiwi fruits, rich in Vitamin C.',
+        image: 'https://images.pexels.com/photos/54370/pexels-photo-54370.jpeg'
+    },
+    {
+        id: 27,
+        title: 'Peaches',
+        farmer: 'Stone Fruits',
+        category: 'fruits',
+        quantity: 60,
+        price: 70,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(8),
+        location: 'Stone Valley',
+        description: 'Juicy peaches, perfect for desserts.',
+        image: 'https://images.pexels.com/photos/209416/pexels-photo-209416.jpeg'
+    },
+    {
+        id: 28,
+        title: 'Cherries',
+        farmer: 'Berry Farms',
+        category: 'fruits',
+        quantity: 30,
+        price: 150,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(5),
+        location: 'Cherry Hill',
+        description: 'Fresh cherries, sweet and delicious.',
+        image: 'https://images.pexels.com/photos/966416/pexels-photo-966416.jpeg'
+    },
+    {
+        id: 29,
+        title: 'Plums',
+        farmer: 'Purple Fruits',
+        category: 'fruits',
+        quantity: 80,
+        price: 60,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(9),
+        location: 'Plum Valley',
+        description: 'Fresh plums, sweet and juicy.',
+        image: 'https://images.pexels.com/photos/248440/pexels-photo-248440.jpeg'
+    },
+    {
+        id: 30,
+        title: 'Guava',
+        farmer: 'Tropical Health',
+        category: 'fruits',
+        quantity: 100,
+        price: 35,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-2),
+        expiryDate: generateFutureDate(10),
+        location: 'Guava Garden',
+        description: 'Fresh guava, rich in Vitamin C.',
+        image: 'https://images.pexels.com/photos/4400282/pexels-photo-4400282.jpeg'
+    },
+
+    // Grains (15 products)
+    {
+        id: 31,
+        title: 'Wheat Grain',
+        farmer: 'Anand Patel',
+        category: 'grains',
+        quantity: 500,
+        price: 28,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-15),
+        expiryDate: generateFutureDate(365),
+        location: 'Farmville',
+        description: 'High quality wheat grain, freshly harvested. Suitable for milling into flour.',
+        image: 'https://images.unsplash.com/photo-1555064837-3c7ae70f81be?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hlYXQlMjBncmFpbnxlbnwwfHwwfHx8MA%3D%3D'
+    },
+    {
+        id: 32,
+        title: 'Basmati Rice',
+        farmer: 'Rice Farmers Co-op',
+        category: 'grains',
+        quantity: 400,
+        price: 65,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-30),
+        expiryDate: generateFutureDate(180),
+        location: 'Rice Valley',
+        description: 'Premium quality basmati rice, aged for perfect flavor.',
+        image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+   
+    {
+        id: 34,
+        title: 'CornGrain',
+        farmer: 'Maize Masters',
+        category: 'grains',
+        quantity: 300,
+        price: 22,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-25),
+        expiryDate: generateFutureDate(180),
+        location: 'Corn Fields',
+        description: 'Fresh corn grain, perfect for animal feed and processing.',
+        image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 35,
+        title: 'Oats',
+        farmer: 'Breakfast Grains',
+        category: 'grains',
+        quantity: 150,
+        price: 45,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-30),
+        expiryDate: generateFutureDate(365),
+        location: 'Oat Valley',
+        description: 'Organic oats, perfect for healthy breakfast.',
+        image: 'https://images.pexels.com/photos/4725726/pexels-photo-4725726.jpeg'
+    },
+    {
+        id: 36,
+        title: 'Barley',
+        farmer: 'Ancient Grains',
+        category: 'grains',
+        quantity: 200,
+        price: 35,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-40),
+        expiryDate: generateFutureDate(365),
+        location: 'Barley Fields',
+        description: 'Whole barley grains, great for soups and brewing.',
+        image: 'https://images.pexels.com/photos/5538169/pexels-photo-5538169.jpeg'
+    },
+    {
+        id: 37,
+        title: 'Millet',
+        farmer: 'Traditional Grains',
+        category: 'grains',
+        quantity: 180,
+        price: 38,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-35),
+        expiryDate: generateFutureDate(365),
+        location: 'Millet Farms',
+        description: 'Organic millet, gluten-free and nutritious.',
+        image: 'https://images.pexels.com/photos/10738421/pexels-photo-10738421.jpeg'
+    },
+    // Dairy (15 products)
+    {
+        id: 46,
+        title: 'Fresh Milk',
+        farmer: 'Dairy Farms Co-op',
+        category: 'dairy',
+        quantity: 50,
+        price: 45,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(0),
+        expiryDate: generateFutureDate(3),
+        location: 'Dairy Valley',
+        description: 'Fresh milk from grass-fed cows, pasteurized.',
+        image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    },
+    {
+        id: 47,
+        title: 'Organic Yogurt',
+        farmer: 'Culture Dairy',
+        category: 'dairy',
+        quantity: 30,
+        price: 65,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(10),
+        location: 'Yogurt Farm',
+        description: 'Organic yogurt with live cultures.',
+        image: 'https://media.istockphoto.com/id/154961206/photo/white-ceramic-bowl-of-yogurt-on-a-wooden-table.jpg?s=1024x1024&w=is&k=20&c=gbQY4F_qdeP28s4Eha3UE0ewZ75FKHaj7SsHuOnFGXA='
+    },
+    {
+        id: 48,
+        title: 'Farm Cheese',
+        farmer: 'Cheese Masters',
+        category: 'dairy',
+        quantity: 20,
+        price: 120,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-5),
+        expiryDate: generateFutureDate(30),
+        location: 'Cheese Valley',
+        description: 'Aged farm cheese, made traditionally.',
+        image: 'https://media.istockphoto.com/id/120990404/photo/different-types-of-cheese-bread-and-tomatoes.jpg?b=1&s=612x612&w=0&k=20&c=6Rf7pAKMgznySxjJEW5XIJMXjZqh2mzXKlCcCvJqc1o='
+    },
+    {
+        id: 50,
+        title: 'Paneer',
+        farmer: 'Fresh Cheese Co',
+        category: 'dairy',
+        quantity: 40,
+        price: 95,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-1),
+        expiryDate: generateFutureDate(5),
+        location: 'Paneer Factory',
+        description: 'Fresh paneer, perfect for Indian dishes.',
+        image: 'https://myfoodstory.com/wp-content/uploads/2016/10/How-to-make-Paneer-3.jpg'
+    },
+    {
+        id: 51,
+        title: 'Organic Ghee',
+        farmer: 'Pure Ghee',
+        category: 'dairy',
+        quantity: 15,
+        price: 180,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-10),
+        expiryDate: generateFutureDate(365),
+        location: 'Ghee Factory',
+        description: 'Organic clarified butter, traditional method.',
+        image: 'https://media.istockphoto.com/id/2230113209/photo/ghee-butter-in-a-jar-with-serving-spoon-indian-cuisine.jpg?b=1&s=612x612&w=0&k=20&c=3njNT0KebP7X6Vr4ZNrDwk1GZrs48lPuhnRyKC6mjno='
+    },
+    // Spices (15 products)
+    {
+        id: 61,
+        title: 'Turmeric Powder',
+        farmer: 'Spice Masters',
+        category: 'spices',
+        quantity: 50,
+        price: 85,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-30),
+        expiryDate: generateFutureDate(365),
+        location: 'Spice Valley',
+        description: 'Organic turmeric powder, fresh ground.',
+        image: 'https://media.istockphoto.com/id/1372767803/photo/curcuma-longa-powder-rhizomes-and-tea.jpg?b=1&s=612x612&w=0&k=20&c=QtUSNvAS-S4oysTp5UXnbN0-NfABZZBPz8pQ68isMjU='
+    },
+    {
+        id: 62,
+        title: 'Cumin Seeds',
+        farmer: 'Seed Spices',
+        category: 'spices',
+        quantity: 40,
+        price: 75,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-45),
+        expiryDate: generateFutureDate(365),
+        location: 'Cumin Farms',
+        description: 'Premium cumin seeds, aromatic and fresh.',
+        image: 'https://images.pexels.com/photos/4871244/pexels-photo-4871244.jpeg'
+    },
+    {
+        id: 63,
+        title: 'Coriander Powder',
+        farmer: 'Ground Spices',
+        category: 'spices',
+        quantity: 35,
+        price: 65,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-20),
+        expiryDate: generateFutureDate(180),
+        location: 'Spice Mill',
+        description: 'Fresh coriander powder, aromatic.',
+        image: 'https://media.istockphoto.com/id/1158469228/photo/garam-masala-powder.jpg?s=1024x1024&w=is&k=20&c=tHZ76oRImgECsq5oBqx4DOrq8DOWIWXd9pZPooEL9YM='
+    },
+    {
+        id: 64,
+        title: 'Red Chili Powder',
+        farmer: 'Hot Spices',
+        category: 'spices',
+        quantity: 30,
+        price: 95,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-25),
+        expiryDate: generateFutureDate(180),
+        location: 'Chili Farms',
+        description: 'Hot red chili powder, freshly ground.',
+        image: 'https://images.pexels.com/photos/33440719/pexels-photo-33440719.jpeg'
+    },
+    {
+        id: 66,
+        title: 'Cardamom',
+        farmer: 'Queen of Spices',
+        category: 'spices',
+        quantity: 20,
+        price: 250,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-60),
+        expiryDate: generateFutureDate(365),
+        location: 'Cardamom Hills',
+        description: 'Green cardamom pods, premium quality.',
+        image: 'https://images.pexels.com/photos/3040873/pexels-photo-3040873.jpeg'
+    },
+    {
+        id: 67,
+        title: 'Cinnamon Sticks',
+        farmer: 'Bark Spices',
+        category: 'spices',
+        quantity: 30,
+        price: 85,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-90),
+        expiryDate: generateFutureDate(365),
+        location: 'Cinnamon Valley',
+        description: 'Organic cinnamon sticks, sweet aroma.',
+        image: 'https://images.pexels.com/photos/301669/pexels-photo-301669.jpeg'
+    },
+    {
+        id: 68,
+        title: 'Black Pepper',
+        farmer: 'King of Spices',
+        category: 'spices',
+        quantity: 40,
+        price: 110,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-75),
+        expiryDate: generateFutureDate(365),
+        location: 'Pepper Plantations',
+        description: 'Whole black pepper, fresh and aromatic.',
+        image: 'https://images.pexels.com/photos/5988689/pexels-photo-5988689.jpeg'
+    },
+    {
+        id: 71,
+        title: 'Cloves',
+        farmer: 'Bud Spices',
+        category: 'spices',
+        quantity: 25,
+        price: 95,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-80),
+        expiryDate: generateFutureDate(365),
+        location: 'Clove Gardens',
+        description: 'Whole cloves, aromatic and flavorful.',
+        image: 'https://images.pexels.com/photos/6087276/pexels-photo-6087276.jpeg'
+    },
+    {
+        id: 72,
+        title: 'Nutmeg',
+        farmer: 'Nut Spices',
+        category: 'spices',
+        quantity: 20,
+        price: 180,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-100),
+        expiryDate: generateFutureDate(365),
+        location: 'Nutmeg Plantations',
+        description: 'Whole nutmeg, for grating fresh.',
+        image: 'https://images.pexels.com/photos/35339664/pexels-photo-35339664.jpeg'
+    },
+    {
+        id: 73,
+        title: 'Bay Leaves',
+        farmer: 'Leaf Spices',
+        category: 'spices',
+        quantity: 30,
+        price: 45,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-30),
+        expiryDate: generateFutureDate(180),
+        location: 'Bay Leaf Farms',
+        description: 'Dried bay leaves, for soups and stews.',
+        image: 'https://images.pexels.com/photos/5988168/pexels-photo-5988168.jpeg'
+    },
+    {
+        id: 74,
+        title: 'Star Anise',
+        farmer: 'Star Spices',
+        category: 'spices',
+        quantity: 25,
+        price: 110,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-70),
+        expiryDate: generateFutureDate(365),
+        location: 'Anise Gardens',
+        description: 'Whole star anise, licorice flavor.',
+        image: 'https://images.pexels.com/photos/247113/anise-spices-seeds-sprockets-247113.jpeg'
+    },
+    // Nuts (15 products)
+    {
+        id: 76,
+        title: 'Almonds',
+        farmer: 'Nut Masters',
+        category: 'nuts',
+        quantity: 50,
+        price: 220,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-60),
+        expiryDate: generateFutureDate(365),
+        location: 'Almond Orchards',
+        description: 'Premium California almonds, shelled.',
+        image: 'https://images.pexels.com/photos/35339669/pexels-photo-35339669.jpeg'
+    },
+    {
+        id: 77,
+        title: 'Cashews',
+        farmer: 'Nut Harvest',
+        category: 'nuts',
+        quantity: 45,
+        price: 280,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-45),
+        expiryDate: generateFutureDate(365),
+        location: 'Cashew Plantations',
+        description: 'Whole cashews, premium quality.',
+        image: 'https://media.istockphoto.com/id/175380070/photo/cashews.jpg?b=1&s=612x612&w=0&k=20&c=pBi4Uco-zpDtCKbxeNoq3NmlMTFSaxeasf3etakPqRw='
+    },
+    {
+        id: 78,
+        title: 'Walnuts',
+        farmer: 'Nut Valley',
+        category: 'nuts',
+        quantity: 40,
+        price: 190,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-75),
+        expiryDate: generateFutureDate(365),
+        location: 'Walnut Farms',
+        description: 'Organic walnuts, shelled halves.',
+        image: 'https://images.pexels.com/photos/1489291/pexels-photo-1489291.jpeg'
+    },
+    {
+        id: 79,
+        title: 'Pistachios',
+        farmer: 'Green Nuts',
+        category: 'nuts',
+        quantity: 35,
+        price: 320,
+        quality: 'premium',
+        manufacturedDate: generateFutureDate(-30),
+        expiryDate: generateFutureDate(365),
+        location: 'Pistachio Gardens',
+        description: 'Premium pistachios, shelled.',
+        image: 'https://images.pexels.com/photos/52521/pistachio-nuts-pistachios-crisps-52521.jpeg'
+    },
+    {
+        id: 80,
+        title: 'Peanuts',
+        farmer: 'Ground Nuts',
+        category: 'nuts',
+        quantity: 60,
+        price: 85,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-90),
+        expiryDate: generateFutureDate(365),
+        location: 'Peanut Farms',
+        description: 'Raw peanuts, great for roasting.',
+        image: 'https://images.pexels.com/photos/135755/pexels-photo-135755.jpeg'
+    },
+    {
+        id: 87,
+        title: 'Sunflower Seeds',
+        farmer: 'Seed Nuts',
+        category: 'nuts',
+        quantity: 50,
+        price: 75,
+        quality: 'standard',
+        manufacturedDate: generateFutureDate(-30),
+        expiryDate: generateFutureDate(365),
+        location: 'Sunflower Farms',
+        description: 'Shelled sunflower seeds, for snacking.',
+        image: 'https://images.pexels.com/photos/691175/pexels-photo-691175.jpeg'
+    },
+    {
+        id: 88,
+        title: 'Pumpkin Seeds',
+        farmer: 'Autumn Harvest',
+        category: 'nuts',
+        quantity: 45,
+        price: 95,
+        quality: 'organic',
+        manufacturedDate: generateFutureDate(-40),
+        expiryDate: generateFutureDate(365),
+        location: 'Pumpkin Farms',
+        description: 'Organic pumpkin seeds, shelled.',
+        image: 'https://images.pexels.com/photos/4110309/pexels-photo-4110309.jpeg'
+    },
+];
+
+// Image mapping for different product categories
+const categoryImages = {
+    'vegetables': [
+        'https://images.unsplash.com/photo-1561136594-7f68413baa99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1566385101042-1a0f0c126a96?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1445282768818-728615cc910a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1556800572-1b8aeef7a523?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1513530176992-0cf39c4cbed4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    ],
+    'fruits': [
+        'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1464454709131-ffd692591ee5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1603833665858-e61d17a86224?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1547514701-42782101795e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    ],
+    'grains': [
+        'https://images.unsplash.com/photo-1555064837-3c7ae70f81be?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hlYXQlMjBncmFpbnxlbnwwfHwwfHx8MA%3D%3D',
+        'https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1516684732162-798a0062be99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1551754655-cd27e38d2076?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1553531889-65d9c41c2609?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    ],
+    'dairy': [
+        'https://images.unsplash.com/photo-1563636619-e9143da7973b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    ],
+    'spices': [
+        'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1516684732162-798a0062be99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1547514701-42782101795e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    ],
+    'nuts': [
+        'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1547514701-42782101795e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+    ]
+};
+
+// Function to get random image for a category
+function getRandomImageForCategory(category) {
+    const images = categoryImages[category] || categoryImages['vegetables']; // Default to vegetables if category not found
+    const randomIndex = Math.floor(Math.random() * images.length);
+    return images[randomIndex];
+}
+
+// Function to get image based on product name
+function getImageForProduct(productName, category) {
+    const name = productName.toLowerCase();
+    
+    // First, try to match by product name keywords
+    if (name.includes('tomato')) {
+        return 'https://images.unsplash.com/photo-1561136594-7f68413baa99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('potato') || name.includes('potatoes')) {
+        return 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('carrot') || name.includes('carrots')) {
+        return 'https://images.unsplash.com/photo-1445282768818-728615cc910a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('onion') || name.includes('onions')) {
+        return 'https://images.unsplash.com/photo-1556800572-1b8aeef7a523?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('apple') || name.includes('apples')) {
+        return 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('strawberr') || name.includes('berry')) {
+        return 'https://images.unsplash.com/photo-1464454709131-ffd692591ee5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('banana') || name.includes('bananas')) {
+        return 'https://images.unsplash.com/photo-1603833665858-e61d17a86224?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('rice')) {
+        return 'https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('wheat')) {
+        return 'https://images.unsplash.com/photo-1555064837-3c7ae70f81be?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hlYXQlMjBncmFpbnxlbnwwfHwwfHx8MA%3D%3D';
+    }
+    if (name.includes('milk') || name.includes('dairy')) {
+        return 'https://images.unsplash.com/photo-1563636619-e9143da7973b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    if (name.includes('cheese')) {
+        return 'https://images.unsplash.com/photo-1563636619-e9143da7973b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+    }
+    
+    // If no specific match, return random image from category
+    return getRandomImageForCategory(category);
+}
+
+            // Function to change language
+            function changeLanguage(lang) {
+                // Save language preference to localStorage
+                localStorage.setItem('preferredLanguage', lang);
+                
+                // Update select value
+                document.getElementById('language-select').value = lang;
+                
+                // Get all elements with data-i18n attribute
+                const elements = document.querySelectorAll('[data-i18n]');
+                
+                // Update text content
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+                
+                // Update placeholder attributes
+                const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+                placeholders.forEach(element => {
+                    const key = element.getAttribute('data-i18n-placeholder');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.setAttribute('placeholder', translations[lang][key]);
+                    }
+                });
+                
+                // Show notification
+                showNotification(`Language changed to ${document.getElementById('language-select').selectedOptions[0].text}`, 'success');
+            }
+
+            // Initialize language on page load
+            function initLanguage() {
+                // Get saved language or default to English
+                const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
+                
+                // Set select value
+                document.getElementById('language-select').value = savedLanguage;
+                
+                // Change to saved language
+                changeLanguage(savedLanguage);
+            }
+
+            // Initialize the page
+          // Initialize the page
+function init() {
+    listings = [...sampleListings];
+    loadListings();
+    setupEventListeners();
+    setupSmoothScrolling();
+    updateCartUI();
+    initLanguage();
+    initPaymentGateway();
+    
+    // Set today's date as default for manufactured date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('manufactured-date').value = today;
+    
+    // Set default expiry date (7 days from today)
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    document.getElementById('expiry-date').value = nextWeek.toISOString().split('T')[0];
+}
+
+            // Load listings into the grid
+         // Load listings into the grid
+function loadListings(showAll = false) {
+    listingsContainer.innerHTML = '';
+    
+    // Reset displayed count if showing all or filtering
+    if (showAll || isFiltered) {
+        displayedCount = 0;
+    }
+    
+    // Get listings to display
+    let listingsToDisplay = [];
+    
+    if (isFiltered || showAll) {
+        // When filtered or showing all, display all listings
+        listingsToDisplay = listings;
+    } else {
+        // Default: show only 6 products
+        listingsToDisplay = listings.slice(0, productsPerPage);
+    }
+    
+    // Update displayed count
+    displayedCount = listingsToDisplay.length;
+    
+    if (listingsToDisplay.length === 0) {
+        listingsContainer.innerHTML = '<p class="no-listings">No listings found. Try adjusting your filters.</p>';
+        document.getElementById('show-more-btn').style.display = 'none';
+        return;
+    }
+    
+    // Show or hide "Show More" button
+    const showMoreBtn = document.getElementById('show-more-btn');
+    if (listings.length > displayedCount && !isFiltered) {
+        showMoreBtn.style.display = 'block';
+        showMoreBtn.textContent = `Show More (${listings.length - displayedCount} more products)`;
+    } else {
+        showMoreBtn.style.display = 'none';
+    }
+    
+    listingsToDisplay.forEach(listing => {
+        const listingCard = document.createElement('div');
+        listingCard.className = 'listing-card';
+        
+        // Calculate days until expiry
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const expiryDate = new Date(listing.expiryDate);
+        expiryDate.setHours(0, 0, 0, 0);
+        
+        const timeDiff = expiryDate.getTime() - today.getTime();
+        const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        
+        // Format dates for display
+        const manufacturedDateFormatted = formatDate(listing.manufacturedDate);
+        const expiryDateFormatted = formatDate(listing.expiryDate);
+        
+        listingCard.innerHTML = `
+            <img src="${listing.image}" alt="${listing.title}" class="listing-image">
+            <div class="listing-content">
+                <h3 class="listing-title">${listing.title}</h3>
+                <div class="farmer-name">
+                    <i class="fas fa-user"></i>
+                    <span>By ${listing.farmer}</span>
+                </div>
+                <div class="date-info">
+                    <div class="date-item">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Harvested: ${manufacturedDateFormatted}</span>
+                    </div>
+                    <div class="date-item ${daysUntilExpiry < 3 ? 'expiry-soon' : ''}">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Best before: ${expiryDateFormatted}</span>
+                        ${daysUntilExpiry < 3 ? `<span class="expiry-badge expiry-soon-badge">${daysUntilExpiry} day${daysUntilExpiry !== 1 ? 's' : ''} left</span>` : ''}
+                    </div>
+                </div>
+                <p class="listing-details">
+                    <strong>Quantity:</strong> ${listing.quantity} kg<br>
+                    <strong>Location:</strong> ${listing.location}<br>
+                    <strong>Category:</strong> ${listing.category.charAt(0).toUpperCase() + listing.category.slice(1)}
+                </p>
+                <div class="listing-price">₹${listing.price}/kg</div>
+                <span class="listing-quality quality-${listing.quality}">${listing.quality.charAt(0).toUpperCase() + listing.quality.slice(1)}</span>
+                <p>${listing.description}</p>
+                <div class="quantity-selector">
+                    <button class="quantity-btn" data-action="decrease" data-id="${listing.id}">-</button>
+                    <input type="number" class="quantity-input" id="quantity-${listing.id}" value="1" min="1" max="${listing.quantity}">
+                    <button class="quantity-btn" data-action="increase" data-id="${listing.id}">+</button>
+                </div>
+                <div class="listing-action">
+                    <button class="btn btn-primary add-to-cart-btn" data-id="${listing.id}">Add to Cart</button>
+                </div>
+            </div>
+        `;
+        
+        listingsContainer.appendChild(listingCard);
+    });
+    
+    // Add event listeners to quantity buttons
+    document.querySelectorAll('.quantity-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const action = this.getAttribute('data-action');
+            const listingId = this.getAttribute('data-id');
+            const input = document.getElementById(`quantity-${listingId}`);
+            let value = parseInt(input.value);
+            
+            if (action === 'increase') {
+                const listing = listings.find(item => item.id === parseInt(listingId));
+                if (value < listing.quantity) {
+                    input.value = value + 1;
+                }
+            } else if (action === 'decrease') {
+                if (value > 1) {
+                    input.value = value - 1;
+                }
+            }
+        });
+    });
+
+    // Clear filters button
+document.getElementById('clear-filters-btn').addEventListener('click', clearFilters);
+    
+    // Add event listeners to add to cart buttons
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const listingId = this.getAttribute('data-id');
+            if (!currentUser) {
+                showNotification('Please login to add items to cart', 'error');
+                openModal(loginModal);
+                return;
+            }
+            addToCart(listingId);
+        });
+    });
+}
+
+// Show more products
+function showMoreProducts() {
+    // Increase the products per page and reload
+    productsPerPage = Math.min(productsPerPage + 6, listings.length);
+    loadListings();
+    
+    // If all products are shown, hide the button
+    if (productsPerPage >= listings.length) {
+        document.getElementById('show-more-btn').style.display = 'none';
+    }
+}
+
+            // Helper function to format dates consistently
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                });
+            }
+
+            // Add item to cart
+            function addToCart(listingId) {
+                const input = document.getElementById(`quantity-${listingId}`);
+                const quantity = parseInt(input.value);
+                const listing = listings.find(item => item.id === parseInt(listingId));
+                
+                if (!listing) return;
+                
+                if (quantity > listing.quantity) {
+                    showNotification(`Only ${listing.quantity} kg available`, 'error');
+                    return;
+                }
+                
+                const existingItemIndex = cart.findIndex(item => item.id === listing.id);
+                
+                if (existingItemIndex > -1) {
+                    cart[existingItemIndex].quantity += quantity;
+                } else {
+                    cart.push({
+                        ...listing,
+                        quantity: quantity,
+                        cartId: Date.now() // Unique ID for cart items
+                    });
+                }
+                
+                // Reduce available quantity in listing
+                listing.quantity -= quantity;
+                
+                updateCartUI();
+                showNotification(`${quantity} kg of ${listing.title} added to cart!`, 'success');
+                
+                // Update the listing display
+                const quantityInput = document.getElementById(`quantity-${listingId}`);
+                const maxQuantity = Math.min(listing.quantity, 999); // Ensure max is positive
+                quantityInput.max = maxQuantity;
+                if (quantityInput.value > maxQuantity) {
+                    quantityInput.value = maxQuantity;
+                }
+                
+                // Reload listings to update quantities
+                loadListings();
+            }
+
+            // Update cart UI
+            function updateCartUI() {
+                const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+                document.getElementById('cart-count').textContent = cartCount;
+                
+                // Calculate total price
+                const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+                cartTotalPrice.textContent = `₹${totalPrice.toFixed(2)}`;
+            }
+
+            // Update cart modal
+            function updateCartModal() {
+                cartItemsContainer.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p data-i18n="empty-cart">Your cart is empty</p>';
+                    document.getElementById('checkout-btn').disabled = true;
+                    return;
+                }
+                
+                document.getElementById('checkout-btn').disabled = false;
+                
+                cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div>${item.quantity} kg @ ₹${item.price}/kg</div>
+                        </div>
+                        <div class="cart-item-price">₹${(item.price * item.quantity).toFixed(2)}</div>
+                        <button class="btn btn-outline remove-cart-item" data-id="${item.cartId}" style="margin-left: 1rem;" data-i18n="remove">Remove</button>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-cart-item').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const cartId = this.getAttribute('data-id');
+                        removeFromCart(cartId);
+                    });
+                });
+            }
+
+            // Remove item from cart
+            function removeFromCart(cartId) {
+                const itemIndex = cart.findIndex(item => item.cartId === parseInt(cartId));
+                if (itemIndex === -1) return;
+                
+                const removedItem = cart[itemIndex];
+                
+                // Restore quantity to listing
+                const listing = listings.find(item => item.id === removedItem.id);
+                if (listing) {
+                    listing.quantity += removedItem.quantity;
+                }
+                
+                cart.splice(itemIndex, 1);
+                
+                updateCartUI();
+                updateCartModal();
+                loadListings(); // Reload listings to update quantities
+                showNotification(`${removedItem.title} removed from cart`, 'success');
+            }
+
+            // Show notification
+            function showNotification(message, type = 'success') {
+                notification.textContent = message;
+                notification.className = `notification ${type}`;
+                notification.style.display = 'block';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+
+            // Open modal
+            function openModal(modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Close modal
+            function closeModal(modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            // Set up smooth scrolling
+            function setupSmoothScrolling() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        if (targetId === '#') return;
+                        
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            }
+
+            // Set up event listeners
+            function setupEventListeners() {
+                // Language selector
+                document.getElementById('language-select').addEventListener('change', function() {
+                    changeLanguage(this.value);
+                });
+
+                // Show More button
+document.getElementById('show-more-btn').addEventListener('click', showMoreProducts);
+
+                // Find Produce button
+                findProduceBtn.addEventListener('click', function() {
+                    const listingsSection = document.getElementById('listings');
+                    if (listingsSection) {
+                        window.scrollTo({
+                            top: listingsSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        listingsSection.style.boxShadow = '0 0 0 3px var(--secondary)';
+                        setTimeout(() => {
+                            listingsSection.style.boxShadow = 'none';
+                        }, 1500);
+                    }
+                });
+                
+                // Modal triggers
+                createListingBtn.addEventListener('click', function() {
+                    if (!currentUser) {
+                        showNotification('Please login to create a listing', 'error');
+                        openModal(loginModal);
+                        return;
+                    }
+                    openModal(listingModal);
+                });
+                
+                // Login and signup buttons
+                document.getElementById('login-btn').addEventListener('click', function() {
+                    openModal(loginModal);
+                });
+                
+                document.getElementById('signup-btn').addEventListener('click', function() {
+                    openModal(loginModal);
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.querySelector('[data-tab="signup"]').classList.add('active');
+                    document.getElementById('signup-tab').classList.add('active');
+                });
+                
+                // Cart button
+                document.getElementById('cart-btn').addEventListener('click', function() {
+                    if (!currentUser) {
+                        showNotification('Please login to view your cart', 'error');
+                        openModal(loginModal);
+                        return;
+                    }
+                    openModal(cartModal);
+                    updateCartModal();
+                });
+                
+                // Checkout button
+                checkoutBtn.addEventListener('click', function() {
+                    if (cart.length === 0) {
+                        showNotification('Your cart is empty', 'error');
+                        return;
+                    }
+                    
+                    // Update checkout summary
+                    updateCheckoutSummary();
+                    openModal(checkoutModal);
+                    closeModal(cartModal);
+                });
+                
+                // Close checkout modal
+                closeCheckout.addEventListener('click', function() {
+                    closeModal(checkoutModal);
+                });
+                
+                // Close buttons
+                closeButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const modal = this.closest('.modal');
+                        closeModal(modal);
+                    });
+                });
+                
+                // Close modals when clicking outside
+                window.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('modal')) {
+                        closeModal(e.target);
+                    }
+                });
+                
+                // Tab switching
+                tabButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tabId = this.getAttribute('data-tab');
+                        
+                        // Update tab buttons
+                        tabButtons.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Update tab content
+                        document.querySelectorAll('.tab-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        document.getElementById(`${tabId}-tab`).classList.add('active');
+                    });
+                });
+                
+                // Apply filters
+                applyFiltersBtn.addEventListener('click', function() {
+                    applyFilters();
+                });
+                
+                // Filter by Enter key
+                document.getElementById('location-search').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        applyFilters();
+                    }
+                });
+                
+                // Listing form submission
+                // Listing form submission
+listingForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const productName = document.getElementById('product-name').value;
+    const category = document.getElementById('category').value;
+    
+    // Get appropriate image based on product name and category
+    const productImage = getImageForProduct(productName, category);
+    
+    const newListing = {
+        id: Date.now(),
+        title: productName,
+        farmer: document.getElementById('farmer-name').value,
+        category: category,
+        quantity: parseInt(document.getElementById('quantity').value),
+        price: parseFloat(document.getElementById('price').value),
+        quality: document.getElementById('quality').value,
+        manufacturedDate: document.getElementById('manufactured-date').value,
+        expiryDate: document.getElementById('expiry-date').value,
+        location: document.getElementById('location').value,
+        description: document.getElementById('description').value,
+        image: productImage  // Use the dynamically selected image
+    };
+    
+    listings.unshift(newListing);
+    loadListings();
+    closeModal(listingModal);
+    listingForm.reset();
+    showNotification('Listing created successfully!', 'success');
+
+    // Image preview for listing form
+document.getElementById('product-name').addEventListener('input', function() {
+    const productName = this.value;
+    const category = document.getElementById('category').value;
+    
+    if (productName && category) {
+        // You could add a small preview here if you want
+        console.log('Product:', productName, 'Category:', category, 
+                   'Image:', getImageForProduct(productName, category));
+    }
+});
+
+document.getElementById('category').addEventListener('change', function() {
+    const productName = document.getElementById('product-name').value;
+    const category = this.value;
+    
+    if (productName && category) {
+        console.log('Category changed:', category, 
+                   'Image:', getImageForProduct(productName, category));
+    }
+});
+});
+                
+                // Login form submission
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
+                    
+                    // Simple validation
+                    if (email && password) {
+                        currentUser = {
+                            email: email,
+                            name: email.split('@')[0],
+                            type: 'buyer' // Default type
+                        };
+                        
+                        closeModal(loginModal);
+                        loginForm.reset();
+                        showNotification('Logged in successfully!', 'success');
+                        
+                        // Update auth buttons
+                        document.getElementById('login-btn').textContent = 'Logout';
+                        document.getElementById('signup-btn').style.display = 'none';
+                        
+                        // Add logout functionality
+                        document.getElementById('login-btn').onclick = function() {
+                            currentUser = null;
+                            document.getElementById('login-btn').textContent = 'Login';
+                            document.getElementById('signup-btn').style.display = 'block';
+                            showNotification('Logged out successfully!', 'success');
+                        };
+                    }
+                });
+                
+                // Signup form submission
+                signupForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('signup-name').value;
+                    const email = document.getElementById('signup-email').value;
+                    const password = document.getElementById('signup-password').value;
+                    const userType = document.getElementById('user-type').value;
+                    
+                    if (name && email && password) {
+                        currentUser = {
+                            name: name,
+                            email: email,
+                            type: userType
+                        };
+                        
+                        closeModal(loginModal);
+                        signupForm.reset();
+                        showNotification('Account created successfully!', 'success');
+                        
+                        // Update auth buttons
+                        document.getElementById('login-btn').textContent = 'Logout';
+                        document.getElementById('signup-btn').style.display = 'none';
+                        
+                        // Add logout functionality
+                        document.getElementById('login-btn').onclick = function() {
+                            currentUser = null;
+                            document.getElementById('login-btn').textContent = 'Login';
+                            document.getElementById('signup-btn').style.display = 'block';
+                            showNotification('Logged out successfully!', 'success');
+                        };
+                    }
+                });
+                
+              // Add email validation function
+// Add email validation function
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+// Find this code in your HTML and REPLACE it:
+contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitText = document.getElementById('submit-text');
+    const spinner = document.getElementById('submit-spinner');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    
+    // Get form values
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const subject = document.getElementById('contact-subject').value.trim() || 'New Message from FarmLink Website';
+    const message = document.getElementById('contact-message').value.trim();
+    
+    // Basic validation
+    if (!name || !email || !message) {
+        showNotification('Please fill all required fields', 'error');
+        return;
+    }
+    
+    // Email validation
+    if (!validateEmail(email)) {
+        showNotification('Please enter a valid email address', 'error');
+        return;
+    }
+    
+    // Show loading state
+    submitText.style.display = 'none';
+    spinner.style.display = 'inline-block';
+    submitButton.disabled = true;
+    submitButton.style.opacity = '0.7';
+    
+    try {
+        // Send message to backend - CORRECT ENDPOINT
+        const response = await fetch('http://localhost:5000/send-message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                subject: subject,
+                message: message
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Success
+            contactForm.reset();
+            showNotification(result.message || 'Message sent successfully! We will get back to you soon.', 'success');
+            
+        } else {
+            // Error from server
+            showNotification(result.error || 'Failed to send message. Please try again.', 'error');
+        }
+        
+    } catch (error) {
+        console.error('Error sending message:', error);
+        // Check if it's a CORS or connection error
+        if (error.message.includes('Failed to fetch')) {
+            showNotification('Cannot connect to server. Make sure the backend is running on port 5000.', 'error');
+        } else {
+            showNotification('Network error. Please check your connection and try again.', 'error');
+        }
+    } finally {
+        // Reset button state
+        submitText.style.display = 'inline';
+        spinner.style.display = 'none';
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+    }
+});
+                
+                // Shipping form submission (checkout)
+               // Look for this code and REPLACE it:
+checkoutBtn.addEventListener('click', function() {
+    if (cart.length === 0) {
+        showNotification('Your cart is empty', 'error');
+        return;
+    }
+    
+    // REMOVE THIS DIRECT ORDER PLACEMENT:
+    // showNotification('Order placed successfully!', 'success');
+    // cart = [];
+    // updateCartUI();
+    
+    // REPLACE WITH THIS:
+    openModal(checkoutModal);
+    updateCheckoutSummary();
+});
+            }
+
+            // Apply filters to listings
+           // Apply filters to listings
+function applyFilters() {
+    const categoryFilter = document.getElementById('category-filter').value;
+    const qualityFilter = document.getElementById('quality-filter').value;
+    const locationSearch = document.getElementById('location-search').value.toLowerCase();
+    
+    // Set filtered flag
+    isFiltered = categoryFilter || qualityFilter || locationSearch;
+    
+    let filteredListings = [...sampleListings];
+    
+    if (categoryFilter) {
+        filteredListings = filteredListings.filter(listing => listing.category === categoryFilter);
+    }
+    
+    if (qualityFilter) {
+        filteredListings = filteredListings.filter(listing => listing.quality === qualityFilter);
+    }
+    
+    if (locationSearch) {
+        filteredListings = filteredListings.filter(listing => 
+            listing.location.toLowerCase().includes(locationSearch)
+        );
+    }
+    
+    listings = filteredListings;
+    loadListings(true); // Show all when filtering
+}
+            // Update checkout summary
+            function updateCheckoutSummary() {
+                const checkoutItems = document.getElementById('checkout-items');
+                checkoutItems.innerHTML = '';
+                
+                let total = 0;
+                
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'checkout-item';
+                    itemElement.innerHTML = `
+                        <span>${item.title} (${item.quantity} kg)</span>
+                        <span>₹${itemTotal.toFixed(2)}</span>
+                    `;
+                    checkoutItems.appendChild(itemElement);
+                });
+                
+                document.getElementById('checkout-total-price').textContent = `₹${total.toFixed(2)}`;
+            }
+
+            // Clear filters and show default view
+function clearFilters() {
+    document.getElementById('category-filter').value = '';
+    document.getElementById('quality-filter').value = '';
+    document.getElementById('location-search').value = '';
+    isFiltered = false;
+    productsPerPage = 6;
+    listings = [...sampleListings];
+    loadListings();
+}
+// REPLACE your existing payment gateway section with this fixed version
+
+// Payment Gateway Variables
+let selectedPaymentMethod = '';
+let paymentTimer = null;
+let paymentTimeLeft = 300;
+let transactionId = '';
+
+// Initialize Payment Gateway - Call this in your main init() function
+function initPaymentGateway() {
+    const shippingForm = document.getElementById('shipping-form');
+    
+    if (!shippingForm) {
+        console.error('Shipping form not found');
+        return;
+    }
+    
+    // Handle shipping form submission
+    shippingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submitted');
+        
+        // Validate form
+        if (!validateShippingForm()) {
+            return;
+        }
+        
+        // Get selected payment method
+        const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+        if (!selectedPayment) {
+            showNotification('Please select a payment method', 'error');
+            return;
+        }
+        
+        selectedPaymentMethod = selectedPayment.value;
+        console.log('Selected payment method:', selectedPaymentMethod);
+        
+        const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+        
+        // Open payment gateway
+        openPaymentGateway(selectedPaymentMethod, totalAmount);
+    });
+    
+    // Close payment modal button
+    const closePaymentBtn = document.getElementById('close-payment');
+    if (closePaymentBtn) {
+        closePaymentBtn.addEventListener('click', function() {
+            closeModal(document.getElementById('payment-modal'));
+            resetPaymentGateway();
+        });
+    }
+}
+
+// Validate Shipping Form
+function validateShippingForm() {
+    const name = document.getElementById('full-name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const pincode = document.getElementById('pincode').value.trim();
+    
+    if (!name || name.length < 3) {
+        showNotification('Please enter a valid name (min 3 characters)', 'error');
+        return false;
+    }
+    
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(phone)) {
+        showNotification('Please enter a valid 10-digit mobile number', 'error');
+        return false;
+    }
+    
+    if (!address || address.length < 10) {
+        showNotification('Please enter complete delivery address', 'error');
+        return false;
+    }
+    
+    if (!city || city.length < 2) {
+        showNotification('Please enter valid city name', 'error');
+        return false;
+    }
+    
+    const pincodeRegex = /^\d{6}$/;
+    if (!pincodeRegex.test(pincode)) {
+        showNotification('Please enter valid 6-digit PIN code', 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+// Open Payment Gateway
+function openPaymentGateway(method, amount) {
+    console.log('Opening payment gateway:', method, amount);
+    
+    const paymentModal = document.getElementById('payment-modal');
+    
+    if (!paymentModal) {
+        console.error('Payment modal not found');
+        return;
+    }
+    
+    // Generate transaction ID
+    transactionId = 'FARM' + Date.now() + Math.floor(Math.random() * 1000);
+    
+    // Close checkout modal
+    closeModal(document.getElementById('checkout-modal'));
+    
+    // Load appropriate payment interface
+    switch(method) {
+        case 'upi':
+            loadUPIInterface(amount);
+            break;
+        case 'card':
+            loadCardInterface(amount);
+            break;
+        case 'netbanking':
+            loadNetBankingInterface(amount);
+            break;
+        case 'cod':
+            loadCODInterface(amount);
+            break;
+        default:
+            loadUPIInterface(amount);
+    }
+    
+    // Open payment modal
+    openModal(paymentModal);
+    startPaymentTimer();
+}
+
+// Load UPI Payment Interface
+function loadUPIInterface(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway upi-interface">
+            <div class="payment-header">
+                <h3>UPI Payment</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Scan QR code or pay via UPI apps</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p><strong>Transaction ID:</strong> ${transactionId}</p>
+                <p><strong>UPI ID:</strong> farmlink.market@icici</p>
+            </div>
+            
+            <div class="qr-code-container" style="text-align: center; margin: 30px 0;">
+                <div style="width: 200px; height: 200px; background: #f5f5f5; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 2px solid #ddd;">
+                    <i class="fas fa-qrcode" style="font-size: 80px; color: #666;"></i>
+                </div>
+                <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                    Scan QR code to pay
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0; padding: 10px; background: #fff3cd; border-radius: 8px;">
+                <i class="fas fa-clock"></i> Time remaining: 
+                <span style="font-weight: bold; color: #856404;" id="payment-timer">05:00</span>
+            </div>
+            
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0;">
+    <button class="btn upi-app-btn phonepe-btn" id="phonepe-btn" 
+            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
+                   background: #5F259F; color: white; border: none; border-radius: 10px; cursor: pointer; 
+                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(95, 37, 159, 0.2);">
+        <i class="fas fa-mobile-alt" style="font-size: 1.5rem;"></i>
+        <span>PhonePe</span>
+    </button>
+    <button class="btn upi-app-btn gpay-btn" id="gpay-btn" 
+            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
+                   background: #4285F4; color: white; border: none; border-radius: 10px; cursor: pointer; 
+                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(66, 133, 244, 0.2);">
+        <i class="fab fa-google" style="font-size: 1.5rem;"></i>
+        <span>GPay</span>
+    </button>
+    <button class="btn upi-app-btn paytm-btn" id="paytm-btn" 
+            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
+                   background: #1BA6F1; color: white; border: none; border-radius: 10px; cursor: pointer; 
+                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(27, 166, 241, 0.2);">
+        <i class="fas fa-wallet" style="font-size: 1.5rem;"></i>
+        <span>Paytm</span>
+    </button>
+</div>
+            
+            <div style="margin: 20px 0;">
+                <input type="text" class="form-control" id="upi-id-input" 
+                       placeholder="Enter your UPI ID (e.g., 9876543210@upi)" 
+                       style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; margin-bottom: 10px;">
+                <button class="btn btn-primary" id="pay-via-upi-btn" style="width: 100%;">
+                    Pay via UPI ID
+                </button>
+            </div>
+            
+            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <i class="fas fa-info-circle" style="color: #1976d2;"></i>
+                <span style="color: #1565c0; margin-left: 10px;">
+                    You will be redirected to your UPI app for payment confirmation
+                </span>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-outline" id="cancel-payment-btn" style="flex: 1;">
+                    Cancel Payment
+                </button>
+                <button class="btn btn-secondary" id="i-have-paid-btn" style="flex: 1;">
+                    I have Paid
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Attach event listeners after creating the HTML
+    setTimeout(() => {
+        const phonePeBtn = document.getElementById('phonepe-btn');
+        const gPayBtn = document.getElementById('gpay-btn');
+        const paytmBtn = document.getElementById('paytm-btn');
+        const payViaUPIBtn = document.getElementById('pay-via-upi-btn');
+        const cancelBtn = document.getElementById('cancel-payment-btn');
+        const iHavePaidBtn = document.getElementById('i-have-paid-btn');
+        
+        if (phonePeBtn) phonePeBtn.addEventListener('click', () => openUPIApp('phonepe'));
+        if (gPayBtn) gPayBtn.addEventListener('click', () => openUPIApp('gpay'));
+        if (paytmBtn) paytmBtn.addEventListener('click', () => openUPIApp('paytm'));
+        if (payViaUPIBtn) payViaUPIBtn.addEventListener('click', verifyUPIID);
+        if (cancelBtn) cancelBtn.addEventListener('click', () => {
+            closeModal(document.getElementById('payment-modal'));
+            resetPaymentGateway();
+        });
+        if (iHavePaidBtn) iHavePaidBtn.addEventListener('click', () => showUPIPINScreen(amount));
+    }, 100);
+}
+
+// Open UPI App
+function openUPIApp(appName) {
+    const paymentContent = document.getElementById('payment-content');
+    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Opening ${appName === 'phonepe' ? 'PhonePe' : appName === 'gpay' ? 'Google Pay' : 'Paytm'}...</h3>
+            <p style="color: #666; margin-top: 10px;">Redirecting to UPI app for payment</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showUPIPINScreen(amount);
+    }, 2000);
+}
+
+// Verify UPI ID
+function verifyUPIID() {
+    const upiId = document.getElementById('upi-id-input').value.trim();
+    
+    if (!upiId || !upiId.includes('@')) {
+        showNotification('Please enter a valid UPI ID (e.g., 9876543210@upi)', 'error');
+        return;
+    }
+    
+    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    openUPIApp('manual');
+}
+
+// Show UPI PIN Screen - FIXED VERSION
+function showUPIPINScreen(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Enter UPI PIN</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Confirm payment on your UPI app</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>To:</strong> FarmLink Marketplace</p>
+                <p><strong>UPI ID:</strong> farmlink.market@icici</p>
+                <p><strong>Amount:</strong> ₹${amount.toFixed(2)}</p>
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 30px 0;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-1" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-2" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-3" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-4" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-5" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-6" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+            </div>
+            
+            <div style="max-width: 300px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="1" style="padding: 20px; font-size: 18px;">1</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="2" style="padding: 20px; font-size: 18px;">2</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="3" style="padding: 20px; font-size: 18px;">3</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="4" style="padding: 20px; font-size: 18px;">4</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="5" style="padding: 20px; font-size: 18px;">5</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="6" style="padding: 20px; font-size: 18px;">6</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="7" style="padding: 20px; font-size: 18px;">7</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="8" style="padding: 20px; font-size: 18px;">8</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="9" style="padding: 20px; font-size: 18px;">9</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                    <button type="button" class="btn btn-outline" id="clear-pin-btn" style="padding: 20px;">
+                        <i class="fas fa-backspace"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="0" style="padding: 20px; font-size: 18px;">0</button>
+                    <button type="button" class="btn btn-primary" id="verify-pin-btn" style="padding: 20px;">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <i class="fas fa-lock" style="color: #2e7d32;"></i>
+                <span style="color: #1b5e20; margin-left: 10px;">
+                    Your UPI PIN is secure and encrypted
+                </span>
+            </div>
+        </div>
+    `;
+    
+    // Initialize PIN variables
+    window.currentPinIndex = 0;
+    window.pinDigits = ['', '', '', '', '', ''];
+    window.isPinProcessing = false; // Add flag to prevent double clicks
+    
+    // Add CSS to prevent text selection
+    const style = document.createElement('style');
+    style.textContent = `
+        .pin-btn {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            touch-action: manipulation;
+        }
+        .pin-btn:active {
+            transform: scale(0.95);
+            transition: transform 0.1s;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Attach event listeners to PIN buttons - FIXED VERSION
+    setTimeout(() => {
+        const pinButtons = document.querySelectorAll('.pin-btn');
+        pinButtons.forEach(btn => {
+            // Remove any existing listeners first
+            btn.removeEventListener('click', handlePinClick);
+            // Add new listener
+            btn.addEventListener('click', handlePinClick);
+        });
+        
+        const clearBtn = document.getElementById('clear-pin-btn');
+        if (clearBtn) {
+            clearBtn.removeEventListener('click', clearPin);
+            clearBtn.addEventListener('click', clearPin);
+        }
+        
+        const verifyBtn = document.getElementById('verify-pin-btn');
+        if (verifyBtn) {
+            verifyBtn.removeEventListener('click', verifyUPIPIN);
+            verifyBtn.addEventListener('click', verifyUPIPIN);
+        }
+    }, 100);
+}
+
+// NEW: Separate handler function to prevent multiple events
+function handlePinClick() {
+    if (window.isPinProcessing) return; // Prevent multiple clicks
+    
+    const digit = this.getAttribute('data-digit');
+    window.isPinProcessing = true;
+    
+    // Add a small delay to ensure single click
+    setTimeout(() => {
+        addPinDigit(digit);
+        window.isPinProcessing = false;
+    }, 10);
+}
+
+// Updated Add PIN Digit function
+function addPinDigit(digit) {
+    // Prevent if already have 6 digits
+    if (window.currentPinIndex >= 6) return;
+    
+    const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+    if (!pinInput) return;
+    
+    pinInput.value = '•';
+    window.pinDigits[window.currentPinIndex] = digit;
+    window.currentPinIndex++;
+    
+    // Auto-submit when 6 digits entered
+    if (window.currentPinIndex === 6) {
+        setTimeout(() => {
+            verifyUPIPIN();
+        }, 300);
+    }
+}
+
+// Clear PIN function
+function clearPin() {
+    if (window.currentPinIndex > 0) {
+        window.currentPinIndex--;
+        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+        if (pinInput) {
+            pinInput.value = '';
+            window.pinDigits[window.currentPinIndex] = '';
+        }
+    }
+}
+
+// Verify UPI PIN function
+function verifyUPIPIN() {
+    const pin = window.pinDigits.join('');
+    
+    if (pin.length !== 6) {
+        showNotification('Please enter 6-digit UPI PIN', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Processing Payment...</h3>
+            <p style="color: #666; margin-top: 10px;">Please wait while we verify your transaction</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+
+// Add PIN Digit
+function addPinDigit(digit) {
+    if (window.currentPinIndex < 6) {
+        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+        pinInput.value = '•';
+        window.pinDigits[window.currentPinIndex] = digit;
+        window.currentPinIndex++;
+        
+        if (window.currentPinIndex === 6) {
+            setTimeout(() => {
+                verifyUPIPIN();
+            }, 300);
+        }
+    }
+}
+
+// Clear PIN
+function clearPin() {
+    if (window.currentPinIndex > 0) {
+        window.currentPinIndex--;
+        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+        if (pinInput) pinInput.value = '';
+        window.pinDigits[window.currentPinIndex] = '';
+    }
+}
+
+// Verify UPI PIN
+function verifyUPIPIN() {
+    const pin = window.pinDigits.join('');
+    
+    if (pin.length !== 6) {
+        showNotification('Please enter 6-digit UPI PIN', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Processing Payment...</h3>
+            <p style="color: #666; margin-top: 10px;">Please wait while we verify your transaction</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+// Load Card Interface
+function loadCardInterface(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Card Payment</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Enter your card details securely</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p><strong>Transaction ID:</strong> ${transactionId}</p>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Card Number</label>
+                    <input type="text" id="card-number" class="form-control" 
+                           placeholder="1234 5678 9012 3456" maxlength="19"
+                           style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Card Holder Name</label>
+                    <input type="text" id="card-name" class="form-control" 
+                           placeholder="JOHN DOE"
+                           style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; text-transform: uppercase;">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Expiry Date</label>
+                        <input type="text" id="card-expiry" class="form-control" 
+                               placeholder="MM/YY" maxlength="5"
+                               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">CVV</label>
+                        <input type="password" id="card-cvv" class="form-control" 
+                               placeholder="123" maxlength="3"
+                               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
+                    <i class="fab fa-cc-visa" style="font-size: 32px; color: #1a1f71;"></i>
+                    <i class="fab fa-cc-mastercard" style="font-size: 32px; color: #eb001b;"></i>
+                    <i class="fab fa-cc-amex" style="font-size: 32px; color: #0061a8;"></i>
+                    <i class="fas fa-credit-card" style="font-size: 32px; color: #666;"></i>
+                </div>
+                
+                <button class="btn btn-primary" id="process-card-btn" style="width: 100%; padding: 14px; font-size: 16px;">
+                    Pay ₹${amount.toFixed(2)}
+                </button>
+            </div>
+            
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <i class="fas fa-lock" style="color: #2e7d32;"></i>
+                <span style="color: #1b5e20; margin-left: 10px;">
+                    Your payment details are secured with 256-bit SSL encryption
+                </span>
+            </div>
+        </div>
+    `;
+    
+    // Attach event listeners after creating HTML
+    setTimeout(() => {
+        // Card number formatting
+        const cardNumberInput = document.getElementById('card-number');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = formatted.substring(0, 19);
+            });
+        }
+        
+        // Expiry date formatting
+        const expiryInput = document.getElementById('card-expiry');
+        if (expiryInput) {
+            expiryInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value.substring(0, 5);
+            });
+        }
+        
+        // Process card payment button
+        const processBtn = document.getElementById('process-card-btn');
+        if (processBtn) {
+            processBtn.addEventListener('click', () => processCardPayment(amount));
+        }
+    }, 100);
+}
+
+// Process Card Payment
+function processCardPayment(amount) {
+    const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+    const cardName = document.getElementById('card-name').value.trim();
+    const cardExpiry = document.getElementById('card-expiry').value;
+    const cardCVV = document.getElementById('card-cvv').value;
+    
+    if (!cardNumber || cardNumber.length < 16) {
+        showNotification('Please enter valid 16-digit card number', 'error');
+        return;
+    }
+    
+    if (!cardName) {
+        showNotification('Please enter card holder name', 'error');
+        return;
+    }
+    
+    if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+        showNotification('Please enter valid expiry date (MM/YY)', 'error');
+        return;
+    }
+    
+    if (!cardCVV || cardCVV.length !== 3) {
+        showNotification('Please enter valid 3-digit CVV', 'error');
+        return;
+    }
+    
+    showCardOTPScreen(amount);
+}
+
+// Show Card OTP Screen
+function showCardOTPScreen(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Enter OTP</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>OTP sent to your registered mobile</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p>OTP sent to mobile ending with ••••1234</p>
+                <p><strong>Valid for:</strong> <span style="color: #f44336; font-weight: bold;" id="otp-timer">02:00</span></p>
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 30px 0;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-1" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-2" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-3" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-4" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-5" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-6" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn btn-outline" id="resend-otp-btn" style="flex: 1;">
+                    <i class="fas fa-redo"></i> Resend OTP
+                </button>
+                <button class="btn btn-primary" id="verify-otp-btn" style="flex: 1;">
+                    Verify & Pay
+                </button>
+            </div>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        // Auto-move to next input
+        const otpBoxes = document.querySelectorAll('.otp-box');
+        otpBoxes.forEach((box, index) => {
+            box.addEventListener('input', function() {
+                if (this.value.length === 1 && index < 5) {
+                    otpBoxes[index + 1].focus();
+                }
+            });
+            
+            box.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                    otpBoxes[index - 1].focus();
+                }
+            });
+        });
+        
+        // Focus first box
+        otpBoxes[0].focus();
+        
+        // Resend OTP button
+        const resendBtn = document.getElementById('resend-otp-btn');
+        if (resendBtn) resendBtn.addEventListener('click', resendCardOTP);
+        
+        // Verify OTP button
+        const verifyBtn = document.getElementById('verify-otp-btn');
+        if (verifyBtn) verifyBtn.addEventListener('click', verifyCardOTP);
+        
+        // Start timer
+        startOTPTimer();
+    }, 100);
+}
+
+// Move to next OTP input
+function moveToNextOTP(input, nextIndex) {
+    if (input.value.length === 1 && nextIndex < 6) {
+        document.getElementById(`otp-${nextIndex + 1}`).focus();
+    }
+}
+
+// Start OTP Timer
+function startOTPTimer() {
+    let otpTimeLeft = 120;
+    
+    const timerInterval = setInterval(() => {
+        otpTimeLeft--;
+        
+        const minutes = Math.floor(otpTimeLeft / 60);
+        const seconds = otpTimeLeft % 60;
+        
+        const timerElement = document.getElementById('otp-timer');
+        if (timerElement) {
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        if (otpTimeLeft <= 0) {
+            clearInterval(timerInterval);
+        }
+    }, 1000);
+}
+
+// Resend Card OTP
+function resendCardOTP() {
+    showNotification('OTP has been resent to your mobile', 'success');
+    startOTPTimer();
+}
+
+// Verify Card OTP
+function verifyCardOTP() {
+    const otp = Array.from({length: 6}, (_, i) => {
+        const input = document.getElementById(`otp-${i + 1}`);
+        return input ? input.value : '';
+    }).join('');
+    
+    if (otp.length !== 6) {
+        showNotification('Please enter complete 6-digit OTP', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Processing Payment...</h3>
+            <p style="color: #666; margin-top: 10px;">Your transaction is being verified</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+// Load Net Banking Interface
+function loadNetBankingInterface(amount) {
+    const banks = [
+        { id: 'sbi', name: 'State Bank of India' },
+        { id: 'hdfc', name: 'HDFC Bank' },
+        { id: 'icici', name: 'ICICI Bank' },
+        { id: 'axis', name: 'Axis Bank' },
+        { id: 'kotak', name: 'Kotak Mahindra Bank' },
+        { id: 'pnb', name: 'Punjab National Bank' }
+    ];
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Net Banking</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Select your bank</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p><strong>Transaction ID:</strong> ${transactionId}</p>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                ${banks.map(bank => `
+                    <label class="bank-option" style="display: block; padding: 15px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s;" data-bank="${bank.id}">
+                        <input type="radio" name="bank" id="${bank.id}" style="margin-right: 10px;">
+                        <i class="fas fa-university" style="color: #4CAF50; margin-right: 10px;"></i>
+                        <span style="font-weight: 500;">${bank.name}</span>
+                    </label>
+                `).join('')}
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn btn-outline" id="back-btn" style="flex: 1;">
+                    Back
+                </button>
+                <button class="btn btn-primary" id="netbanking-btn" disabled style="flex: 1;">
+                    Continue to Bank
+                </button>
+            </div>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        // Bank selection
+        const bankOptions = document.querySelectorAll('.bank-option');
+        const netbankingBtn = document.getElementById('netbanking-btn');
+        
+        bankOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const bankId = this.getAttribute('data-bank');
+                document.querySelectorAll('input[name="bank"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                document.getElementById(bankId).checked = true;
+                if (netbankingBtn) netbankingBtn.disabled = false;
+                
+                // Highlight selected
+                bankOptions.forEach(opt => {
+                    opt.style.borderColor = '#ddd';
+                    opt.style.background = 'white';
+                });
+                this.style.borderColor = '#4CAF50';
+                this.style.background = '#f1f8f4';
+            });
+        });
+        
+        // Back button
+        const backBtn = document.getElementById('back-btn');
+        if (backBtn) {
+            backBtn.addEventListener('click', () => {
+                closeModal(document.getElementById('payment-modal'));
+                resetPaymentGateway();
+            });
+        }
+        
+        // Continue to bank button
+        if (netbankingBtn) {
+            netbankingBtn.addEventListener('click', processNetBanking);
+        }
+    }, 100);
+}
+
+// Select Bank
+function selectBank(bankId) {
+    document.querySelectorAll('input[name="bank"]').forEach(radio => {
+        radio.checked = false;
+    });
+    
+    document.getElementById(bankId).checked = true;
+    document.getElementById('netbanking-btn').disabled = false;
+}
+
+// Process Net Banking
+function processNetBanking() {
+    const selectedBank = document.querySelector('input[name="bank"]:checked');
+    
+    if (!selectedBank) {
+        showNotification('Please select a bank', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Redirecting to Bank...</h3>
+            <p style="color: #666; margin-top: 10px;">You will be redirected to your bank's secure portal</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+// Load COD Interface
+function loadCODInterface(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Cash on Delivery</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+            </div>
+            
+            <div style="text-align: center; padding: 40px;">
+                <div style="width: 100px; height: 100px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <i class="fas fa-money-bill-wave" style="font-size: 48px; color: #4CAF50;"></i>
+                </div>
+                <h4 style="margin-bottom: 10px;">Order Confirmed!</h4>
+                <p style="color: #666;">Pay ₹${amount.toFixed(2)} when your order is delivered.</p>
+                
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left;">
+                    <p><strong>Order ID:</strong> ${transactionId}</p>
+                </div>
+                
+                <div style="text-align: left; margin: 20px 0;">
+                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> No advance payment required</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Pay cash to delivery executive</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Get invoice and receipt</p>
+                </div>
+                
+                <button class="btn btn-primary" id="confirm-cod-btn" style="width: 100%; margin-top: 20px; padding: 14px; font-size: 16px;">
+                    Confirm Order
+                </button>
+            </div>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        const confirmBtn = document.getElementById('confirm-cod-btn');
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', completeCODPayment);
+        }
+    }, 100);
+}
+
+// Complete COD Payment
+function completeCODPayment() {
+    showPaymentResult(true, 'cod');
+}
+
+// Show Payment Result - FIXED VERSION
+function showPaymentResult(success, paymentType = 'online') {
+    const paymentContent = document.getElementById('payment-content');
+    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    
+    if (success) {
+        // Save order data to global variable BEFORE showing the screen
+        window.lastSuccessfulOrder = {
+            transaction_id: transactionId,
+            customer: {
+                name: document.getElementById('full-name')?.value || 'Customer',
+                phone: document.getElementById('phone')?.value || 'N/A',
+                address: document.getElementById('address')?.value || 'N/A',
+                city: document.getElementById('city')?.value || 'N/A',
+                pincode: document.getElementById('pincode')?.value || 'N/A'
+            },
+            payment_method: selectedPaymentMethod,
+            cart: cart.map(item => ({
+                title: item.title,
+                quantity: item.quantity,
+                price: item.price,
+                quality: item.quality
+            })),
+            amount: amount
+        };
+        
+        console.log('Order saved for invoice:', window.lastSuccessfulOrder);
+        
+        paymentContent.innerHTML = `
+            <div style="text-align: center; padding: 40px;">
+                <div style="width: 100px; height: 100px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <i class="fas fa-check-circle" style="font-size: 60px; color: #4CAF50;"></i>
+                </div>
+                <h4 style="margin-bottom: 10px; color: #2e7d32;">Payment Successful!</h4>
+                <p style="color: #666;">Your order has been confirmed ${paymentType === 'cod' ? 'and will be delivered soon' : 'and payment is complete'}.</p>
+                
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left;">
+                    <p><strong>Transaction ID:</strong> ${transactionId}</p>
+                </div>
+                
+                <div style="text-align: left; margin: 20px 0;">
+                    <p style="margin: 10px 0;"><i class="fas fa-receipt" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Amount:</strong> ₹${amount.toFixed(2)}</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-credit-card" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Payment Method:</strong> ${getPaymentMethodName()}</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-shipping-fast" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Delivery:</strong> within 12 hours</p>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button class="btn btn-outline" id="download-invoice-now-btn" style="flex: 1;">
+                        <i class="fas fa-download"></i> Download Invoice
+                    </button>
+                    <button class="btn btn-primary" id="continue-shopping-now-btn" style="flex: 1;">
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Clear cart
+        cart = [];
+        updateCartUI();
+        
+        // Attach event listeners IMMEDIATELY
+        attachPaymentSuccessListeners();
+        
+    } else {
+        // Failed payment handler (keep your existing code)
+        // ...
+    }
+}
+
+// New function to attach event listeners
+function attachPaymentSuccessListeners() {
+    // Wait a tiny bit to ensure DOM is ready
+    setTimeout(() => {
+        const downloadBtn = document.getElementById('download-invoice-now-btn');
+        const continueBtn = document.getElementById('continue-shopping-now-btn');
+        
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', function() {
+                console.log('Download Invoice button clicked');
+                if (window.lastSuccessfulOrder) {
+                    console.log('Generating invoice for:', window.lastSuccessfulOrder);
+                    generateCleanPDFInvoice(window.lastSuccessfulOrder);
+                } else {
+                    console.error('No order data found');
+                    showNotification('No order data found. Please place an order first.', 'error');
+                }
+            });
+        }
+        
+        if (continueBtn) {
+            continueBtn.addEventListener('click', function() {
+                console.log('Continue Shopping button clicked');
+                completeCheckoutProcess();
+            });
+        }
+    }, 100);
+}
+
+// Simplified PDF Generation - WORKS EVERY TIME
+function generateCleanPDFInvoice(orderData) {
+    try {
+        console.log('Generating invoice for:', orderData);
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Title
+        doc.setFontSize(20);
+        doc.text('FarmLink Invoice', 20, 20);
+        
+        doc.setFontSize(12);
+        doc.text('Direct Farmer to Buyer Marketplace', 20, 30);
+        doc.text('Tirunelvelli, Agriculture City', 20, 37);
+        doc.text('support@farmlink.com | +91 9840994649', 20, 44);
+        
+        // Invoice Details
+        doc.text(`Invoice Date: ${new Date().toLocaleDateString()}`, 20, 55);
+        doc.text(`Invoice #: INV-${Date.now()}`, 20, 62);
+        doc.text(`Order ID: ${orderData.transaction_id}`, 20, 69);
+        
+        // Customer Info
+        doc.text('Bill To:', 20, 85);
+        doc.text(`Name: ${orderData.customer.name}`, 20, 92);
+        doc.text(`Phone: ${orderData.customer.phone}`, 20, 99);
+        doc.text(`Address: ${orderData.customer.address}`, 20, 106);
+        doc.text(`${orderData.customer.city} - ${orderData.customer.pincode}`, 20, 113);
+        
+        // Table Header
+        doc.setFillColor(76, 175, 80);
+        doc.rect(20, 125, 170, 10, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.text('Product', 25, 132);
+        doc.text('Qty', 100, 132);
+        doc.text('Price', 130, 132);
+        doc.text('Total', 160, 132);
+        
+        // Table Rows
+        doc.setTextColor(0, 0, 0);
+        let yPos = 140;
+        let grandTotal = 0;
+        
+        if (orderData.cart && orderData.cart.length > 0) {
+            orderData.cart.forEach(item => {
+                const quantity = item.quantity || 1;
+                const price = item.price || 0;
+                const total = quantity * price;
+                grandTotal += total;
+                
+                doc.text(item.title.substring(0, 30), 25, yPos);
+                doc.text(quantity.toString(), 100, yPos);
+                doc.text(price.toFixed(2), 130, yPos);
+                doc.text(total.toFixed(2), 160, yPos);
+                
+                yPos += 10;
+            });
+        }
+        
+        // Totals
+        const gst = grandTotal * 0.05;
+        const finalTotal = grandTotal + gst;
+        
+        doc.setFont(undefined, 'bold');
+        doc.text('Subtotal:', 130, yPos + 10);
+        doc.text(grandTotal.toFixed(2), 160, yPos + 10);
+        
+        doc.text('GST (5%):', 130, yPos + 20);
+        doc.text(gst.toFixed(2), 160, yPos + 20);
+        
+        doc.text('Grand Total:', 130, yPos + 30);
+        doc.text(finalTotal.toFixed(2), 160, yPos + 30);
+        
+        // Footer
+        doc.setFont(undefined, 'normal');
+        doc.setFontSize(10);
+        doc.text('All amounts in Indian Rupees', 20, 280);
+        doc.text('Thank you for shopping with FarmLink!', 20, 287);
+        
+        // Save
+        doc.save(`invoice-${orderData.transaction_id}.pdf`);
+        
+        showNotification('Invoice downloaded successfully!', 'success');
+        
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        showNotification('Error generating invoice. Please try again.', 'error');
+    }
+}
+
+// Get Payment Method Name
+function getPaymentMethodName() {
+    switch(selectedPaymentMethod) {
+        case 'upi': return 'UPI Payment';
+        case 'card': return 'Credit/Debit Card';
+        case 'netbanking': return 'Net Banking';
+        case 'cod': return 'Cash on Delivery';
+        default: return 'Online Payment';
+    }
+}
+
+// Start Payment Timer
+function startPaymentTimer() {
+    clearInterval(paymentTimer);
+    paymentTimeLeft = 300;
+    
+    paymentTimer = setInterval(() => {
+        paymentTimeLeft--;
+        
+        const minutes = Math.floor(paymentTimeLeft / 60);
+        const seconds = paymentTimeLeft % 60;
+        
+        const timerElement = document.getElementById('payment-timer');
+        if (timerElement) {
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (paymentTimeLeft <= 60) {
+                timerElement.style.color = '#f44336';
+            }
+        }
+        
+        if (paymentTimeLeft <= 0) {
+            clearInterval(paymentTimer);
+            showNotification('Payment timeout. Please try again.', 'error');
+            resetPaymentGateway();
+        }
+    }, 1000);
+}
+
+// Complete Checkout Process
+function completeCheckoutProcess() {
+    closeModal(document.getElementById('payment-modal'));
+    resetPaymentGateway();
+    document.getElementById('shipping-form').reset();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showNotification('Order placed successfully! Thank you for shopping with FarmLink.', 'success');
+}
+
+// UPDATED: Fixed downloadInvoice function - Use actual cart data
+function downloadInvoice() {
+    console.log('=== DOWNLOAD INVOICE STARTED ===');
+    
+    // Get cart data from the GLOBAL cart variable
+    let cartData = [];
+    
+    if (window.cart && window.cart.length > 0) {
+        console.log('Using global cart variable:', window.cart);
+        cartData = window.cart;
+    } else {
+        console.warn('Cart is empty! Please add items to cart first');
+        showNotification('Your cart is empty. Add items before downloading invoice.', 'error');
+        return;
+    }
+    
+    // Get customer information from checkout form
+    const customerInfo = {
+        name: document.getElementById('full-name')?.value || 'Customer',
+        phone: document.getElementById('phone')?.value || 'N/A',
+        address: document.getElementById('address')?.value || 'N/A',
+        city: document.getElementById('city')?.value || 'N/A',
+        pincode: document.getElementById('pincode')?.value || 'N/A'
+    };
+    
+    // Get transaction ID and payment method
+    const transactionId = window.transactionId || 'FARM' + Date.now();
+    const paymentMethod = window.selectedPaymentMethod || 'UPI';
+    
+    // Create order data with ACTUAL cart items
+    const orderData = {
+        transaction_id: transactionId,
+        customer: customerInfo,
+        payment_method: paymentMethod,
+        cart: cartData.map(item => ({
+            title: item.title,
+            quantity: item.quantity, // Use cart quantity
+            price: item.price,
+            quality: item.quality
+        })),
+        timestamp: new Date().toISOString(),
+        status: 'paid'
+    };
+    
+    console.log('Order data for invoice:', orderData);
+    
+    // Call generatePDFInvoice with REAL data
+    generatePDFInvoice(orderData);
+}
+// Add this function to see where cart data is stored
+function debugCartData() {
+    console.log('=== DEBUG CART DATA ===');
+    console.log('1. Global cart variable:', window.cart);
+    console.log('2. LocalStorage cart:', localStorage.getItem('cart'));
+    console.log('3. Session cart:', sessionStorage.getItem('cart'));
+    console.log('4. Checkout page cart:', document.querySelectorAll('.checkout-item').length);
+    console.log('=== END DEBUG ===');
+}
+
+// Call this before downloadInvoice
+debugCartData();
+
+// Helper function to calculate total from cart
+function calculateTotal(cartItems) {
+    let total = 0;
+    cartItems.forEach(item => {
+        const itemTotal = (item.price || 0) * (item.quantity || 0);
+        const gst = itemTotal * 0.05;
+        total += itemTotal + gst;
+    });
+    return total;
+}
+
+function generatePDFInvoiceWithRupeeSymbol(orderData) {
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        // Use a standard font that supports basic characters
+        pdf.setFont('courier'); // Courier font is most reliable
+        pdf.setFontSize(10);
+        
+        // Company Header
+        pdf.setFontSize(20);
+        pdf.setTextColor(76, 175, 80);
+        pdf.text('FarmLink', 20, 20);
+        pdf.setFontSize(14);
+        pdf.text('TAX INVOICE', 150, 20);
+        
+        pdf.setFontSize(10);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text('Direct Farmer to Buyer Marketplace', 20, 30);
+        pdf.text('Tirunelvelli, Agriculture City', 20, 37);
+        pdf.text('support@farmlink.com | +91 9840994649', 20, 44);
+        
+        // Use "Rs." instead of rupee symbol
+        const currencySymbol = 'Rs. ';
+        
+        // ... rest of the code similar to above, but use:
+        // pdf.text(`${currencySymbol}${price.toFixed(2)}`, 120, yPos);
+        
+        // OR use "INR" prefix
+        const currencyPrefix = 'INR ';
+        
+        // ... use currencyPrefix + number
+        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+// Add this function to your index.html JavaScript
+function openInvoiceWindow(orderData) {
+    // Convert order data to URL parameters
+    const jsonData = encodeURIComponent(JSON.stringify(orderData));
+    const url = `invoice.html?data=${jsonData}`;
+    
+    // Open invoice in new window
+    window.open(url, '_blank', 'width=900,height=700,scrollbars=yes');
+}
+
+// Function to save order to backend
+async function saveOrderToBackend(orderData) {
+    try {
+        const response = await fetch('http://localhost:5000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log('Order saved to backend:', result.order);
+            // Open invoice with backend-generated ID
+            openInvoiceWindow(result.order);
+            return result.order;
+        } else {
+            console.error('Failed to save order:', result.error);
+            // Fallback to local invoice generation
+            generatePDFInvoice(orderData);
+        }
+    } catch (error) {
+        console.error('Error saving order to backend:', error);
+        // Fallback to local invoice generation
+        generatePDFInvoice(orderData);
+    }
+}
+
+// Update the shipping form submission - REMOVE automatic download
+shippingForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log('Form submitted');
+    
+    // Validate form
+    if (!validateShippingForm()) {
+        return;
+    }
+    
+    // Get selected payment method
+    const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+    if (!selectedPayment) {
+        showNotification('Please select a payment method', 'error');
+        return;
+    }
+    
+    selectedPaymentMethod = selectedPayment.value;
+    console.log('Selected payment method:', selectedPaymentMethod);
+    
+    const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    
+    // Open payment gateway (NO invoice download here)
+    openPaymentGateway(selectedPaymentMethod, totalAmount);
+    
+    // Save order data for later (not downloading yet)
+    window.pendingOrderData = {
+        customer: {
+            name: document.getElementById('full-name').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            city: document.getElementById('city').value.trim(),
+            pincode: document.getElementById('pincode').value.trim()
+        },
+        cart: cart,
+        total: totalAmount
+    };
+});
+
+
+function testInvoiceGeneration() {
+    // Create sample order data
+    const testOrderData = {
+        transaction_id: 'FARM1766411958915943',
+        customer: {
+            name: 'vel raj',
+            phone: '9003676711',
+            address: '3/86-1 west yadhavar street pudukottai',
+            city: 'thoothukudi',
+            pincode: '628103'
+        },
+        payment_method: 'upi',
+        cart: [
+            {
+                title: 'Fresh Tomatoes',
+                quantity: 2,
+                price: 35.00,
+                quality: 'Grade A'
+            },
+            {
+                title: 'premium apples',
+                quantity: 3,
+                price: 230.00,
+                quality: 'Organic'
+            },
+            {
+                title: 'Onions',
+                quantity: 1.5,
+                price: 25.00,
+                quality: 'Regular'
+            }
+        ]
+    };
+    
+    console.log('=== TESTING INVOICE GENERATION ===');
+    generatePDFInvoice(testOrderData);
+}
+
+// Call this function to test
+// testInvoiceGeneration();
+// Method 2: Open invoice in new window (Fallback method)
+function openInvoiceWindow(orderData) {
+    try {
+        // Create invoice HTML content
+        const invoiceHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Invoice - ${orderData.transaction_id}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    .invoice { max-width: 800px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; }
+                    .header { text-align: center; margin-bottom: 30px; }
+                    .details { margin: 20px 0; }
+                    .item { display: flex; justify-content: space-between; margin: 5px 0; }
+                    .total { border-top: 2px solid #333; padding-top: 10px; margin-top: 20px; }
+                    @media print { button { display: none; } }
+                </style>
+            </head>
+            <body>
+                <div class="invoice">
+                    <div class="header">
+                        <h2>FarmLink Marketplace</h2>
+                        <h3>Invoice</h3>
+                    </div>
+                    
+                    <div class="details">
+                        <p><strong>Invoice #:</strong> INV-FL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}</p>
+                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        <p><strong>Customer:</strong> ${orderData.customer.name}</p>
+                        <p><strong>Phone:</strong> ${orderData.customer.phone}</p>
+                        <p><strong>Address:</strong> ${orderData.customer.address}, ${orderData.customer.city} - ${orderData.customer.pincode}</p>
+                        <p><strong>Order ID:</strong> ${orderData.transaction_id}</p>
+                        <p><strong>Payment Method:</strong> ${orderData.payment_method.toUpperCase()}</p>
+                    </div>
+                    
+                    <h4>Items:</h4>
+                    ${orderData.cart.map(item => `
+                        <div class="item">
+                            <span>${item.quantity} kg × ${item.title} @ ₹${item.price}/kg</span>
+                            <span>₹${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    `).join('')}
+                    
+                    <div class="total">
+                        <div class="item">
+                            <strong>Total Amount:</strong>
+                            <strong>₹${orderData.total.toFixed(2)}</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <p>Thank you for shopping with FarmLink!</p>
+                        <p>Contact: +91 9840994649 | support@farmlink.com</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="window.print()">Print Invoice</button>
+                    <button onclick="window.close()">Close</button>
+                </div>
+            </body>
+            </html>
+        `;
+        
+        // Open in new window
+        const invoiceWindow = window.open('', '_blank');
+        invoiceWindow.document.write(invoiceHTML);
+        invoiceWindow.document.close();
+        
+    } catch (error) {
+        console.error('Error opening invoice window:', error);
+        showNotification('Could not generate invoice. Please contact support.', 'error');
+    }
+}
+
+// Method 3: Simple text invoice (Alternative fallback)
+function generateTextInvoice(orderData) {
+    let invoiceText = `
+        =========================================
+                    FARM LINK INVOICE
+        =========================================
+        
+        Invoice #: INV-FL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}
+        Date: ${new Date().toLocaleDateString()}
+        Order ID: ${orderData.transaction_id}
+        
+        -------------------------------
+        CUSTOMER INFORMATION
+        -------------------------------
+        Name: ${orderData.customer.name}
+        Phone: ${orderData.customer.phone}
+        Address: ${orderData.customer.address}
+        City: ${orderData.customer.city} - ${orderData.customer.pincode}
+        Payment Method: ${orderData.payment_method.toUpperCase()}
+        
+        -------------------------------
+        ORDER ITEMS
+        -------------------------------
+    `;
+    
+    orderData.cart.forEach(item => {
+        invoiceText += `${item.quantity} kg × ${item.title} @ ₹${item.price}/kg = ₹${(item.price * item.quantity).toFixed(2)}\n`;
+    });
+    
+    invoiceText += `
+        -------------------------------
+        TOTAL: ₹${orderData.total.toFixed(2)}
+        -------------------------------
+        
+        Thank you for shopping with FarmLink!
+        Contact: +91 9840994649 | support@farmlink.com
+        
+        =========================================
+    `;
+    
+    // Create and download text file
+    const blob = new Blob([invoiceText], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `invoice-${orderData.transaction_id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+// Change Payment Method
+function changePaymentMethod() {
+    closeModal(document.getElementById('payment-modal'));
+    openModal(document.getElementById('checkout-modal'));
+    resetPaymentGateway();
+}
+
+// Reset Payment Gateway
+function resetPaymentGateway() {
+    clearInterval(paymentTimer);
+    selectedPaymentMethod = '';
+    transactionId = '';
+    paymentTimeLeft = 300;
+}
+
+// Add CSS for spinner animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
+        
+            // Initialize the application
+            init(// In your existing init() function, add:
+function init() {
+    // ... your existing code ...
+    
+    // Initialize payment gateway
+    initPaymentGateway();
+});
+            
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Christmas Gift Exchange</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a2e38 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        h1 {
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 3.5rem;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b0e0e6;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .section {
+            background: rgba(10, 25, 47, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .section-title {
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 2rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        .gift-box-container {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            perspective: 1000px;
+            margin: 0 auto 30px;
+        }
+        
+        .gift-box {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(-15deg) rotateY(25deg);
+            transition: transform 1s ease;
+            margin: 0 auto;
+        }
+        
+        .box-side {
+            position: absolute;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+        
+        .box-front {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            transform: translateZ(150px);
+        }
+        
+        .box-back {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #8b0000 0%, #c41e3a 100%);
+            transform: translateZ(-150px) rotateY(180deg);
+        }
+        
+        .box-right {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #8b0000 0%, #c41e3a 100%);
+            transform: translateX(150px) rotateY(90deg);
+        }
+        
+        .box-left {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            transform: translateX(-150px) rotateY(-90deg);
+        }
+        
+        .box-top {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);
+            transform: translateY(-150px) rotateX(90deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .box-bottom {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #8b0000 0%, #b22222 100%);
+            transform: translateY(150px) rotateX(-90deg);
+        }
+        
+        .ribbon {
+            position: absolute;
+            background-color: #FFD700;
+            z-index: 10;
+        }
+        
+        .ribbon-horizontal {
+            width: 340px;
+            height: 30px;
+            top: 135px;
+            left: -20px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .ribbon-vertical {
+            width: 30px;
+            height: 340px;
+            top: -20px;
+            left: 135px;
+            box-shadow: 5px 0 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .ribbon-bow {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            top: 110px;
+            left: 110px;
+            z-index: 11;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .ribbon-bow::before, .ribbon-bow::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            top: -10px;
+        }
+        
+        .ribbon-bow::before {
+            left: 10px;
+            transform: rotate(-45deg);
+        }
+        
+        .ribbon-bow::after {
+            right: 10px;
+            transform: rotate(45deg);
+        }
+        
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #0a2e38;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+        }
+        
+        .control-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0e0e6;
+            font-weight: 600;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .music-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(10, 25, 47, 0.8);
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .music-btn:hover {
+            background: #FFD700;
+            color: #0a2e38;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .instructions h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 1.8rem;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .instructions strong {
+            color: #FFD700;
+        }
+        
+        .gift-preview {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px dashed rgba(255, 215, 0, 0.3);
+        }
+        
+        .preview-title {
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .preview-content {
+            line-height: 1.6;
+        }
+        
+        .generate-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .share-btn {
+            background: linear-gradient(135deg, #1e90ff 0%, #0066cc 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4);
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(30, 144, 255, 0.6);
+        }
+        
+        .link-display {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            word-break: break-all;
+            border-left: 4px solid #1e90ff;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            font-weight: 600;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            color: #b0e0e6;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .heart {
+            color: #ff4757;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Gift opening page styles */
+        .gift-opening-page {
+            display: none;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .opening-title {
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 2.5rem;
+            color: #FFD700;
+            margin: 30px 0;
+        }
+        
+        .reveal-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .reveal-content h3 {
+            color: #FFD700;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-family: 'Mountains of Christmas', cursive;
+        }
+        
+        .message-box {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #FFD700;
+        }
+        
+        .message-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #fff;
+        }
+        
+        .from-to {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .from-to div {
+            flex: 1;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-weight: 600;
+        }
+        
+        @keyframes openBox {
+            0% { transform: rotateX(-15deg) rotateY(25deg); }
+            50% { transform: rotateX(-15deg) rotateY(25deg) translateZ(100px); }
+            100% { transform: rotateX(60deg) rotateY(25deg) translateZ(100px); }
+        }
+        
+        .box-opened {
+            animation: openBox 2s forwards !important;
+        }
+        
+        @keyframes rotateBox {
+            0% { transform: rotateX(-15deg) rotateY(0deg); }
+            100% { transform: rotateX(-15deg) rotateY(360deg); }
+        }
+        
+        .box-rotating {
+            animation: rotateBox 10s linear infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .gift-box-container {
+                height: 350px;
+            }
+            
+            .gift-box {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .box-front, .box-back, .box-right, .box-left, .box-top, .box-bottom {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .box-front {
+                transform: translateZ(125px);
+            }
+            
+            .box-back {
+                transform: translateZ(-125px) rotateY(180deg);
+            }
+            
+            .box-right {
+                transform: translateX(125px) rotateY(90deg);
+            }
+            
+            .box-left {
+                transform: translateX(-125px) rotateY(-90deg);
+            }
+            
+            .box-top {
+                transform: translateY(-125px) rotateX(90deg);
+            }
+            
+            .box-bottom {
+                transform: translateY(125px) rotateX(-90deg);
+            }
+            
+            .ribbon-horizontal {
+                width: 290px;
+                top: 110px;
+                left: -20px;
+            }
+            
+            .ribbon-vertical {
+                height: 290px;
+                top: -20px;
+                left: 110px;
+            }
+            
+            .ribbon-bow {
+                top: 85px;
+                left: 85px;
+            }
+            
+            .from-to {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Snowflakes will be generated here -->
+    
+    <div class="container" id="creationPage">
+        <header>
+            <h1>Virtual Christmas Gift Exchange</h1>
+            <p class="subtitle">Create a personalized 3D Christmas gift with photos, messages, and music. Share the magic with loved ones anywhere in the world!</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="section" style="flex: 1; min-width: 300px;">
+                <h2 class="section-title">Your 3D Gift Box</h2>
+                
+                <div class="gift-box-container">
+                    <div class="gift-box" id="giftBox">
+                        <div class="box-side box-front"></div>
+                        <div class="box-side box-back"></div>
+                        <div class="box-side box-right"></div>
+                        <div class="box-side box-left"></div>
+                        <div class="box-side box-top">
+                            <div class="ribbon-bow"></div>
+                        </div>
+                        <div class="box-side box-bottom"></div>
+                        <div class="ribbon ribbon-horizontal"></div>
+                        <div class="ribbon ribbon-vertical"></div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="control-btn pulse" id="rotateBtn">
+                        <i class="fas fa-sync-alt"></i> Rotate Box
+                    </button>
+                    <button class="control-btn" id="openBtn">
+                        <i class="fas fa-box-open"></i> Preview Open
+                    </button>
+                    <button class="control-btn" id="resetBtn">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                </div>
+                
+                <div class="gift-preview">
+                    <h3 class="preview-title">Gift Preview</h3>
+                    <div class="preview-content" id="giftPreview">
+                        Your gift preview will appear here...
+                    </div>
+                    <div id="linkDisplay" class="link-display" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <div class="section" style="flex: 1; min-width: 300px;">
+                <h2 class="section-title">Customize Your Gift</h2>
+                
+                <div class="form-group">
+                    <label for="recipientName"><i class="fas fa-user"></i> Recipient's Name</label>
+                    <input type="text" id="recipientName" placeholder="Enter the name of the person receiving this gift">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gifterName"><i class="fas fa-snowflake"></i> Your Name</label>
+                    <input type="text" id="gifterName" placeholder="Enter your name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message"><i class="fas fa-envelope"></i> Personal Message</label>
+                    <textarea id="message" placeholder="Write a heartfelt message for the recipient..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="boxColor"><i class="fas fa-palette"></i> Gift Box Color</label>
+                    <select id="boxColor">
+                        <option value="red">Christmas Red</option>
+                        <option value="green">Festive Green</option>
+                        <option value="gold">Golden Sparkle</option>
+                        <option value="blue">Winter Blue</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-music"></i> Background Music</label>
+                    <div style="display: flex; gap: 10px; margin-top: 5px;">
+                        <button class="control-btn" id="music1" style="flex: 1;">Jingle Bells</button>
+                        <button class="control-btn" id="music2" style="flex: 1;">Silent Night</button>
+                        <button class="control-btn" id="music3" style="flex: 1;">We Wish You</button>
+                    </div>
+                </div>
+                
+                <div class="generate-link">
+                    <button class="share-btn" id="generateBtn">
+                        <i class="fas fa-gift"></i> Generate Gift Link
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How It Works</h3>
+            <ol>
+                <li><strong>Customize</strong> your gift by filling in the form</li>
+                <li><strong>Preview</strong> how the 3D gift box looks and behaves</li>
+                <li><strong>Generate</strong> a unique link to share with your recipient</li>
+                <li><strong>Share</strong> the link - when opened, they'll experience a magical gift reveal!</li>
+            </ol>
+        </div>
+        
+        <footer>
+            <p>Made with <span class="heart">❤️</span> for a magical Christmas experience | Virtual Gift Exchange 2023</p>
+            <p>This project uses pure HTML, CSS, and JavaScript with no backend dependencies.</p>
+        </footer>
+    </div>
+    
+    <!-- Gift Opening Page (Hidden by default) -->
+    <div class="container gift-opening-page" id="openingPage">
+        <header>
+            <h1 id="openingTitle">Opening Your Christmas Gift</h1>
+            <p class="subtitle" id="openingSubtitle">Get ready for a magical surprise!</p>
+        </header>
+        
+        <div class="gift-box-container">
+            <div class="gift-box" id="openingGiftBox">
+                <div class="box-side box-front"></div>
+                <div class="box-side box-back"></div>
+                <div class="box-side box-right"></div>
+                <div class="box-side box-left"></div>
+                <div class="box-side box-top">
+                    <div class="ribbon-bow"></div>
+                </div>
+                <div class="box-side box-bottom"></div>
+                <div class="ribbon ribbon-horizontal"></div>
+                <div class="ribbon ribbon-vertical"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn pulse" id="openGiftBtn">
+                <i class="fas fa-gift"></i> Open Your Gift
+            </button>
+        </div>
+        
+        <div id="revealContent" class="reveal-content" style="display: none;">
+            <h3>Your Special Christmas Gift</h3>
+            <div class="message-box">
+                <p class="message-text" id="revealMessage"></p>
+            </div>
+            <div class="from-to">
+                <div>
+                    <h4>To:</h4>
+                    <p id="revealTo"></p>
+                </div>
+                <div>
+                    <h4>From:</h4>
+                    <p id="revealFrom"></p>
+                </div>
+            </div>
+            <p style="margin-top: 20px; color: #FFD700; font-style: italic;">
+                <i class="fas fa-heart"></i> Wishing you a Merry Christmas and a Happy New Year!
+            </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i> Create Your Own Gift
+            </button>
+        </div>
+    </div>
+    
+    <div class="music-control">
+        <button class="music-btn" id="musicToggle">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+    
+    <script>
+        // ========================
+        // URL Parameter Handling
+        // ========================
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                recipient: params.get('to') || '',
+                gifter: params.get('from') || '',
+                message: params.get('message') || '',
+                color: params.get('color') || 'red',
+                music: params.get('music') || 'music1'
+            };
+        }
+        
+        function createShareableUrl(data) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const params = new URLSearchParams({
+                to: encodeURIComponent(data.recipient),
+                from: encodeURIComponent(data.gifter),
+                message: encodeURIComponent(data.message),
+                color: data.boxColor,
+                music: data.music,
+                gift: 'true'
+            });
+            return `${baseUrl}?${params.toString()}`;
+        }
+        
+        // ========================
+        // Page Navigation
+        // ========================
+        function showCreationPage() {
+            document.getElementById('creationPage').style.display = 'block';
+            document.getElementById('openingPage').style.display = 'none';
+            resetAll();
+        }
+        
+        function showOpeningPage() {
+            document.getElementById('creationPage').style.display = 'none';
+            document.getElementById('openingPage').style.display = 'block';
+            
+            const params = getUrlParams();
+            
+            if (params.recipient) {
+                document.getElementById('openingTitle').textContent = `A Gift For ${decodeURIComponent(params.recipient)}`;
+                document.getElementById('revealTo').textContent = decodeURIComponent(params.recipient);
+                document.getElementById('revealFrom').textContent = decodeURIComponent(params.gifter);
+                document.getElementById('revealMessage').textContent = decodeURIComponent(params.message);
+                
+                // Update box color
+                updateBoxColor(params.color, 'opening');
+                
+                // Set music
+                setMusic(params.music);
+            }
+        }
+        
+        // ========================
+        // Core Application Logic
+        // ========================
+        function createSnowflakes() {
+            const snowflakeCount = 50;
+            const body = document.body;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                const size = Math.random() * 7 + 3;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.top = `${Math.random() * -20}vh`;
+                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                
+                const duration = Math.random() * 10 + 10;
+                snowflake.style.animation = `fall ${duration}s linear infinite`;
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fall {
+                        0% {
+                            transform: translateY(0) rotate(0deg);
+                            opacity: ${snowflake.style.opacity};
+                        }
+                        100% {
+                            transform: translateY(100vh) rotate(360deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                body.appendChild(snowflake);
+            }
+        }
+        
+        // DOM elements
+        const giftBox = document.getElementById('giftBox');
+        const rotateBtn = document.getElementById('rotateBtn');
+        const openBtn = document.getElementById('openBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const recipientName = document.getElementById('recipientName');
+        const gifterName = document.getElementById('gifterName');
+        const message = document.getElementById('message');
+        const boxColor = document.getElementById('boxColor');
+        const giftPreview = document.getElementById('giftPreview');
+        const generateBtn = document.getElementById('generateBtn');
+        const musicToggle = document.getElementById('musicToggle');
+        const music1 = document.getElementById('music1');
+        const music2 = document.getElementById('music2');
+        const music3 = document.getElementById('music3');
+        const linkDisplay = document.getElementById('linkDisplay');
+        const openGiftBtn = document.getElementById('openGiftBtn');
+        const openingGiftBox = document.getElementById('openingGiftBox');
+        const backBtn = document.getElementById('backBtn');
+        const revealContent = document.getElementById('revealContent');
+        
+        // Audio elements
+        const bgMusic = new Audio('https://assets.mixkit.co/music/preview/mixkit-jingle-bells-311.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.5;
+        
+        const openSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3');
+        openSound.volume = 0.7;
+        
+        const successSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3');
+        successSound.volume = 0.7;
+        
+        // Variables
+        let isRotating = false;
+        let isOpen = false;
+        let selectedMusic = 'music1';
+        
+        // Update gift preview
+        function updatePreview() {
+            const recName = recipientName.value || '[Recipient Name]';
+            const giftName = gifterName.value || '[Your Name]';
+            const giftMessage = message.value || '[Your personal message will appear here]';
+            const color = boxColor.value;
+            
+            let colorText = '';
+            switch(color) {
+                case 'red': colorText = 'Christmas Red'; break;
+                case 'green': colorText = 'Festive Green'; break;
+                case 'gold': colorText = 'Golden Sparkle'; break;
+                case 'blue': colorText = 'Winter Blue'; break;
+            }
+            
+            giftPreview.innerHTML = `
+                <p><strong>To:</strong> ${recName}</p>
+                <p><strong>From:</strong> ${giftName}</p>
+                <p><strong>Message:</strong> ${giftMessage.substring(0, 100)}${giftMessage.length > 100 ? '...' : ''}</p>
+                <p><strong>Box Design:</strong> ${colorText} with golden ribbon</p>
+                <p><strong>Includes:</strong> Personal message, festive music, and a surprise reveal!</p>
+            `;
+            
+            updateBoxColor(color, 'creation');
+        }
+        
+        // Update box color
+        function updateBoxColor(color, page = 'creation') {
+            const prefix = page === 'creation' ? '' : 'opening';
+            const front = document.querySelector(`#${prefix}GiftBox .box-front`);
+            const back = document.querySelector(`#${prefix}GiftBox .box-back`);
+            const right = document.querySelector(`#${prefix}GiftBox .box-right`);
+            const left = document.querySelector(`#${prefix}GiftBox .box-left`);
+            const top = document.querySelector(`#${prefix}GiftBox .box-top`);
+            const bottom = document.querySelector(`#${prefix}GiftBox .box-bottom`);
+            
+            let color1, color2;
+            
+            switch(color) {
+                case 'red':
+                    color1 = '#c41e3a';
+                    color2 = '#8b0000';
+                    break;
+                case 'green':
+                    color1 = '#228B22';
+                    color2 = '#006400';
+                    break;
+                case 'gold':
+                    color1 = '#FFD700';
+                    color2 = '#DAA520';
+                    break;
+                case 'blue':
+                    color1 = '#1e90ff';
+                    color2 = '#0066cc';
+                    break;
+                default:
+                    color1 = '#c41e3a';
+                    color2 = '#8b0000';
+            }
+            
+            if (front) front.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+            if (back) back.style.background = `linear-gradient(135deg, ${color2} 0%, ${color1} 100%)`;
+            if (right) right.style.background = `linear-gradient(135deg, ${color2} 0%, ${color1} 100%)`;
+            if (left) left.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+            if (top) top.style.background = `linear-gradient(135deg, ${color2} 0%, ${color1} 100%)`;
+            if (bottom) bottom.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+        }
+        
+        // Rotate the gift box
+        function rotateBox() {
+            if (isOpen) return;
+            
+            isRotating = !isRotating;
+            
+            if (isRotating) {
+                giftBox.classList.add('box-rotating');
+                rotateBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Rotation';
+                rotateBtn.classList.remove('pulse');
+            } else {
+                giftBox.classList.remove('box-rotating');
+                rotateBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Rotate Box';
+                rotateBtn.classList.add('pulse');
+            }
+        }
+        
+        // Open the gift box (creation page)
+        function openBox() {
+            if (isOpen) return;
+            
+            isOpen = true;
+            isRotating = false;
+            giftBox.classList.remove('box-rotating');
+            giftBox.classList.add('box-opened');
+            openBtn.disabled = true;
+            openSound.play();
+            
+            openBtn.innerHTML = '<i class="fas fa-box"></i> Gift Open!';
+            rotateBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Rotate Box';
+            rotateBtn.classList.add('pulse');
+        }
+        
+        // Open the gift box (opening page)
+        function openGiftForRecipient() {
+            openingGiftBox.classList.add('box-opened');
+            openGiftBtn.disabled = true;
+            openSound.play();
+            
+            openGiftBtn.innerHTML = '<i class="fas fa-box"></i> Opening...';
+            
+            setTimeout(() => {
+                revealContent.style.display = 'block';
+                successSound.play();
+                showConfetti();
+                openGiftBtn.innerHTML = '<i class="fas fa-gift"></i> Gift Opened!';
+            }, 2000);
+        }
+        
+        // Reset the gift box
+        function resetBox() {
+            isOpen = false;
+            isRotating = false;
+            giftBox.classList.remove('box-opened', 'box-rotating');
+            giftBox.style.transform = 'rotateX(-15deg) rotateY(25deg)';
+            openBtn.disabled = false;
+            
+            openBtn.innerHTML = '<i class="fas fa-box-open"></i> Preview Open';
+            rotateBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Rotate Box';
+            rotateBtn.classList.add('pulse');
+        }
+        
+        // Reset everything
+        function resetAll() {
+            resetBox();
+            linkDisplay.style.display = 'none';
+            linkDisplay.innerHTML = '';
+            recipientName.value = '';
+            gifterName.value = '';
+            message.value = '';
+            boxColor.value = 'red';
+            updatePreview();
+        }
+        
+        // Generate gift link
+        function generateGiftLink() {
+            const recName = recipientName.value.trim();
+            const giftName = gifterName.value.trim();
+            const giftMessage = message.value.trim();
+            
+            if (!recName || !giftName || !giftMessage) {
+                alert('Please fill in all fields before generating a gift link.');
+                return;
+            }
+            
+            const giftData = {
+                recipient: recName,
+                gifter: giftName,
+                message: giftMessage,
+                boxColor: boxColor.value,
+                music: selectedMusic
+            };
+            
+            const shareableUrl = createShareableUrl(giftData);
+            
+            linkDisplay.style.display = 'block';
+            linkDisplay.innerHTML = `
+                <h4 style="color: #1e90ff; margin-bottom: 10px;"><i class="fas fa-check-circle"></i> Gift Link Generated!</h4>
+                <p>Your virtual gift is ready to share! Copy the link below and send it to your loved one.</p>
+                <p style="margin: 15px 0; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-family: monospace;">
+                    ${shareableUrl}
+                </p>
+                <button class="copy-btn" id="copyLinkBtn">
+                    <i class="fas fa-copy"></i> Copy Link to Clipboard
+                </button>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #b0e0e6;">
+                    <i class="fas fa-info-circle"></i> When your recipient opens this link, they'll see the gift opening experience!
+                </p>
+            `;
+            
+            // Add event listener to the new copy button
+            document.getElementById('copyLinkBtn').addEventListener('click', () => {
+                copyToClipboard(shareableUrl);
+            });
+            
+            showConfetti();
+            successSound.play();
+        }
+        
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('🎁 Gift link copied to clipboard! Share it with your loved one.');
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('🎁 Gift link copied to clipboard! Share it with your loved one.');
+            });
+        }
+        
+        // Show confetti effect
+        function showConfetti() {
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('snowflake');
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.borderRadius = '0';
+                
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = `${Math.random() * -10}vh`;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                const duration = Math.random() * 3 + 2;
+                confetti.style.animation = `fall ${duration}s linear forwards`;
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, duration * 1000);
+            }
+        }
+        
+        // Get random color for confetti
+        function getRandomColor() {
+            const colors = ['#FFD700', '#c41e3a', '#228B22', '#1e90ff', '#FF69B4', '#FFA500'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Toggle music
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                musicToggle.style.background = '#FFD700';
+                musicToggle.style.color = '#0a2e38';
+            } else {
+                bgMusic.pause();
+                musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                musicToggle.style.background = 'rgba(10, 25, 47, 0.8)';
+                musicToggle.style.color = '#FFD700';
+            }
+        }
+        
+        // Set music track
+        function setMusic(track) {
+            music1.style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
+            music2.style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
+            music3.style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
+            music1.style.color = '#0a2e38';
+            music2.style.color = '#0a2e38';
+            music3.style.color = '#0a2e38';
+            
+            switch(track) {
+                case 'music1':
+                    music1.style.background = 'linear-gradient(135deg, #1e90ff 0%, #0066cc 100%)';
+                    music1.style.color = 'white';
+                    bgMusic.src = 'https://assets.mixkit.co/music/preview/mixkit-jingle-bells-311.mp3';
+                    selectedMusic = 'music1';
+                    break;
+                case 'music2':
+                    music2.style.background = 'linear-gradient(135deg, #1e90ff 0%, #0066cc 100%)';
+                    music2.style.color = 'white';
+                    bgMusic.src = 'https://assets.mixkit.co/music/preview/mixkit-silent-night-315.mp3';
+                    selectedMusic = 'music2';
+                    break;
+                case 'music3':
+                    music3.style.background = 'linear-gradient(135deg, #1e90ff 0%, #0066cc 100%)';
+                    music3.style.color = 'white';
+                    bgMusic.src = 'https://assets.mixkit.co/music/preview/mixkit-we-wish-you-a-merry-christmas-315.mp3';
+                    selectedMusic = 'music3';
+                    break;
+            }
+            
+            if (!bgMusic.paused) {
+                bgMusic.play();
+            }
+        }
+        
+        // ========================
+        // Event Listeners
+        // ========================
+        rotateBtn.addEventListener('click', rotateBox);
+        openBtn.addEventListener('click', openBox);
+        resetBtn.addEventListener('click', resetBox);
+        generateBtn.addEventListener('click', generateGiftLink);
+        musicToggle.addEventListener('click', toggleMusic);
+        openGiftBtn.addEventListener('click', openGiftForRecipient);
+        backBtn.addEventListener('click', showCreationPage);
+        
+        music1.addEventListener('click', () => setMusic('music1'));
+        music2.addEventListener('click', () => setMusic('music2'));
+        music3.addEventListener('click', () => setMusic('music3'));
+        
+        // Input event listeners for live preview
+        recipientName.addEventListener('input', updatePreview);
+        gifterName.addEventListener('input', updatePreview);
+        message.addEventListener('input', updatePreview);
+        boxColor.addEventListener('change', updatePreview);
+        
+        // ========================
+        // Initialize Application
+        // ========================
+        document.addEventListener('DOMContentLoaded', () => {
+            createSnowflakes();
+            updatePreview();
+            
+            // Start with music playing
+            bgMusic.play();
+            
+            // Check if this is a gift opening link
+            const params = getUrlParams();
+            const isGiftOpening = window.location.search.includes('gift=true');
+            
+            if (isGiftOpening && params.recipient) {
+                showOpeningPage();
+            } else {
+                showCreationPage();
+            }
+        });
+        
+        // Add CSS animations
+        const animationStyle = document.createElement('style');
+        animationStyle.textContent = `
+            @keyframes fall {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(animationStyle);
+    </script>
+</body>
+</html>

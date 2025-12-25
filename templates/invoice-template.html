@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - FarmLink</title>
+    <link rel="stylesheet" href="invoice-styles.css">
+    <style>
+        /* Print-specific styles */
+        @media print {
+            @page {
+                margin: 20mm;
+            }
+            
+            body {
+                font-size: 12pt;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .invoice-container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+        
+        /* Additional styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+        
+        .company-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .invoice-title h1 {
+            color: #2E7D32;
+            margin: 0;
+        }
+        
+        .invoice-title .invoice-number {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .invoice-details {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .customer-info {
+            margin-bottom: 20px;
+        }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .items-table th {
+            background: #4CAF50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .items-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .totals {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+        
+        .grand-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2E7D32;
+            border-top: 2px solid #2E7D32;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .payment-terms {
+            margin-top: 30px;
+            padding: 15px;
+            background: #E8F5E9;
+            border-radius: 8px;
+        }
+        
+        .thank-you {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container" id="invoice-content">
+        <div class="invoice-header">
+            <div class="company-info">
+                <div class="company-logo">
+                    <i class="fas fa-tractor"></i> FarmLink
+                </div>
+                <div class="company-details">
+                    <p>Direct Farmer to Buyer Marketplace</p>
+                    <p>Tirunelvelli, Agriculture City</p>
+                    <p>support@farmlink.com | +91 9840994649</p>
+                    <p>GSTIN: 24AABCF1234M1Z5</p>
+                </div>
+            </div>
+            
+            <div class="invoice-title">
+                <h1>TAX INVOICE</h1>
+                <div class="invoice-number" id="invoice-number">INV-FL-2025-001</div>
+                <div class="invoice-date" id="invoice-date">Date: 2025-12-22</div>
+            </div>
+        </div>
+        
+        <div class="invoice-details">
+            <div class="customer-info" id="customer-info">
+                <h3>Bill To:</h3>
+                <p><strong>Name:</strong> <span id="customer-name">John Doe</span></p>
+                <p><strong>Phone:</strong> <span id="customer-phone">9876543210</span></p>
+                <p><strong>Address:</strong> <span id="customer-address">123 Main Street, City - 600001</span></p>
+            </div>
+            
+            <div class="order-info">
+                <p><strong>Order ID:</strong> <span id="order-id">ORD-2025-001</span></p>
+                <p><strong>Transaction ID:</strong> <span id="transaction-id">TXN-2025-001</span></p>
+                <p><strong>Payment Method:</strong> <span id="payment-method">UPI Payment</span></p>
+            </div>
+        </div>
+        
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Product Description</th>
+                    <th>Quantity</th>
+                    <th>Unit Price (₹)</th>
+                    <th>GST (5%)</th>
+                    <th>Total (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="invoice-items">
+                <!-- Items will be populated here -->
+            </tbody>
+        </table>
+        
+        <div class="totals">
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹0.00</span>
+            </div>
+            <div class="total-row">
+                <span>GST (5%):</span>
+                <span id="gst-amount">₹0.00</span>
+            </div>
+            <div class="total-row grand-total">
+                <span>Grand Total:</span>
+                <span id="grand-total">₹0.00</span>
+            </div>
+        </div>
+        
+        <div class="payment-terms">
+            <h4>Payment Terms:</h4>
+            <p>• Payment due upon receipt</p>
+            <p>• GSTIN: 24AABCF1234M1Z5</p>
+            <p>• Invoice generated automatically via FarmLink System</p>
+        </div>
+        
+        <div class="thank-you">
+            <p>Thank you for shopping with FarmLink!</p>
+            <p>Connecting farmers directly with buyers for better prices and reduced food waste.</p>
+            <p>Visit: www.farmlink.com | Email: support@farmlink.com | Phone: +91 9840994649</p>
+        </div>
+    </div>
+
+    <button onclick="testInvoice()" style="padding: 10px; background: #ff9800; color: white; border: none; border-radius: 5px; margin: 10px;">
+    Test Invoice Generation
+</button>
+
+<script>
+function testInvoice() {
+    const testOrderData = {
+        transaction_id: 'TEST-' + Date.now(),
+        customer: {
+            name: 'Test Customer',
+            phone: '9876543210',
+            address: '123 Test Street',
+            city: 'Test City',
+            pincode: '600001'
+        },
+        payment_method: 'UPI',
+        cart: [
+            {
+                title: 'Fresh Tomatoes',
+                quantity: 2,
+                price: 40.00,
+                quality: 'Grade A'
+            },
+            {
+                title: 'Organic Potatoes',
+                quantity: 3,
+                price: 30.00,
+                quality: 'Organic'
+            },
+            {
+                title: 'Carrots',
+                quantity: 1.5,
+                price: 35.00,
+                quality: 'Fresh'
+            }
+        ]
+    };
+    
+    generatePDFInvoice(testOrderData);
+}
+</script>
+    
+    <div class="no-print" style="text-align: center; margin-top: 20px; padding: 20px;">
+        <button onclick="window.print()" style="padding: 12px 30px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-right: 10px;">
+            <i class="fas fa-print"></i> Print Invoice
+        </button>
+        <button onclick="downloadPDF()" style="padding: 12px 30px; background: #2E7D32; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            <i class="fas fa-download"></i> Download as PDF
+        </button>
+    </div>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script>
+        // Function to download as PDF
+        function downloadPDF() {
+            const invoiceElement = document.getElementById('invoice-content');
+            
+            html2canvas(invoiceElement, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 190;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+                pdf.save(`invoice-${document.getElementById('invoice-number').textContent}.pdf`);
+            });
+        }
+        
+        // Parse URL parameters if invoice was opened in new window
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // Load invoice data from URL parameters
+        window.onload = function() {
+            const invoiceData = getUrlParam('data');
+            if (invoiceData) {
+                try {
+                    const data = JSON.parse(decodeURIComponent(invoiceData));
+                    populateInvoice(data);
+                } catch (e) {
+                    console.error('Error parsing invoice data:', e);
+                }
+            }
+        };
+        
+        // Populate invoice with data
+      // Populate invoice with data - CORRECTED VERSION
+function populateInvoice(data) {
+    if (!data) return;
+    
+    document.getElementById('invoice-number').textContent = `INV-FL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+    document.getElementById('invoice-date').textContent = `Date: ${new Date().toLocaleDateString()}`;
+    document.getElementById('customer-name').textContent = data.customer?.name || 'Customer';
+    document.getElementById('customer-phone').textContent = data.customer?.phone || 'N/A';
+    document.getElementById('customer-address').textContent = `${data.customer?.address || ''}, ${data.customer?.city || ''} - ${data.customer?.pincode || ''}`;
+    document.getElementById('order-id').textContent = data.transaction_id || 'N/A';
+    document.getElementById('transaction-id').textContent = data.transaction_id || 'N/A';
+    document.getElementById('payment-method').textContent = data.payment_method?.toUpperCase() || 'N/A';
+    
+    const itemsContainer = document.getElementById('invoice-items');
+    itemsContainer.innerHTML = '';
+    
+    let subtotal = 0;
+    
+    if (data.cart && Array.isArray(data.cart)) {
+        data.cart.forEach(item => {
+            const itemPrice = item.price || 0;
+            const quantity = item.quantity || 0;
+            const itemTotal = itemPrice * quantity;
+            subtotal += itemTotal; // Add to subtotal BEFORE GST
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.title || 'Product'} (${item.quality || 'Standard'})</td>
+                <td>${quantity} kg</td>
+                <td>₹${itemPrice.toFixed(2)}</td>
+                <td>₹${(itemTotal * 0.05).toFixed(2)}</td>
+                <td>₹${(itemTotal * 1.05).toFixed(2)}</td>
+            `;
+            itemsContainer.appendChild(row);
+        });
+    }
+    
+    // Calculate totals correctly
+    const gstAmount = subtotal * 0.05;
+    const grandTotal = subtotal + gstAmount;
+    
+    document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+    document.getElementById('gst-amount').textContent = `₹${gstAmount.toFixed(2)}`;
+    document.getElementById('grand-total').textContent = `₹${grandTotal.toFixed(2)}`;
+}
+
+// Add this function to see where cart data is stored
+function debugCartData() {
+    console.log('=== DEBUG CART DATA ===');
+    console.log('1. Global cart variable:', window.cart);
+    console.log('2. LocalStorage cart:', localStorage.getItem('cart'));
+    console.log('3. Session cart:', sessionStorage.getItem('cart'));
+    console.log('4. Checkout page cart:', document.querySelectorAll('.checkout-item').length);
+    console.log('=== END DEBUG ===');
+}
+
+// Call this before downloadInvoice
+debugCartData();
+    </script>
+</body>
+</html>
