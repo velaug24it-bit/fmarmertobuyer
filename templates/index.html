@@ -30,6 +30,8 @@
             background-color: #f9f9f9;
             color: #333;
             line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         .container {
@@ -38,23 +40,47 @@
             padding: 0 20px;
         }
 
-        /* Header & Navigation */
-       header {
-    background-color: white;
-    box-shadow: var(--shadow);
-    position: fixed; /* Changed from sticky to fixed */
-    top: 0;
-    width: 100%; /* Add this */
-    z-index: 100;
-}
+        /* ==================== HEADER STYLES ==================== */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 0;
+        }
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
+            min-height: 70px;
         }
 
+        /* Navbar Sections */
+        .navbar-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-center {
+            flex: 2;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Logo */
         .logo {
             display: flex;
             align-items: center;
@@ -65,12 +91,15 @@
         }
 
         .logo i {
-            margin-left: 0;
+            margin-right: 0.5rem;
         }
 
+        /* Navigation Menu */
         .nav-menu {
             display: flex;
             list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
         .nav-menu li {
@@ -82,19 +111,246 @@
             color: var(--gray);
             font-weight: 500;
             transition: color 0.3s;
-            padding: 0.5rem;
+            padding: 0.5rem 0;
+            position: relative;
         }
 
         .nav-menu a:hover, .nav-menu a.active {
             color: var(--primary);
-            border-bottom: 2px solid var(--primary);
         }
 
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        /* Cart Button */
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Language Selector */
+        .language-selector select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            min-height: 44px;
+        }
+
+        /* Auth Buttons */
         .auth-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
+        .auth-buttons .btn {
+            white-space: nowrap;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Menu Toggle Button - HIDDEN ON DESKTOP */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            min-width: 44px;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+        }
+
+        /* Mobile Navigation Menu - HIDDEN ON DESKTOP */
+        .mobile-nav-menu {
+            display: none;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .mobile-nav-items {
+            list-style: none;
+            margin: 0;
+            padding: 1rem 0;
+        }
+
+        .mobile-nav-items li {
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-nav-items li:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav-items a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .mobile-nav-items a:hover, .mobile-nav-items a.active {
+            color: var(--primary);
+            background-color: var(--light);
+        }
+
+        .mobile-auth-buttons {
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            display: none;
+        }
+
+        .mobile-auth-buttons .btn {
+            flex: 1;
+            padding: 0.8rem;
+        }
+
+        /* ==================== MOBILE RESPONSIVE STYLES ==================== */
+        @media (max-width: 1024px) {
+            .navbar-center {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .navbar {
+                padding: 0.8rem 0;
+            }
+            
+            .logo span {
+                font-size: 1.3rem;
+            }
+            
+            .navbar-right {
+                gap: 0.5rem;
+            }
+            
+            .language-selector select {
+                padding: 0.4rem;
+                font-size: 0.85rem;
+                min-width: 100px;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .mobile-auth-buttons {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                min-height: 60px;
+            }
+            
+            .logo span {
+                font-size: 1.2rem;
+            }
+            
+            .logo i {
+                font-size: 1.2rem;
+            }
+            
+            .navbar-right {
+                gap: 0.3rem;
+            }
+            
+            .language-selector select {
+                min-width: 80px;
+                font-size: 0.8rem;
+                padding: 0.3rem;
+            }
+            
+            .cart-btn {
+                font-size: 1.1rem;
+                padding: 0.3rem;
+            }
+            
+            .cart-count {
+                width: 18px;
+                height: 18px;
+                font-size: 0.7rem;
+            }
+            
+            .menu-toggle {
+                font-size: 1.3rem;
+                padding: 0.3rem;
+            }
+        }
+
+        /* Extra small devices (phones) */
+        @media (max-width: 360px) {
+            .logo span {
+                font-size: 1.1rem;
+            }
+            
+            .logo i {
+                margin-right: 0.3rem;
+            }
+            
+            .language-selector select {
+                min-width: 70px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Button Styles */
         .btn {
             padding: 0.5rem 1rem;
             border: none;
@@ -102,6 +358,10 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-primary {
@@ -137,126 +397,82 @@
             padding: 0.8rem 1.5rem;
             font-size: 1.1rem;
         }
-        
-        /* Cart Button */
-        .cart-btn {
-            position: relative;
-            margin-right: 1rem;
-        }
-        
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: var(--secondary);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: var(--white);
+            padding: 8rem 0 5rem;
+            text-align: center;
         }
 
-        /* Hero Section */
-      .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-    color: var(--white);
-    padding: 10rem 0 5rem; /* Remove margin-top from here */
-    /* margin-top: 70px; ← DELETE THIS LINE */
-}
         .hero-content {
-            flex: 1;
-            padding-right: 2rem;
-            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .hero-content h1 {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
+            margin-bottom: 1.5rem;
+            color: white;
         }
 
         .hero-content p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
-            color: var(--gray);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .hero-buttons {
             display: flex;
             gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-                /* Language Selector Styles */
-        .language-selector {
-            margin-right: 1rem;
-        }
-        
-        .language-selector select {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-            cursor: pointer;
-        }
-        
-        /* Farmer Name Styling */
-        .farmer-name {
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .farmer-name i {
-            margin-right: 0.5rem;
-            color: var(--secondary);
+        @media (max-width: 768px) {
+            .hero {
+                padding: 7rem 0 4rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 1rem;
+            }
         }
 
-        /* Date Info Styling */
-        .date-info {
-            margin: 0.5rem 0;
-            font-size: 0.9rem;
-            color: var(--gray);
+        /* ==================== TOUCH-FRIENDLY STYLES ==================== */
+        .btn, .menu-toggle, .cart-btn, .language-selector select {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
-        
-        .date-item {
+
+        .btn:active, .menu-toggle:active {
+            transform: scale(0.95);
+            transition: transform 0.1s;
+        }
+
+        /* Ensure all clickable elements have minimum touch target size */
+        .btn, .menu-toggle, .cart-btn, .nav-menu a, .mobile-nav-items a {
+            min-height: 44px;
             display: flex;
             align-items: center;
-            margin-bottom: 0.3rem;
-        }
-        
-        .date-item i {
-            margin-right: 0.5rem;
-            color: var(--primary);
-        }
-        
-        .expiry-soon {
-            color: #ff4444;
-            font-weight: bold;
-        }
-        
-        .expiry-badge {
-            display: inline-block;
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-            font-weight: bold;
-        }
-        
-        .expiry-soon-badge {
-            background-color: #ffebee;
-            color: #d32f2f;
-        }
-        
-        .expiry-fresh-badge {
-            background-color: #e8f5e9;
-            color: var(--dark);
+            justify-content: center;
         }
 
         /* Stats Section */
@@ -678,360 +894,6 @@
             border-top: 2px solid #eee;
         }
 
-        /* Payment Gateway Styles */
-.payment-method-details {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1rem;
-}
-
-.payment-method-details i {
-    font-size: 1.2rem;
-    color: #4CAF50;
-}
-
-/* Payment Gateway Layout */
-.payment-gateway {
-    padding: 20px;
-}
-
-.payment-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.payment-header h2 {
-    color: #2E7D32;
-    margin-bottom: 10px;
-}
-
-.payment-amount {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    margin: 10px 0;
-}
-
-.merchant-info {
-    background: #f5f5f5;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.merchant-info p {
-    margin: 5px 0;
-    color: #666;
-}
-
-/* UPI Payment Styles */
-.upi-payment {
-    text-align: center;
-}
-
-.upi-qr-container {
-    margin: 20px 0;
-    padding: 20px;
-    background: white;
-    border: 2px dashed #4CAF50;
-    border-radius: 10px;
-}
-
-.upi-qr-placeholder {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-    background: linear-gradient(45deg, #4CAF50, #8BC34A);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
-.upi-qr-placeholder i {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
-
-.upi-apps {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.upi-app {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.upi-app:hover {
-    transform: scale(1.1);
-}
-
-.upi-app.phonepe {
-    background: #5F259F;
-    color: white;
-}
-
-.upi-app.gpay {
-    background: #4285F4;
-    color: white;
-}
-
-.upi-app.paytm {
-    background: #1BA6F1;
-    color: white;
-}
-
-.upi-id-input {
-    margin: 20px 0;
-}
-
-.upi-id-input input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    text-align: center;
-}
-
-.payment-timer {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 10px 0;
-}
-
-.timer {
-    color: #e53935;
-    font-weight: bold;
-}
-
-/* Card Payment Styles */
-.card-payment {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.card-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.card-input-group {
-    margin-bottom: 20px;
-}
-
-.card-input-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-    font-weight: 500;
-}
-
-.card-input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
-
-.card-input:focus {
-    border-color: #4CAF50;
-    outline: none;
-}
-
-.card-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.card-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-}
-
-.card-icons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.card-icons img {
-    height: 30px;
-    filter: grayscale(100%);
-}
-
-.card-icons img.active {
-    filter: none;
-}
-
-/* OTP/PIN Verification */
-.otp-verification {
-    text-align: center;
-}
-
-.otp-inputs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 30px 0;
-}
-
-.otp-input {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    font-size: 1.5rem;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    transition: all 0.3s;
-}
-
-.otp-input:focus {
-    border-color: #4CAF50;
-    outline: none;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-}
-
-.pin-keypad {
-    margin: 20px 0;
-}
-
-.keypad-row {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 10px 0;
-}
-
-.pin-key {
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    background: #f0f0f0;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.pin-key:hover {
-    background: #4CAF50;
-    color: white;
-}
-
-.pin-key.clear {
-    background: #ff4444;
-    color: white;
-}
-
-/* Payment Status */
-.payment-status {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.status-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
-}
-
-.status-icon.success {
-    color: #4CAF50;
-}
-
-.status-icon.failed {
-    color: #f44336;
-}
-
-.status-message h3 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.status-message p {
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.payment-details {
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 20px 0;
-    text-align: left;
-}
-
-.payment-detail {
-    display: flex;
-    justify-content: space-between;
-    margin: 8px 0;
-}
-
-/* Loading Animation */
-.payment-loading {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.loading-spinner {
-    width: 60px;
-    height: 60px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #4CAF50;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Action Buttons */
-.payment-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 30px;
-}
-
-.payment-actions .btn {
-    flex: 1;
-}
-
-/* Transaction ID */
-.transaction-id {
-    background: #f0f0f0;
-    padding: 10px;
-    border-radius: 6px;
-    margin: 20px 0;
-    font-family: monospace;
-    font-size: 0.9rem;
-    word-break: break-all;
-}
-
         /* Checkout Styles */
         .checkout-container {
             display: grid;
@@ -1094,31 +956,6 @@
             margin-right: 0.5rem;
         }
 
-        /* Contact Form Spinner */
-        .spinner {
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--primary);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-left: 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .contact-image {
-            transition: transform 0.3s;
-        }
-        
-        .contact-image:hover {
-            transform: scale(1.02);
-        }
-        
         /* Notification */
         .notification {
             position: fixed;
@@ -1150,30 +987,438 @@
             font-size: 1.2rem;
         }
 
+        /* Farmer Name Styling */
+        .farmer-name {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .farmer-name i {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+
+        /* Date Info Styling */
+        .date-info {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .date-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+        
+        .date-item i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .expiry-soon {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        
+        .expiry-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .expiry-soon-badge {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .expiry-fresh-badge {
+            background-color: #e8f5e9;
+            color: var(--dark);
+        }
+
+        /* Payment Gateway Styles */
+        .payment-method-details {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .payment-method-details i {
+            font-size: 1.2rem;
+            color: #4CAF50;
+        }
+
+        /* Payment Gateway Layout */
+        .payment-gateway {
+            padding: 20px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h2 {
+            color: #2E7D32;
+            margin-bottom: 10px;
+        }
+
+        .payment-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .merchant-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .merchant-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        /* UPI Payment Styles */
+        .upi-payment {
+            text-align: center;
+        }
+
+        .upi-qr-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border: 2px dashed #4CAF50;
+            border-radius: 10px;
+        }
+
+        .upi-qr-placeholder {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .upi-qr-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .upi-apps {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .upi-app {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .upi-app:hover {
+            transform: scale(1.1);
+        }
+
+        .upi-app.phonepe {
+            background: #5F259F;
+            color: white;
+        }
+
+        .upi-app.gpay {
+            background: #4285F4;
+            color: white;
+        }
+
+        .upi-app.paytm {
+            background: #1BA6F1;
+            color: white;
+        }
+
+        .upi-id-input {
+            margin: 20px 0;
+        }
+
+        .upi-id-input input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .payment-timer {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .timer {
+            color: #e53935;
+            font-weight: bold;
+        }
+
+        /* Card Payment Styles */
+        .card-payment {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .card-input-group {
+            margin-bottom: 20px;
+        }
+
+        .card-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .card-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .card-input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .card-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .card-icons img {
+            height: 30px;
+            filter: grayscale(100%);
+        }
+
+        .card-icons img.active {
+            filter: none;
+        }
+
+        /* OTP/PIN Verification */
+        .otp-verification {
+            text-align: center;
+        }
+
+        .otp-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .otp-input:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+
+        .pin-keypad {
+            margin: 20px 0;
+        }
+
+        .keypad-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .pin-key {
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            background: #f0f0f0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pin-key:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .pin-key.clear {
+            background: #ff4444;
+            color: white;
+        }
+
+        /* Payment Status */
+        .payment-status {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .status-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .status-icon.success {
+            color: #4CAF50;
+        }
+
+        .status-icon.failed {
+            color: #f44336;
+        }
+
+        .status-message h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .status-message p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .payment-details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .payment-detail {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+
+        /* Loading Animation */
+        .payment-loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Action Buttons */
+        .payment-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .payment-actions .btn {
+            flex: 1;
+        }
+
+        /* Transaction ID */
+        .transaction-id {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        /* Contact Form Spinner */
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .contact-image {
+            transition: transform 0.3s;
+        }
+        
+        .contact-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Responsive Media Queries */
         @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-            
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .hero-content {
-                padding-right: 0;
-                margin-bottom: 2rem;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .stats {
-                flex-direction: column;
-                gap: 2rem;
-            }
-            
             .contact-content {
                 grid-template-columns: 1fr;
             }
@@ -1208,290 +1453,93 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
-            
-            .language-selector {
-                margin: 0.5rem 0;
-                order: 3;
-                width: 100%;
-                text-align: center;
-            }
-            
-            .navbar {
-                flex-wrap: wrap;
-            }
         }
 
-        /* Mobile Menu Toggle Button */
-.menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: var(--primary);
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-/* Mobile Navigation */
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
-        order: 2;
-        margin-left: auto;
-    }
-    
-    .nav-menu {
-        display: none;
-        position: fixed;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        background-color: white;
-        flex-direction: column;
-        padding: 1rem 0;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        z-index: 999;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-    
-    .nav-menu.active {
-        display: flex;
-    }
-    
-    .nav-menu li {
-        margin: 0;
-        width: 100%;
-        text-align: center;
-    }
-    
-    .nav-menu a {
-        display: block;
-        padding: 1rem;
-        border-bottom: 1px solid #eee;
-        width: 100%;
-    }
-    
-    .nav-menu a:hover, .nav-menu a.active {
-        background-color: var(--light);
-        border-bottom: 2px solid var(--primary);
-    }
-    
-    /* Mobile Auth Buttons */
-    .auth-buttons {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        order: 3;
-    }
-    
-    .auth-buttons .btn {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.9rem;
-    }
-    
-    /* Mobile Language Selector */
-    .language-selector {
-        margin: 0;
-        display: none; /* Hidden in mobile by default */
-    }
-    
-    /* Mobile-specific layout for navbar */
-    .navbar {
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-    
-    .logo {
-        order: 1;
-    }
-    
-    .menu-toggle {
-        order: 2;
-    }
-    
-    .auth-buttons {
-        order: 3;
-        width: auto;
-    }
-    
-    /* Show language selector in auth buttons for mobile */
-    .auth-buttons .language-selector {
-        display: block;
-        margin-left: 0.5rem;
-    }
-    
-    .auth-buttons .language-selector select {
-        padding: 0.3rem 0.5rem;
-        font-size: 0.85rem;
-    }
-    
-    /* Cart button adjustments */
-    .cart-btn {
-        margin-right: 0;
-    }
-    
-    /* Hero section adjustments */
-    .hero {
-        padding: 8rem 0 3rem;
-        text-align: center;
-    }
-    
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-    
-    .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .hero-buttons .btn {
-        width: 100%;
-        max-width: 300px;
-        margin-bottom: 1rem;
-    }
-    
-    /* Mobile cart and auth buttons */
-    .cart-btn, #login-btn, #signup-btn {
-        white-space: nowrap;
-    }
-    
-    /* Mobile-specific container padding */
-    .container {
-        padding: 0 15px;
-    }
-}
-
-/* Extra small devices */
-@media (max-width: 480px) {
-    .auth-buttons {
-        gap: 0.3rem;
-    }
-    
-    .auth-buttons .btn {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.8rem;
-    }
-    
-    .logo span {
-        font-size: 1.2rem;
-    }
-    
-    .cart-count {
-        width: 16px;
-        height: 16px;
-        font-size: 0.7rem;
-        top: -5px;
-        right: -5px;
-    }
-    
-    /* Mobile language selector smaller */
-    .auth-buttons .language-selector select {
-        padding: 0.2rem 0.3rem;
-        font-size: 0.8rem;
-        max-width: 90px;
-    }
-}
-
-/* Tablet-specific adjustments */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .nav-menu li {
-        margin: 0 0.5rem;
-    }
-    
-    .auth-buttons {
-        gap: 0.8rem;
-    }
-    
-    .auth-buttons .btn {
-        padding: 0.6rem 1rem;
-    }
-}
-/* Mobile header spacing fix */
-@media (max-width: 768px) {
-    header {
-        padding: 0.5rem 0;
-    }
-    
-    .navbar {
-        padding: 0.5rem 0;
-    }
-    
-    /* Ensure proper spacing between navbar elements */
-    .navbar > * {
-        margin-bottom: 0.5rem;
-    }
-    
-    /* Fix for auth buttons container */
-    .auth-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 0.5rem;
-        margin-left: auto;
-    }
-    
-    /* Make sure buttons don't overflow */
-    .btn {
-        white-space: nowrap;
-    }
-    
-    /* Adjust hero section for mobile */
-    .hero {
-        margin-top: 60px; /* Account for fixed header */
-    }
-}
+        @media (max-width: 350px) {
+            .navbar-right {
+                flex-wrap: nowrap;
+            }
+            
+            .language-selector select {
+                max-width: 70px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
     </style>
 </head>
 <body>
-  <!-- Header & Navigation -->
-<!-- Header & Navigation -->
-<header>
-    <div class="container">
-        <nav class="navbar">
-            <!-- Logo on the left -->
-            <a href="#" class="logo">
-                <i class="fas fa-tractor"></i>
-                <span>FarmLink</span>
-            </a>
-            
-            <!-- Mobile Menu Toggle Button -->
-            <button class="menu-toggle" id="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <!-- Navigation menu -->
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#home" class="active" data-i18n="home">Home</a></li>
-                <li><a href="#listings" data-i18n="listings">Listings</a></li>
-                <li><a href="#how-it-works" data-i18n="how-it-works">How It Works</a></li>
-                <li><a href="#about" data-i18n="about">About</a></li>
-                <li><a href="#contact" data-i18n="contact">Contact</a></li>
-            </ul>
-            
-            <!-- Auth buttons and language selector -->
-            <div class="auth-buttons">
-                <button class="btn cart-btn" id="cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" id="cart-count">0</span>
-                </button>
-                <button class="btn btn-outline" id="login-btn" data-i18n="login">Login</button>
-                <button class="btn btn-primary" id="signup-btn" data-i18n="signup">Sign Up</button>
-                <div class="language-selector">
-                    <select id="language-select">
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                        <option value="fr">Français</option>
-                        <option value="hi">हिंदी</option>
-                        <option value="ta">தமிழ்</option>
-                    </select>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <!-- Left: Logo -->
+                <div class="navbar-left">
+                    <a href="#" class="logo">
+                        <i class="fas fa-tractor"></i>
+                        <span>FarmLink</span>
+                    </a>
                 </div>
+                
+                <!-- Middle: Desktop Navigation Menu -->
+                <div class="navbar-center">
+                    <ul class="nav-menu">
+                        <li><a href="#home" class="active" data-i18n="home">Home</a></li>
+                        <li><a href="#listings" data-i18n="listings">Listings</a></li>
+                        <li><a href="#how-it-works" data-i18n="how-it-works">How It Works</a></li>
+                        <li><a href="#about" data-i18n="about">About</a></li>
+                        <li><a href="#contact" data-i18n="contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Right: Auth Buttons & Cart -->
+                <div class="navbar-right">
+                    <!-- Cart Button -->
+                    <button class="btn cart-btn" id="cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </button>
+                    
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-select">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="hi">हिंदी</option>
+                            <option value="ta">தமிழ்</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Auth Buttons -->
+                    <div class="auth-buttons">
+                        <button class="btn btn-outline" id="login-btn" data-i18n="login">Login</button>
+                        <button class="btn btn-primary" id="signup-btn" data-i18n="signup">Sign Up</button>
+                    </div>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button class="menu-toggle" id="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+            
+            <!-- Mobile Navigation Menu -->
+            <div class="mobile-nav-menu" id="mobile-nav-menu">
+                <ul class="mobile-nav-items">
+                    <li><a href="#home" class="active" data-i18n="home">Home</a></li>
+                    <li><a href="#listings" data-i18n="listings">Listings</a></li>
+                    <li><a href="#how-it-works" data-i18n="how-it-works">How It Works</a></li>
+                    <li><a href="#about" data-i18n="about">About</a></li>
+                    <li><a href="#contact" data-i18n="contact">Contact</a></li>
+                    <li class="mobile-auth-buttons">
+                        <button class="btn btn-outline" id="mobile-login-btn" data-i18n="login">Login</button>
+                        <button class="btn btn-primary" id="mobile-signup-btn" data-i18n="signup">Sign Up</button>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </div>
-</header>
+        </div>
+    </header>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
@@ -1529,39 +1577,39 @@
         </div>
     </section>
 
-   <!-- Listings Section -->
-<section id="listings" class="listings">
-    <div class="container">
-        <h2 class="section-title" data-i18n="fresh-produce">Fresh Product Listings</h2>
-        <div class="filters">
-            <select id="category-filter">
-                <option value="" data-i18n="all-categories">All Categories</option>
-                <option value="vegetables" data-i18n="vegetables">Vegetables</option>
-                <option value="fruits" data-i18n="fruits">Fruits</option>
-                <option value="grains" data-i18n="grains">Grains</option>
-                <option value="dairy" data-i18n="dairy">Dairy</option>
-                <option value="spices" data-i18n="spices">Spices</option>
-                <option value="nuts" data-i18n="nuts">Nuts</option>
-            </select>
-            <select id="quality-filter">
-                <option value="" data-i18n="all-quality">All Quality Grades</option>
-                <option value="organic" data-i18n="organic">Organic</option>
-                <option value="premium" data-i18n="premium">Premium</option>
-                <option value="standard" data-i18n="standard">Standard</option>
-            </select>
-            <input type="text" placeholder="Search by location..." id="location-search" data-i18n-placeholder="search-location">
-            <button class="btn btn-primary" id="apply-filters" data-i18n="apply-filters">Apply Filters</button>
-            <button class="btn btn-outline" id="clear-filters-btn" data-i18n="clear-filters">Clear Filters</button>
+    <!-- Listings Section -->
+    <section id="listings" class="listings">
+        <div class="container">
+            <h2 class="section-title" data-i18n="fresh-produce">Fresh Product Listings</h2>
+            <div class="filters">
+                <select id="category-filter">
+                    <option value="" data-i18n="all-categories">All Categories</option>
+                    <option value="vegetables" data-i18n="vegetables">Vegetables</option>
+                    <option value="fruits" data-i18n="fruits">Fruits</option>
+                    <option value="grains" data-i18n="grains">Grains</option>
+                    <option value="dairy" data-i18n="dairy">Dairy</option>
+                    <option value="spices" data-i18n="spices">Spices</option>
+                    <option value="nuts" data-i18n="nuts">Nuts</option>
+                </select>
+                <select id="quality-filter">
+                    <option value="" data-i18n="all-quality">All Quality Grades</option>
+                    <option value="organic" data-i18n="organic">Organic</option>
+                    <option value="premium" data-i18n="premium">Premium</option>
+                    <option value="standard" data-i18n="standard">Standard</option>
+                </select>
+                <input type="text" placeholder="Search by location..." id="location-search" data-i18n-placeholder="search-location">
+                <button class="btn btn-primary" id="apply-filters" data-i18n="apply-filters">Apply Filters</button>
+                <button class="btn btn-outline" id="clear-filters-btn" data-i18n="clear-filters">Clear Filters</button>
+            </div>
+            
+            <div class="listings-grid" id="listings-container">
+                <!-- Listings will be loaded here by JavaScript -->
+            </div>
+            <div style="text-align: center; margin-top: 30px;" id="show-more-container">
+                <button class="btn btn-outline" id="show-more-btn" data-i18n="show-more">Show More Products</button>
+            </div>
         </div>
-        
-        <div class="listings-grid" id="listings-container">
-            <!-- Listings will be loaded here by JavaScript -->
-        </div>
-        <div style="text-align: center; margin-top: 30px;" id="show-more-container">
-            <button class="btn btn-outline" id="show-more-btn" data-i18n="show-more">Show More Products</button>
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- How It Works Section -->
     <section id="how-it-works" class="how-it-works">
@@ -1689,6 +1737,7 @@
         </div>
     </footer>
 
+    <!-- All your modals remain the same -->
     <!-- Listing Modal -->
     <div id="listing-modal" class="modal">
         <div class="modal-content">
@@ -1816,105 +1865,106 @@
         </div>
     </div>
 
-   <!-- Checkout Modal -->
-<div id="checkout-modal" class="modal">
-    <div class="modal-content" style="max-width: 700px;">
-        <span class="close" id="close-checkout">&times;</span>
-        <h2 style="text-align: center; margin-bottom: 1.5rem;">Checkout</h2>
-        
-        <div class="checkout-container">
-            <div class="checkout-summary">
-                <h3>Order Summary</h3>
-                <div id="checkout-items">
-                    <!-- Order items will be populated here -->
-                </div>
-                <div class="checkout-total">
-                    <strong>Total: <span id="checkout-total-price">₹0.00</span></strong>
-                </div>
-            </div>
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close" id="close-checkout">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">Checkout</h2>
             
-            <div class="checkout-form">
-                <h3>Payment Information</h3>
-                <form id="shipping-form">
-                    <div class="form-group">
-                        <label for="full-name">Full Name</label>
-                        <input type="text" id="full-name" required>
+            <div class="checkout-container">
+                <div class="checkout-summary">
+                    <h3>Order Summary</h3>
+                    <div id="checkout-items">
+                        <!-- Order items will be populated here -->
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" required>
+                    <div class="checkout-total">
+                        <strong>Total: <span id="checkout-total-price">₹0.00</span></strong>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="address">Delivery Address</label>
-                        <textarea id="address" rows="3" required></textarea>
-                    </div>
-                    
-                    <div class="form-row">
+                </div>
+                
+                <div class="checkout-form">
+                    <h3>Payment Information</h3>
+                    <form id="shipping-form">
                         <div class="form-group">
-                            <label for="city">City</label>
-                            <input type="text" id="city" required>
+                            <label for="full-name">Full Name</label>
+                            <input type="text" id="full-name" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="pincode">PIN Code</label>
-                            <input type="text" id="pincode" required>
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Select Payment Method</label>
-                        <div class="payment-options">
-                            <label class="payment-option">
-                                <input type="radio" name="payment-method" value="card" required>
-                                <div class="payment-method-details">
-                                    <i class="fas fa-credit-card"></i>
-                                    <span>Credit/Debit Card</span>
-                                </div>
-                            </label>
-                            <label class="payment-option">
-                                <input type="radio" name="payment-method" value="upi">
-                                <div class="payment-method-details">
-                                    <i class="fas fa-mobile-alt"></i>
-                                    <span>UPI (PhonePe, GPay, Paytm)</span>
-                                </div>
-                            </label>
-                            <label class="payment-option">
-                                <input type="radio" name="payment-method" value="netbanking">
-                                <div class="payment-method-details">
-                                    <i class="fas fa-university"></i>
-                                    <span>Net Banking</span>
-                                </div>
-                            </label>
-                            <label class="payment-option">
-                                <input type="radio" name="payment-method" value="cod">
-                                <div class="payment-method-details">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    <span>Cash on Delivery</span>
-                                </div>
-                            </label>
+                        
+                        <div class="form-group">
+                            <label for="address">Delivery Address</label>
+                            <textarea id="address" rows="3" required></textarea>
                         </div>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;">
-                        Proceed to Payment
-                    </button>
-                </form>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pincode">PIN Code</label>
+                                <input type="text" id="pincode" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Select Payment Method</label>
+                            <div class="payment-options">
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="card" required>
+                                    <div class="payment-method-details">
+                                        <i class="fas fa-credit-card"></i>
+                                        <span>Credit/Debit Card</span>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="upi">
+                                    <div class="payment-method-details">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <span>UPI (PhonePe, GPay, Paytm)</span>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="netbanking">
+                                    <div class="payment-method-details">
+                                        <i class="fas fa-university"></i>
+                                        <span>Net Banking</span>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="cod">
+                                    <div class="payment-method-details">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span>Cash on Delivery</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;">
+                            Proceed to Payment
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Payment Gateway Modal -->
-<div id="payment-modal" class="modal">
-    <div class="modal-content" style="max-width: 500px;">
-        <span class="close" id="close-payment">&times;</span>
-        <div id="payment-content">
-            <!-- Payment content will be dynamically loaded here -->
+    <!-- Payment Gateway Modal -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close" id="close-payment">&times;</span>
+            <div id="payment-content">
+                <!-- Payment content will be dynamically loaded here -->
+            </div>
         </div>
     </div>
-</div>
+
     <!-- Notification -->
     <div class="notification" id="notification"></div>
 
@@ -1926,6 +1976,7 @@
             const loginModal = document.getElementById('login-modal');
             const cartModal = document.getElementById('cart-modal');
             const checkoutModal = document.getElementById('checkout-modal');
+            const paymentModal = document.getElementById('payment-modal');
             const listingForm = document.getElementById('listing-form');
             const loginForm = document.getElementById('login-form');
             const signupForm = document.getElementById('signup-form');
@@ -1941,6 +1992,10 @@
             const checkoutBtn = document.getElementById('checkout-btn');
             const closeCheckout = document.getElementById('close-checkout');
             const findProduceBtn = document.getElementById('find-produce-btn');
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileNavMenu = document.getElementById('mobile-nav-menu');
+            const mobileLoginBtn = document.getElementById('mobile-login-btn');
+            const mobileSignupBtn = document.getElementById('mobile-signup-btn');
 
             // Language translation data
             const translations = {
@@ -1980,6 +2035,8 @@
                     "standard": "Standard",
                     "search-location": "Search by location...",
                     "apply-filters": "Apply Filters",
+                    "clear-filters": "Clear Filters",
+                    "show-more": "Show More Products",
                     
                     // How It Works
                     "how-it-works-title": "How FarmLink Works",
@@ -2030,108 +2087,12 @@
                     "select-quality": "Select Quality",
                     "description": "Description",
                     
-                    // Notifications
-                    "message-sent": "Your message has been sent successfully!",
-                    "listing-created": "Your listing has been created successfully!",
-                    "logged-in": "Logged in successfully!",
-                    "account-created": "Account created successfully!",
-                    "logged-out": "Logged out successfully!",
-                    "item-added": "kg added to cart!",
-                    "item-removed": "Item removed from cart",
-                    "order-placed": "Order placed successfully!",
-                    
                     // Cart
                     "your-cart": "Your Cart",
                     "empty-cart": "Your cart is empty",
                     "remove": "Remove",
                     "total": "Total",
-                    "proceed-checkout": "Proceed to Checkout",
-                    
-                    // Checkout
-                    "checkout": "Checkout",
-                    "order-summary": "Order Summary",
-                    "shipping-info": "Shipping Information",
-                    "full-name": "Full Name",
-                    "phone-number": "Phone Number",
-                    "delivery-address": "Delivery Address",
-                    "city": "City",
-                    "pincode": "PIN Code",
-                    "payment-method": "Payment Method",
-                    "credit-debit": "Credit/Debit Card",
-                    "upi-netbanking": "UPI/Net Banking",
-                    "place-order": "Place Order"
-                },
-                es: {
-                    // Spanish translations
-                    "home": "Inicio",
-                    "listings": "Productos",
-                    "how-it-works": "Cómo Funciona",
-                    "about": "Acerca de",
-                    "contact": "Contacto",
-                    "login": "Iniciar Sesión",
-                    "signup": "Registrarse",
-                    "logout": "Cerrar Sesión",
-                    
-                    "hero-title": "Conéctate Directamente con Compradores",
-                    "hero-text": "FarmLink elimina intermediarios, reduce las pérdidas posteriores a la cosecha y ofrece mejores precios para los agricultores, garantizando productos de calidad para los compradores.",
-                    "list-product": "Lista Tus Productos",
-                    "find-product": "Encontrar Productos",
-                    
-                    // Add more Spanish translations as needed
-                },
-                fr: {
-                    // French translations
-                    "home": "Accueil",
-                    "listings": "Annonces",
-                    "how-it-works": "Comment ça Marche",
-                    "about": "À Propos",
-                    "contact": "Contact",
-                    "login": "Connexion",
-                    "signup": "S'inscrire",
-                    "logout": "Déconnexion",
-                    
-                    "hero-title": "Connectez-vous Directement avec les Acheteurs",
-                    "hero-text": "FarmLink élimine les intermédiaires, réduit les pertes après récolte et offre de meilleurs prix aux agriculteurs tout en garantissant des produits de qualité aux acheteurs.",
-                    "list-product": "Lister Vos Produits",
-                    "find-product": "Trouver des Produits",
-                    
-                    // Add more French translations as needed
-                },
-                hi: {
-                    // Hindi translations
-                    "home": "होम",
-                    "listings": "लिस्टिंग",
-                    "how-it-works": "कैसे काम करता है",
-                    "about": "अबाउट",
-                    "contact": "संपर्क",
-                    "login": "लॉगिन",
-                    "signup": "साइनअप",
-                    "logout": "लॉगआउट",
-                    
-                    "hero-title": "सीधे खरीदारों से जुड़ें",
-                    "hero-text": "FarmLink मध्यस्थों को खत्म करता है, कटाई के बाद के नुकसान को कम करता है, और किसानों के लिए बेहतर कीमतें प्रदान करता है while खरीदारों के लिए गुणवत्तापूर्ण उपज सुनिश्चित करता है।",
-                    "list-product": "अपनी उपज सूचीबद्ध करें",
-                    "find-product": "उपज खोजें",
-                    
-                    // Add more Hindi translations as needed
-                },
-                ta: {
-                    // Tamil translations
-                    "home": "முகப்பு",
-                    "listings": "பட்டியல்கள்",
-                    "how-it-works": "எவ்வாறு இது செயல்படுகிறது",
-                    "about": "எங்களைப் பற்றி",
-                    "contact": "தொடர்பு",
-                    "login": "உள்நுழைய",
-                    "signup": "பதிவு செய்ய",
-                    "logout": "வெளியேறு",
-                    
-                    "hero-title": "நேரடியாக வாங்குபவர்களுடன் இணைக்கவும்",
-                    "hero-text": "FarmLink மத்தரவர்களை நீக்குகிறது, அறுவடைக்குப் பின் இழப்புகளைக் குறைக்கிறது, மற்றும் விவசாயிகளுக்கு சிறந்த விலைகளை வழங்குகிறது while வாங்குபவர்களுக்கு தரமான பொருட்களை உறுதி செய்கிறது.",
-                    "list-product": "உங்கள் பொருட்களை பட்டியலிடுங்கள்",
-                    "find-product": "பொருட்களை கண்டுபிடி",
-                    
-                    // Add more Tamil translations as needed
+                    "proceed-checkout": "Proceed to Checkout"
                 }
             };
 
@@ -2140,49 +2101,47 @@
             let currentUser = null;
             let listings = [];
             let isFiltered = false;
-let productsPerPage = 6;
-let displayedCount = 0;
-            // Sample data for demonstration
-// Function to generate future dates
-function generateFutureDate(daysFromNow) {
-    const date = new Date();
-    date.setDate(date.getDate() + daysFromNow);
-    return date.toISOString().split('T')[0];
-}
+            let productsPerPage = 6;
+            let displayedCount = 0;
 
-// Update your sample listings to use dynamic dates
-// Extended sample data with 15 products per category
-const sampleListings = [
-    // Vegetables (15 products)
-    {
-        id: 1,
-        title: 'Organic Tomatoes',
-        farmer: 'Rajesh Kumar',
-        category: 'vegetables',
-        quantity: 100,
-        price: 35,
-        quality: 'organic',
-        manufacturedDate: generateFutureDate(-2),
-        expiryDate: generateFutureDate(8),
-        location: 'Springfield',
-        description: 'Fresh organic tomatoes, harvested yesterday. Grown without pesticides or synthetic fertilizers.',
-        image: 'https://images.unsplash.com/photo-1561136594-7f68413baa99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-    },
-    {
-        id: 2,
-        title: 'Fresh Potatoes',
-        farmer: 'Green Farms',
-        category: 'vegetables',
-        quantity: 200,
-        price: 25,
-        quality: 'standard',
-        manufacturedDate: generateFutureDate(-10),
-        expiryDate: generateFutureDate(60),
-        location: 'Potato Valley',
-        description: 'Freshly harvested potatoes, perfect for cooking and storage.',
-        image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
-    },
-    {
+            // Sample data for demonstration
+            function generateFutureDate(daysFromNow) {
+                const date = new Date();
+                date.setDate(date.getDate() + daysFromNow);
+                return date.toISOString().split('T')[0];
+            }
+
+            const sampleListings = [
+                {
+                    id: 1,
+                    title: 'Organic Tomatoes',
+                    farmer: 'Rajesh Kumar',
+                    category: 'vegetables',
+                    quantity: 100,
+                    price: 35,
+                    quality: 'organic',
+                    manufacturedDate: generateFutureDate(-2),
+                    expiryDate: generateFutureDate(8),
+                    location: 'Springfield',
+                    description: 'Fresh organic tomatoes, harvested yesterday.',
+                    image: 'https://images.unsplash.com/photo-1561136594-7f68413baa99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+                },
+                {
+                    id: 2,
+                    title: 'Fresh Potatoes',
+                    farmer: 'Green Farms',
+                    category: 'vegetables',
+                    quantity: 200,
+                    price: 25,
+                    quality: 'standard',
+                    manufacturedDate: generateFutureDate(-10),
+                    expiryDate: generateFutureDate(60),
+                    location: 'Potato Valley',
+                    description: 'Freshly harvested potatoes, perfect for cooking.',
+                    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+                },
+
+                  {
         id: 3,
         title: 'Capcicum',
         farmer: 'Colorful Harvest',
@@ -3122,176 +3081,233 @@ function getImageForProduct(productName, category) {
                 changeLanguage(savedLanguage);
             }
 
+            
+
             // Initialize the page
-          // Initialize the page
-function init() {
-    listings = [...sampleListings];
-    loadListings();
-    setupEventListeners();
-    setupSmoothScrolling();
-    updateCartUI();
-    initLanguage();
-    initPaymentGateway();
-    
-    // Set today's date as default for manufactured date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('manufactured-date').value = today;
-    
-    // Set default expiry date (7 days from today)
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    document.getElementById('expiry-date').value = nextWeek.toISOString().split('T')[0];
-}
+            function init() {
+                listings = [...sampleListings];
+                loadListings();
+                setupEventListeners();
+                setupMobileMenu();
+                setupSmoothScrolling();
+                updateCartUI();
+                initLanguage();
+                
+                // Set today's date as default for manufactured date
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('manufactured-date').value = today;
+                
+                // Set default expiry date (7 days from today)
+                const nextWeek = new Date();
+                nextWeek.setDate(nextWeek.getDate() + 7);
+                document.getElementById('expiry-date').value = nextWeek.toISOString().split('T')[0];
+            }
+
+            // Mobile menu functionality
+            function setupMobileMenu() {
+                if (menuToggle && mobileNavMenu) {
+                    // Toggle mobile menu
+                    menuToggle.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const isVisible = mobileNavMenu.style.display === 'block';
+                        mobileNavMenu.style.display = isVisible ? 'none' : 'block';
+                        const icon = this.querySelector('i');
+                        if (isVisible) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        } else {
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-times');
+                        }
+                    });
+                    
+                    // Close menu when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!menuToggle.contains(e.target) && !mobileNavMenu.contains(e.target)) {
+                            mobileNavMenu.style.display = 'none';
+                            const icon = menuToggle.querySelector('i');
+                            if (icon) {
+                                icon.classList.remove('fa-times');
+                                icon.classList.add('fa-bars');
+                            }
+                        }
+                    });
+                    
+                    // Close menu when clicking a link
+                    const mobileLinks = mobileNavMenu.querySelectorAll('a');
+                    mobileLinks.forEach(link => {
+                        link.addEventListener('click', function() {
+                            mobileNavMenu.style.display = 'none';
+                            const icon = menuToggle.querySelector('i');
+                            if (icon) {
+                                icon.classList.remove('fa-times');
+                                icon.classList.add('fa-bars');
+                            }
+                        });
+                    });
+                    
+                    // Mobile auth buttons functionality
+                    if (mobileLoginBtn) {
+                        mobileLoginBtn.addEventListener('click', function() {
+                            openModal(loginModal);
+                            mobileNavMenu.style.display = 'none';
+                            const icon = menuToggle.querySelector('i');
+                            if (icon) {
+                                icon.classList.remove('fa-times');
+                                icon.classList.add('fa-bars');
+                            }
+                        });
+                    }
+                    
+                    if (mobileSignupBtn) {
+                        mobileSignupBtn.addEventListener('click', function() {
+                            openModal(loginModal);
+                            // Switch to signup tab
+                            document.querySelectorAll('.tab-btn').forEach(btn => {
+                                btn.classList.remove('active');
+                            });
+                            document.querySelectorAll('.tab-content').forEach(content => {
+                                content.classList.remove('active');
+                            });
+                            document.querySelector('[data-tab="signup"]').classList.add('active');
+                            document.getElementById('signup-tab').classList.add('active');
+                            
+                            mobileNavMenu.style.display = 'none';
+                            const icon = menuToggle.querySelector('i');
+                            if (icon) {
+                                icon.classList.remove('fa-times');
+                                icon.classList.add('fa-bars');
+                            }
+                        });
+                    }
+                }
+            }
 
             // Load listings into the grid
-         // Load listings into the grid
-function loadListings(showAll = false) {
-    listingsContainer.innerHTML = '';
-    
-    // Reset displayed count if showing all or filtering
-    if (showAll || isFiltered) {
-        displayedCount = 0;
-    }
-    
-    // Get listings to display
-    let listingsToDisplay = [];
-    
-    if (isFiltered || showAll) {
-        // When filtered or showing all, display all listings
-        listingsToDisplay = listings;
-    } else {
-        // Default: show only 6 products
-        listingsToDisplay = listings.slice(0, productsPerPage);
-    }
-    
-    // Update displayed count
-    displayedCount = listingsToDisplay.length;
-    
-    if (listingsToDisplay.length === 0) {
-        listingsContainer.innerHTML = '<p class="no-listings">No listings found. Try adjusting your filters.</p>';
-        document.getElementById('show-more-btn').style.display = 'none';
-        return;
-    }
-    
-    // Show or hide "Show More" button
-    const showMoreBtn = document.getElementById('show-more-btn');
-    if (listings.length > displayedCount && !isFiltered) {
-        showMoreBtn.style.display = 'block';
-        showMoreBtn.textContent = `Show More (${listings.length - displayedCount} more products)`;
-    } else {
-        showMoreBtn.style.display = 'none';
-    }
-    
-    listingsToDisplay.forEach(listing => {
-        const listingCard = document.createElement('div');
-        listingCard.className = 'listing-card';
-        
-        // Calculate days until expiry
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        const expiryDate = new Date(listing.expiryDate);
-        expiryDate.setHours(0, 0, 0, 0);
-        
-        const timeDiff = expiryDate.getTime() - today.getTime();
-        const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        
-        // Format dates for display
-        const manufacturedDateFormatted = formatDate(listing.manufacturedDate);
-        const expiryDateFormatted = formatDate(listing.expiryDate);
-        
-        listingCard.innerHTML = `
-            <img src="${listing.image}" alt="${listing.title}" class="listing-image">
-            <div class="listing-content">
-                <h3 class="listing-title">${listing.title}</h3>
-                <div class="farmer-name">
-                    <i class="fas fa-user"></i>
-                    <span>By ${listing.farmer}</span>
-                </div>
-                <div class="date-info">
-                    <div class="date-item">
-                        <i class="fas fa-calendar-plus"></i>
-                        <span>Harvested: ${manufacturedDateFormatted}</span>
-                    </div>
-                    <div class="date-item ${daysUntilExpiry < 3 ? 'expiry-soon' : ''}">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>Best before: ${expiryDateFormatted}</span>
-                        ${daysUntilExpiry < 3 ? `<span class="expiry-badge expiry-soon-badge">${daysUntilExpiry} day${daysUntilExpiry !== 1 ? 's' : ''} left</span>` : ''}
-                    </div>
-                </div>
-                <p class="listing-details">
-                    <strong>Quantity:</strong> ${listing.quantity} kg<br>
-                    <strong>Location:</strong> ${listing.location}<br>
-                    <strong>Category:</strong> ${listing.category.charAt(0).toUpperCase() + listing.category.slice(1)}
-                </p>
-                <div class="listing-price">₹${listing.price}/kg</div>
-                <span class="listing-quality quality-${listing.quality}">${listing.quality.charAt(0).toUpperCase() + listing.quality.slice(1)}</span>
-                <p>${listing.description}</p>
-                <div class="quantity-selector">
-                    <button class="quantity-btn" data-action="decrease" data-id="${listing.id}">-</button>
-                    <input type="number" class="quantity-input" id="quantity-${listing.id}" value="1" min="1" max="${listing.quantity}">
-                    <button class="quantity-btn" data-action="increase" data-id="${listing.id}">+</button>
-                </div>
-                <div class="listing-action">
-                    <button class="btn btn-primary add-to-cart-btn" data-id="${listing.id}">Add to Cart</button>
-                </div>
-            </div>
-        `;
-        
-        listingsContainer.appendChild(listingCard);
-    });
-    
-    // Add event listeners to quantity buttons
-    document.querySelectorAll('.quantity-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const action = this.getAttribute('data-action');
-            const listingId = this.getAttribute('data-id');
-            const input = document.getElementById(`quantity-${listingId}`);
-            let value = parseInt(input.value);
-            
-            if (action === 'increase') {
-                const listing = listings.find(item => item.id === parseInt(listingId));
-                if (value < listing.quantity) {
-                    input.value = value + 1;
+            function loadListings(showAll = false) {
+                listingsContainer.innerHTML = '';
+                
+                if (isFiltered || showAll) {
+                    displayedCount = 0;
                 }
-            } else if (action === 'decrease') {
-                if (value > 1) {
-                    input.value = value - 1;
+                
+                let listingsToDisplay = [];
+                
+                if (isFiltered || showAll) {
+                    listingsToDisplay = listings;
+                } else {
+                    listingsToDisplay = listings.slice(0, productsPerPage);
                 }
+                
+                displayedCount = listingsToDisplay.length;
+                
+                if (listingsToDisplay.length === 0) {
+                    listingsContainer.innerHTML = '<p class="no-listings">No listings found. Try adjusting your filters.</p>';
+                    document.getElementById('show-more-btn').style.display = 'none';
+                    return;
+                }
+                
+                const showMoreBtn = document.getElementById('show-more-btn');
+                if (listings.length > displayedCount && !isFiltered) {
+                    showMoreBtn.style.display = 'block';
+                    showMoreBtn.textContent = `Show More (${listings.length - displayedCount} more products)`;
+                } else {
+                    showMoreBtn.style.display = 'none';
+                }
+                
+                listingsToDisplay.forEach(listing => {
+                    const listingCard = document.createElement('div');
+                    listingCard.className = 'listing-card';
+                    
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    const expiryDate = new Date(listing.expiryDate);
+                    expiryDate.setHours(0, 0, 0, 0);
+                    
+                    const timeDiff = expiryDate.getTime() - today.getTime();
+                    const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    
+                    const manufacturedDateFormatted = formatDate(listing.manufacturedDate);
+                    const expiryDateFormatted = formatDate(listing.expiryDate);
+                    
+                    listingCard.innerHTML = `
+                        <img src="${listing.image}" alt="${listing.title}" class="listing-image">
+                        <div class="listing-content">
+                            <h3 class="listing-title">${listing.title}</h3>
+                            <div class="farmer-name">
+                                <i class="fas fa-user"></i>
+                                <span>By ${listing.farmer}</span>
+                            </div>
+                            <div class="date-info">
+                                <div class="date-item">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    <span>Harvested: ${manufacturedDateFormatted}</span>
+                                </div>
+                                <div class="date-item ${daysUntilExpiry < 3 ? 'expiry-soon' : ''}">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Best before: ${expiryDateFormatted}</span>
+                                    ${daysUntilExpiry < 3 ? `<span class="expiry-badge expiry-soon-badge">${daysUntilExpiry} day${daysUntilExpiry !== 1 ? 's' : ''} left</span>` : ''}
+                                </div>
+                            </div>
+                            <p class="listing-details">
+                                <strong>Quantity:</strong> ${listing.quantity} kg<br>
+                                <strong>Location:</strong> ${listing.location}<br>
+                                <strong>Category:</strong> ${listing.category.charAt(0).toUpperCase() + listing.category.slice(1)}
+                            </p>
+                            <div class="listing-price">₹${listing.price}/kg</div>
+                            <span class="listing-quality quality-${listing.quality}">${listing.quality.charAt(0).toUpperCase() + listing.quality.slice(1)}</span>
+                            <p>${listing.description}</p>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn" data-action="decrease" data-id="${listing.id}">-</button>
+                                <input type="number" class="quantity-input" id="quantity-${listing.id}" value="1" min="1" max="${listing.quantity}">
+                                <button class="quantity-btn" data-action="increase" data-id="${listing.id}">+</button>
+                            </div>
+                            <div class="listing-action">
+                                <button class="btn btn-primary add-to-cart-btn" data-id="${listing.id}">Add to Cart</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    listingsContainer.appendChild(listingCard);
+                });
+                
+                // Add event listeners to quantity buttons
+                document.querySelectorAll('.quantity-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const action = this.getAttribute('data-action');
+                        const listingId = this.getAttribute('data-id');
+                        const input = document.getElementById(`quantity-${listingId}`);
+                        let value = parseInt(input.value);
+                        
+                        if (action === 'increase') {
+                            const listing = listings.find(item => item.id === parseInt(listingId));
+                            if (value < listing.quantity) {
+                                input.value = value + 1;
+                            }
+                        } else if (action === 'decrease') {
+                            if (value > 1) {
+                                input.value = value - 1;
+                            }
+                        }
+                    });
+                });
+                
+                // Add event listeners to add to cart buttons
+                document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const listingId = this.getAttribute('data-id');
+                        if (!currentUser) {
+                            showNotification('Please login to add items to cart', 'error');
+                            openModal(loginModal);
+                            return;
+                        }
+                        addToCart(listingId);
+                    });
+                });
             }
-        });
-    });
 
-    // Clear filters button
-document.getElementById('clear-filters-btn').addEventListener('click', clearFilters);
-    
-    // Add event listeners to add to cart buttons
-    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const listingId = this.getAttribute('data-id');
-            if (!currentUser) {
-                showNotification('Please login to add items to cart', 'error');
-                openModal(loginModal);
-                return;
-            }
-            addToCart(listingId);
-        });
-    });
-}
-
-// Show more products
-function showMoreProducts() {
-    // Increase the products per page and reload
-    productsPerPage = Math.min(productsPerPage + 6, listings.length);
-    loadListings();
-    
-    // If all products are shown, hide the button
-    if (productsPerPage >= listings.length) {
-        document.getElementById('show-more-btn').style.display = 'none';
-    }
-}
-
-            // Helper function to format dates consistently
+            // Helper function to format dates
             function formatDate(dateString) {
                 const date = new Date(dateString);
                 return date.toLocaleDateString('en-US', { 
@@ -3322,25 +3338,22 @@ function showMoreProducts() {
                     cart.push({
                         ...listing,
                         quantity: quantity,
-                        cartId: Date.now() // Unique ID for cart items
+                        cartId: Date.now()
                     });
                 }
                 
-                // Reduce available quantity in listing
                 listing.quantity -= quantity;
                 
                 updateCartUI();
                 showNotification(`${quantity} kg of ${listing.title} added to cart!`, 'success');
                 
-                // Update the listing display
                 const quantityInput = document.getElementById(`quantity-${listingId}`);
-                const maxQuantity = Math.min(listing.quantity, 999); // Ensure max is positive
+                const maxQuantity = Math.min(listing.quantity, 999);
                 quantityInput.max = maxQuantity;
                 if (quantityInput.value > maxQuantity) {
                     quantityInput.value = maxQuantity;
                 }
                 
-                // Reload listings to update quantities
                 loadListings();
             }
 
@@ -3349,7 +3362,6 @@ function showMoreProducts() {
                 const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
                 document.getElementById('cart-count').textContent = cartCount;
                 
-                // Calculate total price
                 const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
                 cartTotalPrice.textContent = `₹${totalPrice.toFixed(2)}`;
             }
@@ -3380,7 +3392,6 @@ function showMoreProducts() {
                     cartItemsContainer.appendChild(cartItem);
                 });
                 
-                // Add event listeners to remove buttons
                 document.querySelectorAll('.remove-cart-item').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const cartId = this.getAttribute('data-id');
@@ -3396,7 +3407,6 @@ function showMoreProducts() {
                 
                 const removedItem = cart[itemIndex];
                 
-                // Restore quantity to listing
                 const listing = listings.find(item => item.id === removedItem.id);
                 if (listing) {
                     listing.quantity += removedItem.quantity;
@@ -3406,7 +3416,7 @@ function showMoreProducts() {
                 
                 updateCartUI();
                 updateCartModal();
-                loadListings(); // Reload listings to update quantities
+                loadListings();
                 showNotification(`${removedItem.title} removed from cart`, 'success');
             }
 
@@ -3453,6 +3463,37 @@ function showMoreProducts() {
                 });
             }
 
+            // Initialize language
+            function initLanguage() {
+                const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
+                document.getElementById('language-select').value = savedLanguage;
+                changeLanguage(savedLanguage);
+            }
+
+            // Change language
+            function changeLanguage(lang) {
+                localStorage.setItem('preferredLanguage', lang);
+                document.getElementById('language-select').value = lang;
+                
+                const elements = document.querySelectorAll('[data-i18n]');
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+                
+                const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+                placeholders.forEach(element => {
+                    const key = element.getAttribute('data-i18n-placeholder');
+                    if (translations[lang] && translations[lang][key]) {
+                        element.setAttribute('placeholder', translations[lang][key]);
+                    }
+                });
+                
+                showNotification(`Language changed to ${document.getElementById('language-select').selectedOptions[0].text}`, 'success');
+            }
+
             // Set up event listeners
             function setupEventListeners() {
                 // Language selector
@@ -3461,7 +3502,14 @@ function showMoreProducts() {
                 });
 
                 // Show More button
-document.getElementById('show-more-btn').addEventListener('click', showMoreProducts);
+                document.getElementById('show-more-btn').addEventListener('click', function() {
+                    productsPerPage = Math.min(productsPerPage + 6, listings.length);
+                    loadListings();
+                    
+                    if (productsPerPage >= listings.length) {
+                        this.style.display = 'none';
+                    }
+                });
 
                 // Find Produce button
                 findProduceBtn.addEventListener('click', function() {
@@ -3478,67 +3526,6 @@ document.getElementById('show-more-btn').addEventListener('click', showMoreProdu
                         }, 1500);
                     }
                 });
-
-                // Mobile menu toggle
-function setupMobileMenu() {
-    const menuToggle = document.getElementById('menu-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    
-    if (menuToggle && navMenu) {
-        menuToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            const icon = this.querySelector('i');
-            if (icon.classList.contains('fa-bars')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                navMenu.classList.remove('active');
-                const icon = menuToggle.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-        
-        // Close menu when clicking a link
-        navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function() {
-                navMenu.classList.remove('active');
-                const icon = menuToggle.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            });
-        });
-    }
-}
-
-// Update your init() function to include mobile menu setup
-function init() {
-    listings = [...sampleListings];
-    loadListings();
-    setupEventListeners();
-    setupMobileMenu(); // Add this line
-    setupSmoothScrolling();
-    updateCartUI();
-    initLanguage();
-    initPaymentGateway();
-    
-    // Set today's date as default for manufactured date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('manufactured-date').value = today;
-    
-    // Set default expiry date (7 days from today)
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    document.getElementById('expiry-date').value = nextWeek.toISOString().split('T')[0];
-}
                 
                 // Modal triggers
                 createListingBtn.addEventListener('click', function() {
@@ -3550,7 +3537,7 @@ function init() {
                     openModal(listingModal);
                 });
                 
-                // Login and signup buttons
+                // Login and signup buttons (desktop)
                 document.getElementById('login-btn').addEventListener('click', function() {
                     openModal(loginModal);
                 });
@@ -3585,16 +3572,17 @@ function init() {
                         return;
                     }
                     
-                    // Update checkout summary
                     updateCheckoutSummary();
                     openModal(checkoutModal);
                     closeModal(cartModal);
                 });
                 
                 // Close checkout modal
-                closeCheckout.addEventListener('click', function() {
-                    closeModal(checkoutModal);
-                });
+                if (closeCheckout) {
+                    closeCheckout.addEventListener('click', function() {
+                        closeModal(checkoutModal);
+                    });
+                }
                 
                 // Close buttons
                 closeButtons.forEach(btn => {
@@ -3616,11 +3604,9 @@ function init() {
                     btn.addEventListener('click', function() {
                         const tabId = this.getAttribute('data-tab');
                         
-                        // Update tab buttons
                         tabButtons.forEach(b => b.classList.remove('active'));
                         this.classList.add('active');
                         
-                        // Update tab content
                         document.querySelectorAll('.tab-content').forEach(content => {
                             content.classList.remove('active');
                         });
@@ -3633,6 +3619,11 @@ function init() {
                     applyFilters();
                 });
                 
+                // Clear filters
+                document.getElementById('clear-filters-btn').addEventListener('click', function() {
+                    clearFilters();
+                });
+                
                 // Filter by Enter key
                 document.getElementById('location-search').addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
@@ -3641,59 +3632,30 @@ function init() {
                 });
                 
                 // Listing form submission
-                // Listing form submission
-listingForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const productName = document.getElementById('product-name').value;
-    const category = document.getElementById('category').value;
-    
-    // Get appropriate image based on product name and category
-    const productImage = getImageForProduct(productName, category);
-    
-    const newListing = {
-        id: Date.now(),
-        title: productName,
-        farmer: document.getElementById('farmer-name').value,
-        category: category,
-        quantity: parseInt(document.getElementById('quantity').value),
-        price: parseFloat(document.getElementById('price').value),
-        quality: document.getElementById('quality').value,
-        manufacturedDate: document.getElementById('manufactured-date').value,
-        expiryDate: document.getElementById('expiry-date').value,
-        location: document.getElementById('location').value,
-        description: document.getElementById('description').value,
-        image: productImage  // Use the dynamically selected image
-    };
-    
-    listings.unshift(newListing);
-    loadListings();
-    closeModal(listingModal);
-    listingForm.reset();
-    showNotification('Listing created successfully!', 'success');
-
-    // Image preview for listing form
-document.getElementById('product-name').addEventListener('input', function() {
-    const productName = this.value;
-    const category = document.getElementById('category').value;
-    
-    if (productName && category) {
-        // You could add a small preview here if you want
-        console.log('Product:', productName, 'Category:', category, 
-                   'Image:', getImageForProduct(productName, category));
-    }
-});
-
-document.getElementById('category').addEventListener('change', function() {
-    const productName = document.getElementById('product-name').value;
-    const category = this.value;
-    
-    if (productName && category) {
-        console.log('Category changed:', category, 
-                   'Image:', getImageForProduct(productName, category));
-    }
-});
-});
+                listingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const newListing = {
+                        id: Date.now(),
+                        title: document.getElementById('product-name').value,
+                        farmer: document.getElementById('farmer-name').value,
+                        category: document.getElementById('category').value,
+                        quantity: parseInt(document.getElementById('quantity').value),
+                        price: parseFloat(document.getElementById('price').value),
+                        quality: document.getElementById('quality').value,
+                        manufacturedDate: document.getElementById('manufactured-date').value,
+                        expiryDate: document.getElementById('expiry-date').value,
+                        location: document.getElementById('location').value,
+                        description: document.getElementById('description').value,
+                        image: 'https://images.unsplash.com/photo-1561136594-7f68413baa99?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+                    };
+                    
+                    listings.unshift(newListing);
+                    loadListings();
+                    closeModal(listingModal);
+                    listingForm.reset();
+                    showNotification('Listing created successfully!', 'success');
+                });
                 
                 // Login form submission
                 loginForm.addEventListener('submit', function(e) {
@@ -3702,23 +3664,20 @@ document.getElementById('category').addEventListener('change', function() {
                     const email = document.getElementById('login-email').value;
                     const password = document.getElementById('login-password').value;
                     
-                    // Simple validation
                     if (email && password) {
                         currentUser = {
                             email: email,
                             name: email.split('@')[0],
-                            type: 'buyer' // Default type
+                            type: 'buyer'
                         };
                         
                         closeModal(loginModal);
                         loginForm.reset();
                         showNotification('Logged in successfully!', 'success');
                         
-                        // Update auth buttons
                         document.getElementById('login-btn').textContent = 'Logout';
                         document.getElementById('signup-btn').style.display = 'none';
                         
-                        // Add logout functionality
                         document.getElementById('login-btn').onclick = function() {
                             currentUser = null;
                             document.getElementById('login-btn').textContent = 'Login';
@@ -3748,11 +3707,9 @@ document.getElementById('category').addEventListener('change', function() {
                         signupForm.reset();
                         showNotification('Account created successfully!', 'success');
                         
-                        // Update auth buttons
                         document.getElementById('login-btn').textContent = 'Logout';
                         document.getElementById('signup-btn').style.display = 'none';
                         
-                        // Add logout functionality
                         document.getElementById('login-btn').onclick = function() {
                             currentUser = null;
                             document.getElementById('login-btn').textContent = 'Login';
@@ -3762,137 +3719,104 @@ document.getElementById('category').addEventListener('change', function() {
                     }
                 });
                 
-              // Add email validation function
-// Add email validation function
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-// Find this code in your HTML and REPLACE it:
-contactForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const submitText = document.getElementById('submit-text');
-    const spinner = document.getElementById('submit-spinner');
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-    
-    // Get form values
-    const name = document.getElementById('contact-name').value.trim();
-    const email = document.getElementById('contact-email').value.trim();
-    const subject = document.getElementById('contact-subject').value.trim() || 'New Message from FarmLink Website';
-    const message = document.getElementById('contact-message').value.trim();
-    
-    // Basic validation
-    if (!name || !email || !message) {
-        showNotification('Please fill all required fields', 'error');
-        return;
-    }
-    
-    // Email validation
-    if (!validateEmail(email)) {
-        showNotification('Please enter a valid email address', 'error');
-        return;
-    }
-    
-    // Show loading state
-    submitText.style.display = 'none';
-    spinner.style.display = 'inline-block';
-    submitButton.disabled = true;
-    submitButton.style.opacity = '0.7';
-    
-    try {
-        // Send message to backend - CORRECT ENDPOINT
-        const response = await fetch('http://localhost:5000/send-message', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                subject: subject,
-                message: message
-            })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            // Success
-            contactForm.reset();
-            showNotification(result.message || 'Message sent successfully! We will get back to you soon.', 'success');
-            
-        } else {
-            // Error from server
-            showNotification(result.error || 'Failed to send message. Please try again.', 'error');
-        }
-        
-    } catch (error) {
-        console.error('Error sending message:', error);
-        // Check if it's a CORS or connection error
-        if (error.message.includes('Failed to fetch')) {
-            showNotification('Cannot connect to server. Make sure the backend is running on port 5000.', 'error');
-        } else {
-            showNotification('Network error. Please check your connection and try again.', 'error');
-        }
-    } finally {
-        // Reset button state
-        submitText.style.display = 'inline';
-        spinner.style.display = 'none';
-        submitButton.disabled = false;
-        submitButton.style.opacity = '1';
-    }
-});
+                // Contact form submission
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitText = document.getElementById('submit-text');
+                    const spinner = document.getElementById('submit-spinner');
+                    const submitButton = contactForm.querySelector('button[type="submit"]');
+                    
+                    const name = document.getElementById('contact-name').value.trim();
+                    const email = document.getElementById('contact-email').value.trim();
+                    const subject = document.getElementById('contact-subject').value.trim() || 'New Message from FarmLink Website';
+                    const message = document.getElementById('contact-message').value.trim();
+                    
+                    if (!name || !email || !message) {
+                        showNotification('Please fill all required fields', 'error');
+                        return;
+                    }
+                    
+                    function validateEmail(email) {
+                        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        return re.test(email);
+                    }
+                    
+                    if (!validateEmail(email)) {
+                        showNotification('Please enter a valid email address', 'error');
+                        return;
+                    }
+                    
+                    submitText.style.display = 'none';
+                    spinner.style.display = 'inline-block';
+                    submitButton.disabled = true;
+                    submitButton.style.opacity = '0.7';
+                    
+                    setTimeout(() => {
+                        contactForm.reset();
+                        showNotification('Message sent successfully! We will get back to you soon.', 'success');
+                        submitText.style.display = 'inline';
+                        spinner.style.display = 'none';
+                        submitButton.disabled = false;
+                        submitButton.style.opacity = '1';
+                    }, 1500);
+                });
                 
-                // Shipping form submission (checkout)
-               // Look for this code and REPLACE it:
-checkoutBtn.addEventListener('click', function() {
-    if (cart.length === 0) {
-        showNotification('Your cart is empty', 'error');
-        return;
-    }
-    
-    // REMOVE THIS DIRECT ORDER PLACEMENT:
-    // showNotification('Order placed successfully!', 'success');
-    // cart = [];
-    // updateCartUI();
-    
-    // REPLACE WITH THIS:
-    openModal(checkoutModal);
-    updateCheckoutSummary();
-});
+                // Shipping form submission
+                if (shippingForm) {
+                    shippingForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+                        showNotification('Order placed successfully!', 'success');
+                        
+                        cart = [];
+                        updateCartUI();
+                        closeModal(checkoutModal);
+                        this.reset();
+                    });
+                }
             }
 
             // Apply filters to listings
-           // Apply filters to listings
-function applyFilters() {
-    const categoryFilter = document.getElementById('category-filter').value;
-    const qualityFilter = document.getElementById('quality-filter').value;
-    const locationSearch = document.getElementById('location-search').value.toLowerCase();
-    
-    // Set filtered flag
-    isFiltered = categoryFilter || qualityFilter || locationSearch;
-    
-    let filteredListings = [...sampleListings];
-    
-    if (categoryFilter) {
-        filteredListings = filteredListings.filter(listing => listing.category === categoryFilter);
-    }
-    
-    if (qualityFilter) {
-        filteredListings = filteredListings.filter(listing => listing.quality === qualityFilter);
-    }
-    
-    if (locationSearch) {
-        filteredListings = filteredListings.filter(listing => 
-            listing.location.toLowerCase().includes(locationSearch)
-        );
-    }
-    
-    listings = filteredListings;
-    loadListings(true); // Show all when filtering
-}
+            function applyFilters() {
+                const categoryFilter = document.getElementById('category-filter').value;
+                const qualityFilter = document.getElementById('quality-filter').value;
+                const locationSearch = document.getElementById('location-search').value.toLowerCase();
+                
+                isFiltered = categoryFilter || qualityFilter || locationSearch;
+                
+                let filteredListings = [...sampleListings];
+                
+                if (categoryFilter) {
+                    filteredListings = filteredListings.filter(listing => listing.category === categoryFilter);
+                }
+                
+                if (qualityFilter) {
+                    filteredListings = filteredListings.filter(listing => listing.quality === qualityFilter);
+                }
+                
+                if (locationSearch) {
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.location.toLowerCase().includes(locationSearch)
+                    );
+                }
+                
+                listings = filteredListings;
+                loadListings(true);
+            }
+
+            // Clear filters
+            function clearFilters() {
+                document.getElementById('category-filter').value = '';
+                document.getElementById('quality-filter').value = '';
+                document.getElementById('location-search').value = '';
+                isFiltered = false;
+                productsPerPage = 6;
+                listings = [...sampleListings];
+                loadListings();
+            }
+
             // Update checkout summary
             function updateCheckoutSummary() {
                 const checkoutItems = document.getElementById('checkout-items');
@@ -3916,1576 +3840,8 @@ function applyFilters() {
                 document.getElementById('checkout-total-price').textContent = `₹${total.toFixed(2)}`;
             }
 
-            // Clear filters and show default view
-function clearFilters() {
-    document.getElementById('category-filter').value = '';
-    document.getElementById('quality-filter').value = '';
-    document.getElementById('location-search').value = '';
-    isFiltered = false;
-    productsPerPage = 6;
-    listings = [...sampleListings];
-    loadListings();
-}
-// REPLACE your existing payment gateway section with this fixed version
-
-// Payment Gateway Variables
-let selectedPaymentMethod = '';
-let paymentTimer = null;
-let paymentTimeLeft = 300;
-let transactionId = '';
-
-// Initialize Payment Gateway - Call this in your main init() function
-function initPaymentGateway() {
-    const shippingForm = document.getElementById('shipping-form');
-    
-    if (!shippingForm) {
-        console.error('Shipping form not found');
-        return;
-    }
-    
-    // Handle shipping form submission
-    shippingForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        console.log('Form submitted');
-        
-        // Validate form
-        if (!validateShippingForm()) {
-            return;
-        }
-        
-        // Get selected payment method
-        const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
-        if (!selectedPayment) {
-            showNotification('Please select a payment method', 'error');
-            return;
-        }
-        
-        selectedPaymentMethod = selectedPayment.value;
-        console.log('Selected payment method:', selectedPaymentMethod);
-        
-        const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
-        
-        // Open payment gateway
-        openPaymentGateway(selectedPaymentMethod, totalAmount);
-    });
-    
-    // Close payment modal button
-    const closePaymentBtn = document.getElementById('close-payment');
-    if (closePaymentBtn) {
-        closePaymentBtn.addEventListener('click', function() {
-            closeModal(document.getElementById('payment-modal'));
-            resetPaymentGateway();
-        });
-    }
-}
-
-// Validate Shipping Form
-function validateShippingForm() {
-    const name = document.getElementById('full-name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const address = document.getElementById('address').value.trim();
-    const city = document.getElementById('city').value.trim();
-    const pincode = document.getElementById('pincode').value.trim();
-    
-    if (!name || name.length < 3) {
-        showNotification('Please enter a valid name (min 3 characters)', 'error');
-        return false;
-    }
-    
-    const phoneRegex = /^[6-9]\d{9}$/;
-    if (!phoneRegex.test(phone)) {
-        showNotification('Please enter a valid 10-digit mobile number', 'error');
-        return false;
-    }
-    
-    if (!address || address.length < 10) {
-        showNotification('Please enter complete delivery address', 'error');
-        return false;
-    }
-    
-    if (!city || city.length < 2) {
-        showNotification('Please enter valid city name', 'error');
-        return false;
-    }
-    
-    const pincodeRegex = /^\d{6}$/;
-    if (!pincodeRegex.test(pincode)) {
-        showNotification('Please enter valid 6-digit PIN code', 'error');
-        return false;
-    }
-    
-    return true;
-}
-
-// Open Payment Gateway
-function openPaymentGateway(method, amount) {
-    console.log('Opening payment gateway:', method, amount);
-    
-    const paymentModal = document.getElementById('payment-modal');
-    
-    if (!paymentModal) {
-        console.error('Payment modal not found');
-        return;
-    }
-    
-    // Generate transaction ID
-    transactionId = 'FARM' + Date.now() + Math.floor(Math.random() * 1000);
-    
-    // Close checkout modal
-    closeModal(document.getElementById('checkout-modal'));
-    
-    // Load appropriate payment interface
-    switch(method) {
-        case 'upi':
-            loadUPIInterface(amount);
-            break;
-        case 'card':
-            loadCardInterface(amount);
-            break;
-        case 'netbanking':
-            loadNetBankingInterface(amount);
-            break;
-        case 'cod':
-            loadCODInterface(amount);
-            break;
-        default:
-            loadUPIInterface(amount);
-    }
-    
-    // Open payment modal
-    openModal(paymentModal);
-    startPaymentTimer();
-}
-
-// Load UPI Payment Interface
-function loadUPIInterface(amount) {
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div class="payment-gateway upi-interface">
-            <div class="payment-header">
-                <h3>UPI Payment</h3>
-                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
-                <p>Scan QR code or pay via UPI apps</p>
-            </div>
-            
-            <div class="merchant-details">
-                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
-                <p><strong>Transaction ID:</strong> ${transactionId}</p>
-                <p><strong>UPI ID:</strong> farmlink.market@icici</p>
-            </div>
-            
-            <div class="qr-code-container" style="text-align: center; margin: 30px 0;">
-                <div style="width: 200px; height: 200px; background: #f5f5f5; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 2px solid #ddd;">
-                    <i class="fas fa-qrcode" style="font-size: 80px; color: #666;"></i>
-                </div>
-                <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
-                    Scan QR code to pay
-                </p>
-            </div>
-            
-            <div style="text-align: center; margin: 20px 0; padding: 10px; background: #fff3cd; border-radius: 8px;">
-                <i class="fas fa-clock"></i> Time remaining: 
-                <span style="font-weight: bold; color: #856404;" id="payment-timer">05:00</span>
-            </div>
-            
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0;">
-    <button class="btn upi-app-btn phonepe-btn" id="phonepe-btn" 
-            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
-                   background: #5F259F; color: white; border: none; border-radius: 10px; cursor: pointer; 
-                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(95, 37, 159, 0.2);">
-        <i class="fas fa-mobile-alt" style="font-size: 1.5rem;"></i>
-        <span>PhonePe</span>
-    </button>
-    <button class="btn upi-app-btn gpay-btn" id="gpay-btn" 
-            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
-                   background: #4285F4; color: white; border: none; border-radius: 10px; cursor: pointer; 
-                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(66, 133, 244, 0.2);">
-        <i class="fab fa-google" style="font-size: 1.5rem;"></i>
-        <span>GPay</span>
-    </button>
-    <button class="btn upi-app-btn paytm-btn" id="paytm-btn" 
-            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
-                   background: #1BA6F1; color: white; border: none; border-radius: 10px; cursor: pointer; 
-                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(27, 166, 241, 0.2);">
-        <i class="fas fa-wallet" style="font-size: 1.5rem;"></i>
-        <span>Paytm</span>
-    </button>
-</div>
-            
-            <div style="margin: 20px 0;">
-                <input type="text" class="form-control" id="upi-id-input" 
-                       placeholder="Enter your UPI ID (e.g., 9876543210@upi)" 
-                       style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; margin-bottom: 10px;">
-                <button class="btn btn-primary" id="pay-via-upi-btn" style="width: 100%;">
-                    Pay via UPI ID
-                </button>
-            </div>
-            
-            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <i class="fas fa-info-circle" style="color: #1976d2;"></i>
-                <span style="color: #1565c0; margin-left: 10px;">
-                    You will be redirected to your UPI app for payment confirmation
-                </span>
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn btn-outline" id="cancel-payment-btn" style="flex: 1;">
-                    Cancel Payment
-                </button>
-                <button class="btn btn-secondary" id="i-have-paid-btn" style="flex: 1;">
-                    I have Paid
-                </button>
-            </div>
-        </div>
-    `;
-    
-    // Attach event listeners after creating the HTML
-    setTimeout(() => {
-        const phonePeBtn = document.getElementById('phonepe-btn');
-        const gPayBtn = document.getElementById('gpay-btn');
-        const paytmBtn = document.getElementById('paytm-btn');
-        const payViaUPIBtn = document.getElementById('pay-via-upi-btn');
-        const cancelBtn = document.getElementById('cancel-payment-btn');
-        const iHavePaidBtn = document.getElementById('i-have-paid-btn');
-        
-        if (phonePeBtn) phonePeBtn.addEventListener('click', () => openUPIApp('phonepe'));
-        if (gPayBtn) gPayBtn.addEventListener('click', () => openUPIApp('gpay'));
-        if (paytmBtn) paytmBtn.addEventListener('click', () => openUPIApp('paytm'));
-        if (payViaUPIBtn) payViaUPIBtn.addEventListener('click', verifyUPIID);
-        if (cancelBtn) cancelBtn.addEventListener('click', () => {
-            closeModal(document.getElementById('payment-modal'));
-            resetPaymentGateway();
-        });
-        if (iHavePaidBtn) iHavePaidBtn.addEventListener('click', () => showUPIPINScreen(amount));
-    }, 100);
-}
-
-// Open UPI App
-function openUPIApp(appName) {
-    const paymentContent = document.getElementById('payment-content');
-    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
-    
-    paymentContent.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-            <h3>Opening ${appName === 'phonepe' ? 'PhonePe' : appName === 'gpay' ? 'Google Pay' : 'Paytm'}...</h3>
-            <p style="color: #666; margin-top: 10px;">Redirecting to UPI app for payment</p>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        showUPIPINScreen(amount);
-    }, 2000);
-}
-
-// Verify UPI ID
-function verifyUPIID() {
-    const upiId = document.getElementById('upi-id-input').value.trim();
-    
-    if (!upiId || !upiId.includes('@')) {
-        showNotification('Please enter a valid UPI ID (e.g., 9876543210@upi)', 'error');
-        return;
-    }
-    
-    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
-    openUPIApp('manual');
-}
-
-// Show UPI PIN Screen - FIXED VERSION
-function showUPIPINScreen(amount) {
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div class="payment-gateway">
-            <div class="payment-header">
-                <h3>Enter UPI PIN</h3>
-                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
-                <p>Confirm payment on your UPI app</p>
-            </div>
-            
-            <div class="merchant-details">
-                <p><strong>To:</strong> FarmLink Marketplace</p>
-                <p><strong>UPI ID:</strong> farmlink.market@icici</p>
-                <p><strong>Amount:</strong> ₹${amount.toFixed(2)}</p>
-            </div>
-            
-            <div style="display: flex; justify-content: center; gap: 10px; margin: 30px 0;">
-                <input type="password" class="pin-box" maxlength="1" readonly id="pin-1" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="password" class="pin-box" maxlength="1" readonly id="pin-2" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="password" class="pin-box" maxlength="1" readonly id="pin-3" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="password" class="pin-box" maxlength="1" readonly id="pin-4" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="password" class="pin-box" maxlength="1" readonly id="pin-5" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="password" class="pin-box" maxlength="1" readonly id="pin-6" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-            </div>
-            
-            <div style="max-width: 300px; margin: 0 auto;">
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="1" style="padding: 20px; font-size: 18px;">1</button>
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="2" style="padding: 20px; font-size: 18px;">2</button>
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="3" style="padding: 20px; font-size: 18px;">3</button>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="4" style="padding: 20px; font-size: 18px;">4</button>
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="5" style="padding: 20px; font-size: 18px;">5</button>
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="6" style="padding: 20px; font-size: 18px;">6</button>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="7" style="padding: 20px; font-size: 18px;">7</button>
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="8" style="padding: 20px; font-size: 18px;">8</button>
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="9" style="padding: 20px; font-size: 18px;">9</button>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                    <button type="button" class="btn btn-outline" id="clear-pin-btn" style="padding: 20px;">
-                        <i class="fas fa-backspace"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline pin-btn" data-digit="0" style="padding: 20px; font-size: 18px;">0</button>
-                    <button type="button" class="btn btn-primary" id="verify-pin-btn" style="padding: 20px;">
-                        <i class="fas fa-check"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px;">
-                <i class="fas fa-lock" style="color: #2e7d32;"></i>
-                <span style="color: #1b5e20; margin-left: 10px;">
-                    Your UPI PIN is secure and encrypted
-                </span>
-            </div>
-        </div>
-    `;
-    
-    // Initialize PIN variables
-    window.currentPinIndex = 0;
-    window.pinDigits = ['', '', '', '', '', ''];
-    window.isPinProcessing = false; // Add flag to prevent double clicks
-    
-    // Add CSS to prevent text selection
-    const style = document.createElement('style');
-    style.textContent = `
-        .pin-btn {
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            touch-action: manipulation;
-        }
-        .pin-btn:active {
-            transform: scale(0.95);
-            transition: transform 0.1s;
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Attach event listeners to PIN buttons - FIXED VERSION
-    setTimeout(() => {
-        const pinButtons = document.querySelectorAll('.pin-btn');
-        pinButtons.forEach(btn => {
-            // Remove any existing listeners first
-            btn.removeEventListener('click', handlePinClick);
-            // Add new listener
-            btn.addEventListener('click', handlePinClick);
-        });
-        
-        const clearBtn = document.getElementById('clear-pin-btn');
-        if (clearBtn) {
-            clearBtn.removeEventListener('click', clearPin);
-            clearBtn.addEventListener('click', clearPin);
-        }
-        
-        const verifyBtn = document.getElementById('verify-pin-btn');
-        if (verifyBtn) {
-            verifyBtn.removeEventListener('click', verifyUPIPIN);
-            verifyBtn.addEventListener('click', verifyUPIPIN);
-        }
-    }, 100);
-}
-
-// NEW: Separate handler function to prevent multiple events
-function handlePinClick() {
-    if (window.isPinProcessing) return; // Prevent multiple clicks
-    
-    const digit = this.getAttribute('data-digit');
-    window.isPinProcessing = true;
-    
-    // Add a small delay to ensure single click
-    setTimeout(() => {
-        addPinDigit(digit);
-        window.isPinProcessing = false;
-    }, 10);
-}
-
-// Updated Add PIN Digit function
-function addPinDigit(digit) {
-    // Prevent if already have 6 digits
-    if (window.currentPinIndex >= 6) return;
-    
-    const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
-    if (!pinInput) return;
-    
-    pinInput.value = '•';
-    window.pinDigits[window.currentPinIndex] = digit;
-    window.currentPinIndex++;
-    
-    // Auto-submit when 6 digits entered
-    if (window.currentPinIndex === 6) {
-        setTimeout(() => {
-            verifyUPIPIN();
-        }, 300);
-    }
-}
-
-// Clear PIN function
-function clearPin() {
-    if (window.currentPinIndex > 0) {
-        window.currentPinIndex--;
-        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
-        if (pinInput) {
-            pinInput.value = '';
-            window.pinDigits[window.currentPinIndex] = '';
-        }
-    }
-}
-
-// Verify UPI PIN function
-function verifyUPIPIN() {
-    const pin = window.pinDigits.join('');
-    
-    if (pin.length !== 6) {
-        showNotification('Please enter 6-digit UPI PIN', 'error');
-        return;
-    }
-    
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-            <h3>Processing Payment...</h3>
-            <p style="color: #666; margin-top: 10px;">Please wait while we verify your transaction</p>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        showPaymentResult(true);
-    }, 3000);
-}
-
-
-// Add PIN Digit
-function addPinDigit(digit) {
-    if (window.currentPinIndex < 6) {
-        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
-        pinInput.value = '•';
-        window.pinDigits[window.currentPinIndex] = digit;
-        window.currentPinIndex++;
-        
-        if (window.currentPinIndex === 6) {
-            setTimeout(() => {
-                verifyUPIPIN();
-            }, 300);
-        }
-    }
-}
-
-// Clear PIN
-function clearPin() {
-    if (window.currentPinIndex > 0) {
-        window.currentPinIndex--;
-        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
-        if (pinInput) pinInput.value = '';
-        window.pinDigits[window.currentPinIndex] = '';
-    }
-}
-
-// Verify UPI PIN
-function verifyUPIPIN() {
-    const pin = window.pinDigits.join('');
-    
-    if (pin.length !== 6) {
-        showNotification('Please enter 6-digit UPI PIN', 'error');
-        return;
-    }
-    
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-            <h3>Processing Payment...</h3>
-            <p style="color: #666; margin-top: 10px;">Please wait while we verify your transaction</p>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        showPaymentResult(true);
-    }, 3000);
-}
-
-// Load Card Interface
-function loadCardInterface(amount) {
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div class="payment-gateway">
-            <div class="payment-header">
-                <h3>Card Payment</h3>
-                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
-                <p>Enter your card details securely</p>
-            </div>
-            
-            <div class="merchant-details">
-                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
-                <p><strong>Transaction ID:</strong> ${transactionId}</p>
-            </div>
-            
-            <div style="margin: 20px 0;">
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Card Number</label>
-                    <input type="text" id="card-number" class="form-control" 
-                           placeholder="1234 5678 9012 3456" maxlength="19"
-                           style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-                </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Card Holder Name</label>
-                    <input type="text" id="card-name" class="form-control" 
-                           placeholder="JOHN DOE"
-                           style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; text-transform: uppercase;">
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Expiry Date</label>
-                        <input type="text" id="card-expiry" class="form-control" 
-                               placeholder="MM/YY" maxlength="5"
-                               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-                    </div>
-                    
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">CVV</label>
-                        <input type="password" id="card-cvv" class="form-control" 
-                               placeholder="123" maxlength="3"
-                               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
-                    </div>
-                </div>
-                
-                <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
-                    <i class="fab fa-cc-visa" style="font-size: 32px; color: #1a1f71;"></i>
-                    <i class="fab fa-cc-mastercard" style="font-size: 32px; color: #eb001b;"></i>
-                    <i class="fab fa-cc-amex" style="font-size: 32px; color: #0061a8;"></i>
-                    <i class="fas fa-credit-card" style="font-size: 32px; color: #666;"></i>
-                </div>
-                
-                <button class="btn btn-primary" id="process-card-btn" style="width: 100%; padding: 14px; font-size: 16px;">
-                    Pay ₹${amount.toFixed(2)}
-                </button>
-            </div>
-            
-            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px;">
-                <i class="fas fa-lock" style="color: #2e7d32;"></i>
-                <span style="color: #1b5e20; margin-left: 10px;">
-                    Your payment details are secured with 256-bit SSL encryption
-                </span>
-            </div>
-        </div>
-    `;
-    
-    // Attach event listeners after creating HTML
-    setTimeout(() => {
-        // Card number formatting
-        const cardNumberInput = document.getElementById('card-number');
-        if (cardNumberInput) {
-            cardNumberInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-                let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
-                e.target.value = formatted.substring(0, 19);
-            });
-        }
-        
-        // Expiry date formatting
-        const expiryInput = document.getElementById('card-expiry');
-        if (expiryInput) {
-            expiryInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length >= 2) {
-                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                }
-                e.target.value = value.substring(0, 5);
-            });
-        }
-        
-        // Process card payment button
-        const processBtn = document.getElementById('process-card-btn');
-        if (processBtn) {
-            processBtn.addEventListener('click', () => processCardPayment(amount));
-        }
-    }, 100);
-}
-
-// Process Card Payment
-function processCardPayment(amount) {
-    const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
-    const cardName = document.getElementById('card-name').value.trim();
-    const cardExpiry = document.getElementById('card-expiry').value;
-    const cardCVV = document.getElementById('card-cvv').value;
-    
-    if (!cardNumber || cardNumber.length < 16) {
-        showNotification('Please enter valid 16-digit card number', 'error');
-        return;
-    }
-    
-    if (!cardName) {
-        showNotification('Please enter card holder name', 'error');
-        return;
-    }
-    
-    if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
-        showNotification('Please enter valid expiry date (MM/YY)', 'error');
-        return;
-    }
-    
-    if (!cardCVV || cardCVV.length !== 3) {
-        showNotification('Please enter valid 3-digit CVV', 'error');
-        return;
-    }
-    
-    showCardOTPScreen(amount);
-}
-
-// Show Card OTP Screen
-function showCardOTPScreen(amount) {
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div class="payment-gateway">
-            <div class="payment-header">
-                <h3>Enter OTP</h3>
-                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
-                <p>OTP sent to your registered mobile</p>
-            </div>
-            
-            <div class="merchant-details">
-                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
-                <p>OTP sent to mobile ending with ••••1234</p>
-                <p><strong>Valid for:</strong> <span style="color: #f44336; font-weight: bold;" id="otp-timer">02:00</span></p>
-            </div>
-            
-            <div style="display: flex; justify-content: center; gap: 10px; margin: 30px 0;">
-                <input type="text" class="otp-box" maxlength="1" id="otp-1" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="text" class="otp-box" maxlength="1" id="otp-2" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="text" class="otp-box" maxlength="1" id="otp-3" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="text" class="otp-box" maxlength="1" id="otp-4" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="text" class="otp-box" maxlength="1" id="otp-5" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-                <input type="text" class="otp-box" maxlength="1" id="otp-6" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn btn-outline" id="resend-otp-btn" style="flex: 1;">
-                    <i class="fas fa-redo"></i> Resend OTP
-                </button>
-                <button class="btn btn-primary" id="verify-otp-btn" style="flex: 1;">
-                    Verify & Pay
-                </button>
-            </div>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        // Auto-move to next input
-        const otpBoxes = document.querySelectorAll('.otp-box');
-        otpBoxes.forEach((box, index) => {
-            box.addEventListener('input', function() {
-                if (this.value.length === 1 && index < 5) {
-                    otpBoxes[index + 1].focus();
-                }
-            });
-            
-            box.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace' && this.value === '' && index > 0) {
-                    otpBoxes[index - 1].focus();
-                }
-            });
-        });
-        
-        // Focus first box
-        otpBoxes[0].focus();
-        
-        // Resend OTP button
-        const resendBtn = document.getElementById('resend-otp-btn');
-        if (resendBtn) resendBtn.addEventListener('click', resendCardOTP);
-        
-        // Verify OTP button
-        const verifyBtn = document.getElementById('verify-otp-btn');
-        if (verifyBtn) verifyBtn.addEventListener('click', verifyCardOTP);
-        
-        // Start timer
-        startOTPTimer();
-    }, 100);
-}
-
-// Move to next OTP input
-function moveToNextOTP(input, nextIndex) {
-    if (input.value.length === 1 && nextIndex < 6) {
-        document.getElementById(`otp-${nextIndex + 1}`).focus();
-    }
-}
-
-// Start OTP Timer
-function startOTPTimer() {
-    let otpTimeLeft = 120;
-    
-    const timerInterval = setInterval(() => {
-        otpTimeLeft--;
-        
-        const minutes = Math.floor(otpTimeLeft / 60);
-        const seconds = otpTimeLeft % 60;
-        
-        const timerElement = document.getElementById('otp-timer');
-        if (timerElement) {
-            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        if (otpTimeLeft <= 0) {
-            clearInterval(timerInterval);
-        }
-    }, 1000);
-}
-
-// Resend Card OTP
-function resendCardOTP() {
-    showNotification('OTP has been resent to your mobile', 'success');
-    startOTPTimer();
-}
-
-// Verify Card OTP
-function verifyCardOTP() {
-    const otp = Array.from({length: 6}, (_, i) => {
-        const input = document.getElementById(`otp-${i + 1}`);
-        return input ? input.value : '';
-    }).join('');
-    
-    if (otp.length !== 6) {
-        showNotification('Please enter complete 6-digit OTP', 'error');
-        return;
-    }
-    
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-            <h3>Processing Payment...</h3>
-            <p style="color: #666; margin-top: 10px;">Your transaction is being verified</p>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        showPaymentResult(true);
-    }, 3000);
-}
-
-// Load Net Banking Interface
-function loadNetBankingInterface(amount) {
-    const banks = [
-        { id: 'sbi', name: 'State Bank of India' },
-        { id: 'hdfc', name: 'HDFC Bank' },
-        { id: 'icici', name: 'ICICI Bank' },
-        { id: 'axis', name: 'Axis Bank' },
-        { id: 'kotak', name: 'Kotak Mahindra Bank' },
-        { id: 'pnb', name: 'Punjab National Bank' }
-    ];
-    
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div class="payment-gateway">
-            <div class="payment-header">
-                <h3>Net Banking</h3>
-                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
-                <p>Select your bank</p>
-            </div>
-            
-            <div class="merchant-details">
-                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
-                <p><strong>Transaction ID:</strong> ${transactionId}</p>
-            </div>
-            
-            <div style="margin: 20px 0;">
-                ${banks.map(bank => `
-                    <label class="bank-option" style="display: block; padding: 15px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s;" data-bank="${bank.id}">
-                        <input type="radio" name="bank" id="${bank.id}" style="margin-right: 10px;">
-                        <i class="fas fa-university" style="color: #4CAF50; margin-right: 10px;"></i>
-                        <span style="font-weight: 500;">${bank.name}</span>
-                    </label>
-                `).join('')}
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn btn-outline" id="back-btn" style="flex: 1;">
-                    Back
-                </button>
-                <button class="btn btn-primary" id="netbanking-btn" disabled style="flex: 1;">
-                    Continue to Bank
-                </button>
-            </div>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        // Bank selection
-        const bankOptions = document.querySelectorAll('.bank-option');
-        const netbankingBtn = document.getElementById('netbanking-btn');
-        
-        bankOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                const bankId = this.getAttribute('data-bank');
-                document.querySelectorAll('input[name="bank"]').forEach(radio => {
-                    radio.checked = false;
-                });
-                document.getElementById(bankId).checked = true;
-                if (netbankingBtn) netbankingBtn.disabled = false;
-                
-                // Highlight selected
-                bankOptions.forEach(opt => {
-                    opt.style.borderColor = '#ddd';
-                    opt.style.background = 'white';
-                });
-                this.style.borderColor = '#4CAF50';
-                this.style.background = '#f1f8f4';
-            });
-        });
-        
-        // Back button
-        const backBtn = document.getElementById('back-btn');
-        if (backBtn) {
-            backBtn.addEventListener('click', () => {
-                closeModal(document.getElementById('payment-modal'));
-                resetPaymentGateway();
-            });
-        }
-        
-        // Continue to bank button
-        if (netbankingBtn) {
-            netbankingBtn.addEventListener('click', processNetBanking);
-        }
-    }, 100);
-}
-
-// Select Bank
-function selectBank(bankId) {
-    document.querySelectorAll('input[name="bank"]').forEach(radio => {
-        radio.checked = false;
-    });
-    
-    document.getElementById(bankId).checked = true;
-    document.getElementById('netbanking-btn').disabled = false;
-}
-
-// Process Net Banking
-function processNetBanking() {
-    const selectedBank = document.querySelector('input[name="bank"]:checked');
-    
-    if (!selectedBank) {
-        showNotification('Please select a bank', 'error');
-        return;
-    }
-    
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-            <h3>Redirecting to Bank...</h3>
-            <p style="color: #666; margin-top: 10px;">You will be redirected to your bank's secure portal</p>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        showPaymentResult(true);
-    }, 3000);
-}
-
-// Load COD Interface
-function loadCODInterface(amount) {
-    const paymentContent = document.getElementById('payment-content');
-    
-    paymentContent.innerHTML = `
-        <div class="payment-gateway">
-            <div class="payment-header">
-                <h3>Cash on Delivery</h3>
-                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
-            </div>
-            
-            <div style="text-align: center; padding: 40px;">
-                <div style="width: 100px; height: 100px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                    <i class="fas fa-money-bill-wave" style="font-size: 48px; color: #4CAF50;"></i>
-                </div>
-                <h4 style="margin-bottom: 10px;">Order Confirmed!</h4>
-                <p style="color: #666;">Pay ₹${amount.toFixed(2)} when your order is delivered.</p>
-                
-                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left;">
-                    <p><strong>Order ID:</strong> ${transactionId}</p>
-                </div>
-                
-                <div style="text-align: left; margin: 20px 0;">
-                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> No advance payment required</p>
-                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Pay cash to delivery executive</p>
-                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Get invoice and receipt</p>
-                </div>
-                
-                <button class="btn btn-primary" id="confirm-cod-btn" style="width: 100%; margin-top: 20px; padding: 14px; font-size: 16px;">
-                    Confirm Order
-                </button>
-            </div>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        const confirmBtn = document.getElementById('confirm-cod-btn');
-        if (confirmBtn) {
-            confirmBtn.addEventListener('click', completeCODPayment);
-        }
-    }, 100);
-}
-
-// Complete COD Payment
-function completeCODPayment() {
-    showPaymentResult(true, 'cod');
-}
-
-// Show Payment Result - FIXED VERSION
-function showPaymentResult(success, paymentType = 'online') {
-    const paymentContent = document.getElementById('payment-content');
-    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
-    
-    if (success) {
-        // Save order data to global variable BEFORE showing the screen
-        window.lastSuccessfulOrder = {
-            transaction_id: transactionId,
-            customer: {
-                name: document.getElementById('full-name')?.value || 'Customer',
-                phone: document.getElementById('phone')?.value || 'N/A',
-                address: document.getElementById('address')?.value || 'N/A',
-                city: document.getElementById('city')?.value || 'N/A',
-                pincode: document.getElementById('pincode')?.value || 'N/A'
-            },
-            payment_method: selectedPaymentMethod,
-            cart: cart.map(item => ({
-                title: item.title,
-                quantity: item.quantity,
-                price: item.price,
-                quality: item.quality
-            })),
-            amount: amount
-        };
-        
-        console.log('Order saved for invoice:', window.lastSuccessfulOrder);
-        
-        paymentContent.innerHTML = `
-            <div style="text-align: center; padding: 40px;">
-                <div style="width: 100px; height: 100px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                    <i class="fas fa-check-circle" style="font-size: 60px; color: #4CAF50;"></i>
-                </div>
-                <h4 style="margin-bottom: 10px; color: #2e7d32;">Payment Successful!</h4>
-                <p style="color: #666;">Your order has been confirmed ${paymentType === 'cod' ? 'and will be delivered soon' : 'and payment is complete'}.</p>
-                
-                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left;">
-                    <p><strong>Transaction ID:</strong> ${transactionId}</p>
-                </div>
-                
-                <div style="text-align: left; margin: 20px 0;">
-                    <p style="margin: 10px 0;"><i class="fas fa-receipt" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Amount:</strong> ₹${amount.toFixed(2)}</p>
-                    <p style="margin: 10px 0;"><i class="fas fa-credit-card" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Payment Method:</strong> ${getPaymentMethodName()}</p>
-                    <p style="margin: 10px 0;"><i class="fas fa-shipping-fast" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Delivery:</strong> within 12 hours</p>
-                </div>
-                
-                <div style="display: flex; gap: 10px; margin-top: 30px;">
-                    <button class="btn btn-outline" id="download-invoice-now-btn" style="flex: 1;">
-                        <i class="fas fa-download"></i> Download Invoice
-                    </button>
-                    <button class="btn btn-primary" id="continue-shopping-now-btn" style="flex: 1;">
-                        Continue Shopping
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        // Clear cart
-        cart = [];
-        updateCartUI();
-        
-        // Attach event listeners IMMEDIATELY
-        attachPaymentSuccessListeners();
-        
-    } else {
-        // Failed payment handler (keep your existing code)
-        // ...
-    }
-}
-
-// New function to attach event listeners
-function attachPaymentSuccessListeners() {
-    // Wait a tiny bit to ensure DOM is ready
-    setTimeout(() => {
-        const downloadBtn = document.getElementById('download-invoice-now-btn');
-        const continueBtn = document.getElementById('continue-shopping-now-btn');
-        
-        if (downloadBtn) {
-            downloadBtn.addEventListener('click', function() {
-                console.log('Download Invoice button clicked');
-                if (window.lastSuccessfulOrder) {
-                    console.log('Generating invoice for:', window.lastSuccessfulOrder);
-                    generateCleanPDFInvoice(window.lastSuccessfulOrder);
-                } else {
-                    console.error('No order data found');
-                    showNotification('No order data found. Please place an order first.', 'error');
-                }
-            });
-        }
-        
-        if (continueBtn) {
-            continueBtn.addEventListener('click', function() {
-                console.log('Continue Shopping button clicked');
-                completeCheckoutProcess();
-            });
-        }
-    }, 100);
-}
-
-// Simplified PDF Generation - WORKS EVERY TIME
-function generateCleanPDFInvoice(orderData) {
-    try {
-        console.log('Generating invoice for:', orderData);
-        
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        // Title
-        doc.setFontSize(20);
-        doc.text('FarmLink Invoice', 20, 20);
-        
-        doc.setFontSize(12);
-        doc.text('Direct Farmer to Buyer Marketplace', 20, 30);
-        doc.text('Tirunelvelli, Agriculture City', 20, 37);
-        doc.text('support@farmlink.com | +91 9840994649', 20, 44);
-        
-        // Invoice Details
-        doc.text(`Invoice Date: ${new Date().toLocaleDateString()}`, 20, 55);
-        doc.text(`Invoice #: INV-${Date.now()}`, 20, 62);
-        doc.text(`Order ID: ${orderData.transaction_id}`, 20, 69);
-        
-        // Customer Info
-        doc.text('Bill To:', 20, 85);
-        doc.text(`Name: ${orderData.customer.name}`, 20, 92);
-        doc.text(`Phone: ${orderData.customer.phone}`, 20, 99);
-        doc.text(`Address: ${orderData.customer.address}`, 20, 106);
-        doc.text(`${orderData.customer.city} - ${orderData.customer.pincode}`, 20, 113);
-        
-        // Table Header
-        doc.setFillColor(76, 175, 80);
-        doc.rect(20, 125, 170, 10, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.text('Product', 25, 132);
-        doc.text('Qty', 100, 132);
-        doc.text('Price', 130, 132);
-        doc.text('Total', 160, 132);
-        
-        // Table Rows
-        doc.setTextColor(0, 0, 0);
-        let yPos = 140;
-        let grandTotal = 0;
-        
-        if (orderData.cart && orderData.cart.length > 0) {
-            orderData.cart.forEach(item => {
-                const quantity = item.quantity || 1;
-                const price = item.price || 0;
-                const total = quantity * price;
-                grandTotal += total;
-                
-                doc.text(item.title.substring(0, 30), 25, yPos);
-                doc.text(quantity.toString(), 100, yPos);
-                doc.text(price.toFixed(2), 130, yPos);
-                doc.text(total.toFixed(2), 160, yPos);
-                
-                yPos += 10;
-            });
-        }
-        
-        // Totals
-        const gst = grandTotal * 0.05;
-        const finalTotal = grandTotal + gst;
-        
-        doc.setFont(undefined, 'bold');
-        doc.text('Subtotal:', 130, yPos + 10);
-        doc.text(grandTotal.toFixed(2), 160, yPos + 10);
-        
-        doc.text('GST (5%):', 130, yPos + 20);
-        doc.text(gst.toFixed(2), 160, yPos + 20);
-        
-        doc.text('Grand Total:', 130, yPos + 30);
-        doc.text(finalTotal.toFixed(2), 160, yPos + 30);
-        
-        // Footer
-        doc.setFont(undefined, 'normal');
-        doc.setFontSize(10);
-        doc.text('All amounts in Indian Rupees', 20, 280);
-        doc.text('Thank you for shopping with FarmLink!', 20, 287);
-        
-        // Save
-        doc.save(`invoice-${orderData.transaction_id}.pdf`);
-        
-        showNotification('Invoice downloaded successfully!', 'success');
-        
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        showNotification('Error generating invoice. Please try again.', 'error');
-    }
-}
-
-// Get Payment Method Name
-function getPaymentMethodName() {
-    switch(selectedPaymentMethod) {
-        case 'upi': return 'UPI Payment';
-        case 'card': return 'Credit/Debit Card';
-        case 'netbanking': return 'Net Banking';
-        case 'cod': return 'Cash on Delivery';
-        default: return 'Online Payment';
-    }
-}
-
-// Start Payment Timer
-function startPaymentTimer() {
-    clearInterval(paymentTimer);
-    paymentTimeLeft = 300;
-    
-    paymentTimer = setInterval(() => {
-        paymentTimeLeft--;
-        
-        const minutes = Math.floor(paymentTimeLeft / 60);
-        const seconds = paymentTimeLeft % 60;
-        
-        const timerElement = document.getElementById('payment-timer');
-        if (timerElement) {
-            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (paymentTimeLeft <= 60) {
-                timerElement.style.color = '#f44336';
-            }
-        }
-        
-        if (paymentTimeLeft <= 0) {
-            clearInterval(paymentTimer);
-            showNotification('Payment timeout. Please try again.', 'error');
-            resetPaymentGateway();
-        }
-    }, 1000);
-}
-
-// Complete Checkout Process
-function completeCheckoutProcess() {
-    closeModal(document.getElementById('payment-modal'));
-    resetPaymentGateway();
-    document.getElementById('shipping-form').reset();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    showNotification('Order placed successfully! Thank you for shopping with FarmLink.', 'success');
-}
-
-// UPDATED: Fixed downloadInvoice function - Use actual cart data
-function downloadInvoice() {
-    console.log('=== DOWNLOAD INVOICE STARTED ===');
-    
-    // Get cart data from the GLOBAL cart variable
-    let cartData = [];
-    
-    if (window.cart && window.cart.length > 0) {
-        console.log('Using global cart variable:', window.cart);
-        cartData = window.cart;
-    } else {
-        console.warn('Cart is empty! Please add items to cart first');
-        showNotification('Your cart is empty. Add items before downloading invoice.', 'error');
-        return;
-    }
-    
-    // Get customer information from checkout form
-    const customerInfo = {
-        name: document.getElementById('full-name')?.value || 'Customer',
-        phone: document.getElementById('phone')?.value || 'N/A',
-        address: document.getElementById('address')?.value || 'N/A',
-        city: document.getElementById('city')?.value || 'N/A',
-        pincode: document.getElementById('pincode')?.value || 'N/A'
-    };
-    
-    // Get transaction ID and payment method
-    const transactionId = window.transactionId || 'FARM' + Date.now();
-    const paymentMethod = window.selectedPaymentMethod || 'UPI';
-    
-    // Create order data with ACTUAL cart items
-    const orderData = {
-        transaction_id: transactionId,
-        customer: customerInfo,
-        payment_method: paymentMethod,
-        cart: cartData.map(item => ({
-            title: item.title,
-            quantity: item.quantity, // Use cart quantity
-            price: item.price,
-            quality: item.quality
-        })),
-        timestamp: new Date().toISOString(),
-        status: 'paid'
-    };
-    
-    console.log('Order data for invoice:', orderData);
-    
-    // Call generatePDFInvoice with REAL data
-    generatePDFInvoice(orderData);
-}
-// Add this function to see where cart data is stored
-function debugCartData() {
-    console.log('=== DEBUG CART DATA ===');
-    console.log('1. Global cart variable:', window.cart);
-    console.log('2. LocalStorage cart:', localStorage.getItem('cart'));
-    console.log('3. Session cart:', sessionStorage.getItem('cart'));
-    console.log('4. Checkout page cart:', document.querySelectorAll('.checkout-item').length);
-    console.log('=== END DEBUG ===');
-}
-
-// Call this before downloadInvoice
-debugCartData();
-
-// Helper function to calculate total from cart
-function calculateTotal(cartItems) {
-    let total = 0;
-    cartItems.forEach(item => {
-        const itemTotal = (item.price || 0) * (item.quantity || 0);
-        const gst = itemTotal * 0.05;
-        total += itemTotal + gst;
-    });
-    return total;
-}
-
-function generatePDFInvoiceWithRupeeSymbol(orderData) {
-    try {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        
-        // Use a standard font that supports basic characters
-        pdf.setFont('courier'); // Courier font is most reliable
-        pdf.setFontSize(10);
-        
-        // Company Header
-        pdf.setFontSize(20);
-        pdf.setTextColor(76, 175, 80);
-        pdf.text('FarmLink', 20, 20);
-        pdf.setFontSize(14);
-        pdf.text('TAX INVOICE', 150, 20);
-        
-        pdf.setFontSize(10);
-        pdf.setTextColor(0, 0, 0);
-        pdf.text('Direct Farmer to Buyer Marketplace', 20, 30);
-        pdf.text('Tirunelvelli, Agriculture City', 20, 37);
-        pdf.text('support@farmlink.com | +91 9840994649', 20, 44);
-        
-        // Use "Rs." instead of rupee symbol
-        const currencySymbol = 'Rs. ';
-        
-        // ... rest of the code similar to above, but use:
-        // pdf.text(`${currencySymbol}${price.toFixed(2)}`, 120, yPos);
-        
-        // OR use "INR" prefix
-        const currencyPrefix = 'INR ';
-        
-        // ... use currencyPrefix + number
-        
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-
-
-// Add this function to your index.html JavaScript
-function openInvoiceWindow(orderData) {
-    // Convert order data to URL parameters
-    const jsonData = encodeURIComponent(JSON.stringify(orderData));
-    const url = `invoice.html?data=${jsonData}`;
-    
-    // Open invoice in new window
-    window.open(url, '_blank', 'width=900,height=700,scrollbars=yes');
-}
-
-// Function to save order to backend
-async function saveOrderToBackend(orderData) {
-    try {
-        const response = await fetch('http://localhost:5000/api/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData)
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            console.log('Order saved to backend:', result.order);
-            // Open invoice with backend-generated ID
-            openInvoiceWindow(result.order);
-            return result.order;
-        } else {
-            console.error('Failed to save order:', result.error);
-            // Fallback to local invoice generation
-            generatePDFInvoice(orderData);
-        }
-    } catch (error) {
-        console.error('Error saving order to backend:', error);
-        // Fallback to local invoice generation
-        generatePDFInvoice(orderData);
-    }
-}
-
-// Update the shipping form submission - REMOVE automatic download
-shippingForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    console.log('Form submitted');
-    
-    // Validate form
-    if (!validateShippingForm()) {
-        return;
-    }
-    
-    // Get selected payment method
-    const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
-    if (!selectedPayment) {
-        showNotification('Please select a payment method', 'error');
-        return;
-    }
-    
-    selectedPaymentMethod = selectedPayment.value;
-    console.log('Selected payment method:', selectedPaymentMethod);
-    
-    const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
-    
-    // Open payment gateway (NO invoice download here)
-    openPaymentGateway(selectedPaymentMethod, totalAmount);
-    
-    // Save order data for later (not downloading yet)
-    window.pendingOrderData = {
-        customer: {
-            name: document.getElementById('full-name').value.trim(),
-            phone: document.getElementById('phone').value.trim(),
-            address: document.getElementById('address').value.trim(),
-            city: document.getElementById('city').value.trim(),
-            pincode: document.getElementById('pincode').value.trim()
-        },
-        cart: cart,
-        total: totalAmount
-    };
-});
-
-
-function testInvoiceGeneration() {
-    // Create sample order data
-    const testOrderData = {
-        transaction_id: 'FARM1766411958915943',
-        customer: {
-            name: 'vel raj',
-            phone: '9003676711',
-            address: '3/86-1 west yadhavar street pudukottai',
-            city: 'thoothukudi',
-            pincode: '628103'
-        },
-        payment_method: 'upi',
-        cart: [
-            {
-                title: 'Fresh Tomatoes',
-                quantity: 2,
-                price: 35.00,
-                quality: 'Grade A'
-            },
-            {
-                title: 'premium apples',
-                quantity: 3,
-                price: 230.00,
-                quality: 'Organic'
-            },
-            {
-                title: 'Onions',
-                quantity: 1.5,
-                price: 25.00,
-                quality: 'Regular'
-            }
-        ]
-    };
-    
-    console.log('=== TESTING INVOICE GENERATION ===');
-    generatePDFInvoice(testOrderData);
-}
-
-// Call this function to test
-// testInvoiceGeneration();
-// Method 2: Open invoice in new window (Fallback method)
-function openInvoiceWindow(orderData) {
-    try {
-        // Create invoice HTML content
-        const invoiceHTML = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Invoice - ${orderData.transaction_id}</title>
-                <style>
-                    body { font-family: Arial, sans-serif; padding: 20px; }
-                    .invoice { max-width: 800px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; }
-                    .header { text-align: center; margin-bottom: 30px; }
-                    .details { margin: 20px 0; }
-                    .item { display: flex; justify-content: space-between; margin: 5px 0; }
-                    .total { border-top: 2px solid #333; padding-top: 10px; margin-top: 20px; }
-                    @media print { button { display: none; } }
-                </style>
-            </head>
-            <body>
-                <div class="invoice">
-                    <div class="header">
-                        <h2>FarmLink Marketplace</h2>
-                        <h3>Invoice</h3>
-                    </div>
-                    
-                    <div class="details">
-                        <p><strong>Invoice #:</strong> INV-FL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}</p>
-                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
-                        <p><strong>Customer:</strong> ${orderData.customer.name}</p>
-                        <p><strong>Phone:</strong> ${orderData.customer.phone}</p>
-                        <p><strong>Address:</strong> ${orderData.customer.address}, ${orderData.customer.city} - ${orderData.customer.pincode}</p>
-                        <p><strong>Order ID:</strong> ${orderData.transaction_id}</p>
-                        <p><strong>Payment Method:</strong> ${orderData.payment_method.toUpperCase()}</p>
-                    </div>
-                    
-                    <h4>Items:</h4>
-                    ${orderData.cart.map(item => `
-                        <div class="item">
-                            <span>${item.quantity} kg × ${item.title} @ ₹${item.price}/kg</span>
-                            <span>₹${(item.price * item.quantity).toFixed(2)}</span>
-                        </div>
-                    `).join('')}
-                    
-                    <div class="total">
-                        <div class="item">
-                            <strong>Total Amount:</strong>
-                            <strong>₹${orderData.total.toFixed(2)}</strong>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 30px;">
-                        <p>Thank you for shopping with FarmLink!</p>
-                        <p>Contact: +91 9840994649 | support@farmlink.com</p>
-                    </div>
-                </div>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <button onclick="window.print()">Print Invoice</button>
-                    <button onclick="window.close()">Close</button>
-                </div>
-            </body>
-            </html>
-        `;
-        
-        // Open in new window
-        const invoiceWindow = window.open('', '_blank');
-        invoiceWindow.document.write(invoiceHTML);
-        invoiceWindow.document.close();
-        
-    } catch (error) {
-        console.error('Error opening invoice window:', error);
-        showNotification('Could not generate invoice. Please contact support.', 'error');
-    }
-}
-
-// Method 3: Simple text invoice (Alternative fallback)
-function generateTextInvoice(orderData) {
-    let invoiceText = `
-        =========================================
-                    FARM LINK INVOICE
-        =========================================
-        
-        Invoice #: INV-FL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}
-        Date: ${new Date().toLocaleDateString()}
-        Order ID: ${orderData.transaction_id}
-        
-        -------------------------------
-        CUSTOMER INFORMATION
-        -------------------------------
-        Name: ${orderData.customer.name}
-        Phone: ${orderData.customer.phone}
-        Address: ${orderData.customer.address}
-        City: ${orderData.customer.city} - ${orderData.customer.pincode}
-        Payment Method: ${orderData.payment_method.toUpperCase()}
-        
-        -------------------------------
-        ORDER ITEMS
-        -------------------------------
-    `;
-    
-    orderData.cart.forEach(item => {
-        invoiceText += `${item.quantity} kg × ${item.title} @ ₹${item.price}/kg = ₹${(item.price * item.quantity).toFixed(2)}\n`;
-    });
-    
-    invoiceText += `
-        -------------------------------
-        TOTAL: ₹${orderData.total.toFixed(2)}
-        -------------------------------
-        
-        Thank you for shopping with FarmLink!
-        Contact: +91 9840994649 | support@farmlink.com
-        
-        =========================================
-    `;
-    
-    // Create and download text file
-    const blob = new Blob([invoiceText], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `invoice-${orderData.transaction_id}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-}
-
-// Change Payment Method
-function changePaymentMethod() {
-    closeModal(document.getElementById('payment-modal'));
-    openModal(document.getElementById('checkout-modal'));
-    resetPaymentGateway();
-}
-
-// Reset Payment Gateway
-function resetPaymentGateway() {
-    clearInterval(paymentTimer);
-    selectedPaymentMethod = '';
-    transactionId = '';
-    paymentTimeLeft = 300;
-}
-
-// Add CSS for spinner animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-`;
-document.head.appendChild(style);
-        
             // Initialize the application
-            init(// In your existing init() function, add:
-function init() {
-    // ... your existing code ...
-    
-    // Initialize payment gateway
-    initPaymentGateway();
-});
-            
+            init();
         });
     </script>
 </body>
