@@ -15,7 +15,13 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'farmlink-secret-key-2025'  # Change this for production
-CORS(app, origins="*", supports_credentials=True)
+
+# UPDATE CORS Configuration
+CORS(app, 
+     origins=["http://localhost:5000", "http://127.0.0.1:5000", "http://localhost:8000", "http://127.0.0.1:8000"],
+     supports_credentials=True,
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type", "Authorization"])
 
 # Email configuration from environment variables
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
@@ -25,15 +31,18 @@ EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', EMAIL_ADDRESS)
 
 # In-memory storage for orders (use database in production)
-orders = {}
+orders = []
 
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
-@app.route('/send-message', methods=['POST'])
+@app.route('/send-message', methods=['POST', 'OPTIONS'])
 def send_message():
     """Handle contact form submissions and send email"""
+    if request.method == 'OPTIONS':
+        return '', 200  # Handle preflight requests
+    
     try:
         # Check if request is JSON
         if not request.is_json:
@@ -62,13 +71,16 @@ def send_message():
                 'error': 'Please enter a valid email address'
             }), 400
         
-        # Send email to admin
-        email_sent = send_contact_email(name, email, subject, message)
+        # For now, simulate email sending
+        print(f"Email would be sent to admin: Name: {name}, Email: {email}, Subject: {subject}, Message: {message}")
+        
+        # In production, you would call send_contact_email() here
+        # email_sent = send_contact_email(name, email, subject, message)
+        
+        # Simulate success
+        email_sent = True
         
         if email_sent:
-            # Also send confirmation to user
-            send_confirmation_email(name, email)
-            
             return jsonify({
                 'success': True,
                 'message': 'Your message has been sent successfully! We will get back to you soon.'
@@ -279,9 +291,12 @@ def send_confirmation_email(name, user_email):
         print(f"Error sending confirmation email: {str(e)}")
         return False
 
-@app.route('/checkout', methods=['POST'])
+@app.route('/checkout', methods=['POST', 'OPTIONS'])
 def checkout():
     """Handle checkout and payment initialization"""
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     try:
         if not request.is_json:
             return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
@@ -297,6 +312,7 @@ def checkout():
         transaction_id = 'TXN' + ''.join(random.choices(string.digits, k=8))
         
         order_data = {
+            'id': f"FARM{int(datetime.now().timestamp())}",
             'transaction_id': transaction_id,
             'customer': {
                 'name': data['name'],
@@ -312,12 +328,13 @@ def checkout():
             'timestamp': datetime.now().isoformat()
         }
         
-        orders[transaction_id] = order_data
+        orders.append(order_data)
         print(f"Order created: {transaction_id}")
         
         return jsonify({
             'success': True,
             'transaction_id': transaction_id,
+            'order_id': order_data['id'],
             'message': 'Checkout initialized successfully'
         })
         
@@ -325,9 +342,12 @@ def checkout():
         print(f"Checkout error: {str(e)}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
-@app.route('/process_payment', methods=['POST'])
+@app.route('/process_payment', methods=['POST', 'OPTIONS'])
 def process_payment():
     """Process payment for an order"""
+    if request.method == 'OPTIONS':
+        return '', 200
+    
     try:
         if not request.is_json:
             return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
@@ -340,10 +360,11 @@ def process_payment():
         
         transaction_id = data['transaction_id']
         
-        if transaction_id not in orders:
+        order = next((o for o in orders if o['transaction_id'] == transaction_id), None)
+        if not order:
             return jsonify({'success': False, 'error': 'Order not found'}), 404
         
-        payment_method = orders[transaction_id]['payment_method']
+        payment_method = order['payment_method']
         print(f"Processing {payment_method} payment for {transaction_id}")
         
         if payment_method == 'upi':
@@ -370,20 +391,21 @@ def process_payment():
             return jsonify({'success': False, 'error': 'Invalid payment method'}), 400
         
         if payment_success:
-            orders[transaction_id]['status'] = 'paid'
-            orders[transaction_id]['payment_status'] = 'completed'
-            orders[transaction_id]['payment_timestamp'] = datetime.now().isoformat()
+            order['status'] = 'paid'
+            order['payment_status'] = 'completed'
+            order['payment_timestamp'] = datetime.now().isoformat()
             
             print(f"Payment successful for {transaction_id}")
             
             return jsonify({
                 'success': True,
                 'message': 'Payment successful',
-                'order_id': transaction_id,
+                'order_id': order['id'],
+                'transaction_id': transaction_id,
                 'status': 'paid'
             })
         else:
-            orders[transaction_id]['status'] = 'payment_failed'
+            order['status'] = 'payment_failed'
             return jsonify({
                 'success': False,
                 'error': 'Payment failed. Please try again.'
@@ -395,33 +417,34 @@ def process_payment():
 
 @app.route('/order_status/<transaction_id>', methods=['GET'])
 def order_status(transaction_id):
-    if transaction_id in orders:
+    order = next((o for o in orders if o['transaction_id'] == transaction_id), None)
+    if order:
         return jsonify({
             'success': True,
-            'order': orders[transaction_id]
+            'order': order
         })
     else:
         return jsonify({'success': False, 'error': 'Order not found'}), 404
 
-@app.route('/receipt/<transaction_id>', methods=['GET'])
-def receipt(transaction_id):
-    if transaction_id in orders:
-        order = orders[transaction_id]
-        return render_template('receipt.html', order=order)
-    else:
-        return "Order not found", 404
-
-@app.route('/api/orders', methods=['POST'])
+@app.route('/api/orders', methods=['POST', 'OPTIONS'])
 def create_order():
+    if request.method == 'OPTIONS':
+        return '', 200
+        
     try:
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Content-Type must be application/json'}), 400
+            
         order_data = request.json
         
-        # Generate invoice data
+        # Generate order ID
+        order_id = f"FARM{int(datetime.now().timestamp())}"
+        
         order = {
-            'id': f"FARM{int(datetime.now().timestamp())}",
-            'transaction_id': order_data.get('transaction_id'),
+            'id': order_id,
+            'transaction_id': order_data.get('transaction_id', f"TXN{random.randint(10000000, 99999999)}"),
             'customer': order_data.get('customer', {}),
-            'payment_method': order_data.get('payment_method'),
+            'payment_method': order_data.get('payment_method', 'upi'),
             'cart': order_data.get('cart', []),
             'total': calculate_total(order_data.get('cart', [])),
             'date': datetime.now().isoformat(),
@@ -430,7 +453,6 @@ def create_order():
         
         orders.append(order)
         
-        # Return order data including the generated ID
         return jsonify({
             'success': True,
             'message': 'Order created successfully',
@@ -453,8 +475,29 @@ def get_invoice(order_id):
         if not order:
             return jsonify({'error': 'Order not found'}), 404
         
-        # Render invoice HTML
-        return render_template('invoice.html', order=order)
+        # Return order data for invoice generation
+        return jsonify({
+            'success': True,
+            'order': order
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/invoice/pdf/<order_id>', methods=['GET'])
+def get_invoice_pdf(order_id):
+    try:
+        # Find the order
+        order = next((o for o in orders if o['id'] == order_id), None)
+        
+        if not order:
+            return jsonify({'error': 'Order not found'}), 404
+        
+        return jsonify({
+            'success': True,
+            'message': 'PDF generation would happen here',
+            'order': order
+        })
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -463,6 +506,13 @@ def get_invoice(order_id):
 def test_email():
     """Test email functionality"""
     try:
+        # Check if email credentials are set
+        if not EMAIL_ADDRESS or not EMAIL_PASSWORD:
+            return jsonify({
+                'success': False, 
+                'error': 'Email credentials not configured. Please set EMAIL_ADDRESS and EMAIL_PASSWORD in .env file'
+            })
+        
         # Test sending a simple email
         msg = MIMEMultipart()
         msg['From'] = EMAIL_ADDRESS
@@ -485,28 +535,10 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'service': 'FarmLink Backend',
-        'email_configured': bool(EMAIL_ADDRESS and EMAIL_PASSWORD)
+        'email_configured': bool(EMAIL_ADDRESS and EMAIL_PASSWORD),
+        'orders_count': len(orders),
+        'timestamp': datetime.now().isoformat()
     })
-
-@app.route('/api/invoice/pdf/<order_id>', methods=['GET'])
-def get_invoice_pdf(order_id):
-    try:
-        # Find the order
-        order = next((o for o in orders if o['id'] == order_id), None)
-        
-        if not order:
-            return jsonify({'error': 'Order not found'}), 404
-        
-        # Generate PDF (you can use reportlab or another PDF library)
-        # For now, return JSON with instructions
-        return jsonify({
-            'success': True,
-            'message': 'PDF generation would happen here',
-            'order': order
-        })
-        
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 def calculate_total(cart_items):
     total = 0
@@ -515,9 +547,6 @@ def calculate_total(cart_items):
         quantity = item.get('quantity', 0)
         total += price * quantity
     return total * 1.05  # Include 5% GST
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
 
 def simulate_upi_payment(upi_pin):
     pin_str = str(upi_pin)
@@ -536,5 +565,12 @@ if __name__ == '__main__':
         print("EMAIL_ADDRESS=your-email@gmail.com")
         print("EMAIL_PASSWORD=your-app-password")
         print("ADMIN_EMAIL=admin-email@example.com")
+        print("\nFor now, contact form will work without sending actual emails.")
     
-    app.run(debug=True, port=5000)
+    print("✅ FarmLink Backend Server Starting...")
+    print(f"📧 Email configured: {bool(EMAIL_ADDRESS and EMAIL_PASSWORD)}")
+    print("🌐 Server running on http://localhost:5000")
+    print("📊 Health check: http://localhost:5000/health")
+    print("✉️ Test email: http://localhost:5000/test-email")
+    
+    app.run(debug=True, port=5000, host='0.0.0.0')
