@@ -1220,10 +1220,234 @@
                 flex-wrap: wrap;
             }
         }
+
+        /* Mobile Menu Toggle Button */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        order: 2;
+        margin-left: auto;
+    }
+    
+    .nav-menu {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        flex-direction: column;
+        padding: 1rem 0;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .nav-menu li {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-menu a {
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+    
+    .nav-menu a:hover, .nav-menu a.active {
+        background-color: var(--light);
+        border-bottom: 2px solid var(--primary);
+    }
+    
+    /* Mobile Auth Buttons */
+    .auth-buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        order: 3;
+    }
+    
+    .auth-buttons .btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Mobile Language Selector */
+    .language-selector {
+        margin: 0;
+        display: none; /* Hidden in mobile by default */
+    }
+    
+    /* Mobile-specific layout for navbar */
+    .navbar {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .logo {
+        order: 1;
+    }
+    
+    .menu-toggle {
+        order: 2;
+    }
+    
+    .auth-buttons {
+        order: 3;
+        width: auto;
+    }
+    
+    /* Show language selector in auth buttons for mobile */
+    .auth-buttons .language-selector {
+        display: block;
+        margin-left: 0.5rem;
+    }
+    
+    .auth-buttons .language-selector select {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Cart button adjustments */
+    .cart-btn {
+        margin-right: 0;
+    }
+    
+    /* Hero section adjustments */
+    .hero {
+        padding: 8rem 0 3rem;
+        text-align: center;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 1rem;
+    }
+    
+    /* Mobile cart and auth buttons */
+    .cart-btn, #login-btn, #signup-btn {
+        white-space: nowrap;
+    }
+    
+    /* Mobile-specific container padding */
+    .container {
+        padding: 0 15px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .auth-buttons {
+        gap: 0.3rem;
+    }
+    
+    .auth-buttons .btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    
+    .logo span {
+        font-size: 1.2rem;
+    }
+    
+    .cart-count {
+        width: 16px;
+        height: 16px;
+        font-size: 0.7rem;
+        top: -5px;
+        right: -5px;
+    }
+    
+    /* Mobile language selector smaller */
+    .auth-buttons .language-selector select {
+        padding: 0.2rem 0.3rem;
+        font-size: 0.8rem;
+        max-width: 90px;
+    }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .nav-menu li {
+        margin: 0 0.5rem;
+    }
+    
+    .auth-buttons {
+        gap: 0.8rem;
+    }
+    
+    .auth-buttons .btn {
+        padding: 0.6rem 1rem;
+    }
+}
+/* Mobile header spacing fix */
+@media (max-width: 768px) {
+    header {
+        padding: 0.5rem 0;
+    }
+    
+    .navbar {
+        padding: 0.5rem 0;
+    }
+    
+    /* Ensure proper spacing between navbar elements */
+    .navbar > * {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Fix for auth buttons container */
+    .auth-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: auto;
+    }
+    
+    /* Make sure buttons don't overflow */
+    .btn {
+        white-space: nowrap;
+    }
+    
+    /* Adjust hero section for mobile */
+    .hero {
+        margin-top: 60px; /* Account for fixed header */
+    }
+}
     </style>
 </head>
 <body>
   <!-- Header & Navigation -->
+<!-- Header & Navigation -->
 <header>
     <div class="container">
         <nav class="navbar">
@@ -1233,8 +1457,13 @@
                 <span>FarmLink</span>
             </a>
             
+            <!-- Mobile Menu Toggle Button -->
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <!-- Navigation menu -->
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="#home" class="active" data-i18n="home">Home</a></li>
                 <li><a href="#listings" data-i18n="listings">Listings</a></li>
                 <li><a href="#how-it-works" data-i18n="how-it-works">How It Works</a></li>
@@ -1250,19 +1479,20 @@
                 </button>
                 <button class="btn btn-outline" id="login-btn" data-i18n="login">Login</button>
                 <button class="btn btn-primary" id="signup-btn" data-i18n="signup">Sign Up</button>
-            </div>
-            <div class="language-selector">
-                <select id="language-select">
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                    <option value="fr">Français</option>
-                    <option value="hi">हिंदी</option>
-                    <option value="ta">தமிழ்</option>
-                </select>
+                <div class="language-selector">
+                    <select id="language-select">
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                </div>
             </div>
         </nav>
     </div>
 </header>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container">
@@ -3248,6 +3478,67 @@ document.getElementById('show-more-btn').addEventListener('click', showMoreProdu
                         }, 1500);
                     }
                 });
+
+                // Mobile menu toggle
+function setupMobileMenu() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close menu when clicking a link
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    }
+}
+
+// Update your init() function to include mobile menu setup
+function init() {
+    listings = [...sampleListings];
+    loadListings();
+    setupEventListeners();
+    setupMobileMenu(); // Add this line
+    setupSmoothScrolling();
+    updateCartUI();
+    initLanguage();
+    initPaymentGateway();
+    
+    // Set today's date as default for manufactured date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('manufactured-date').value = today;
+    
+    // Set default expiry date (7 days from today)
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    document.getElementById('expiry-date').value = nextWeek.toISOString().split('T')[0];
+}
                 
                 // Modal triggers
                 createListingBtn.addEventListener('click', function() {
