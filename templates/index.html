@@ -184,83 +184,143 @@
             font-size: 0.9rem;
         }
 
-        /* Mobile Menu Toggle Button - HIDDEN ON DESKTOP */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--primary);
-            cursor: pointer;
-            padding: 0.5rem;
-            min-width: 44px;
-            min-height: 44px;
-            align-items: center;
-            justify-content: center;
-            margin-left: 0.5rem;
-        }
+      /* ==================== MOBILE MENU STYLES ==================== */
+/* Mobile Menu Toggle Button - Hidden by default */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--gray);
+    cursor: pointer;
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
 
-        /* Mobile Navigation Menu - HIDDEN ON DESKTOP */
-        .mobile-nav-menu {
-            display: none;
-            background-color: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            z-index: 999;
-        }
+/* Mobile Navigation Menu */
+.mobile-nav-menu {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-top: 1px solid #eee;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+}
 
-        .mobile-nav-items {
-            list-style: none;
-            margin: 0;
-            padding: 1rem 0;
-        }
+/* Mobile menu items */
+.mobile-nav-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 
-        .mobile-nav-items li {
-            border-bottom: 1px solid #eee;
-        }
+.mobile-nav-items li {
+    border-bottom: 1px solid #eee;
+}
 
-        .mobile-nav-items li:last-child {
-            border-bottom: none;
-        }
+.mobile-nav-items li:last-child {
+    border-bottom: none;
+}
 
-        .mobile-nav-items a {
-            display: block;
-            padding: 1rem 1.5rem;
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-        }
+.mobile-nav-items a {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: var(--gray);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    min-height: 44px;
+}
 
-        .mobile-nav-items a:hover, .mobile-nav-items a.active {
-            color: var(--primary);
-            background-color: var(--light);
-        }
+.mobile-nav-items a:hover,
+.mobile-nav-items a.active {
+    color: var(--primary);
+    background-color: var(--light);
+}
 
-        .mobile-auth-buttons {
-            padding: 1rem 1.5rem;
-            display: flex;
-            gap: 1rem;
-            display: none;
-        }
+.mobile-auth-buttons {
+    padding: 1.5rem;
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+}
 
-        .mobile-auth-buttons .btn {
-            flex: 1;
-            padding: 0.8rem;
-        }
+.mobile-auth-buttons .btn {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+}
+@media (max-width: 768px) {
+    #mobile-nav-menu {
+        top: 60px;
+    }
+    
+    .mobile-nav-items a {
+        padding: 1rem 1.2rem;
+    }
+    
+    .mobile-auth-buttons {
+        padding: 1rem;
+    }
+}
 
-        /* ==================== MOBILE RESPONSIVE STYLES ==================== */
-        @media (max-width: 1024px) {
-            .navbar-center {
-                display: none;
-            }
-            
-            .menu-toggle {
-                display: flex;
-            }
-        }
+@media (max-width: 480px) {
+    #mobile-nav-menu {
+        top: 60px;
+    }
+    
+    .mobile-nav-items a {
+        padding: 0.9rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .mobile-auth-buttons {
+        padding: 0.9rem;
+    }
+    
+    .mobile-auth-buttons .btn {
+        padding: 0.7rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Touch-friendly mobile menu */
+.menu-toggle:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+
+      /* ==================== MOBILE RESPONSIVE STYLES ==================== */
+@media (max-width: 1024px) {
+    .navbar-center {
+        display: none;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .auth-buttons {
+        display: none;
+    }
+    
+    .mobile-auth-buttons {
+        display: flex;
+    }
+}
 
         @media (max-width: 768px) {
             .container {
@@ -1998,103 +2058,474 @@
             const mobileSignupBtn = document.getElementById('mobile-signup-btn');
 
             // Language translation data
-            const translations = {
-                en: {
-                    // Navigation
-                    "home": "Home",
-                    "listings": "Listings",
-                    "how-it-works": "How It Works",
-                    "about": "About",
-                    "contact": "Contact",
-                    "login": "Login",
-                    "signup": "Sign Up",
-                    "logout": "Logout",
-                    
-                    // Hero Section
-                    "hero-title": "Connect Directly with Buyers",
-                    "hero-text": "FarmLink eliminates middlemen, reduces post-harvest losses, and provides better prices for farmers while ensuring quality produce for buyers.",
-                    "list-product": "List Your Produce",
-                    "find-product": "Find Produce",
-                    
-                    // Stats Section
-                    "higher-prices": "Higher Prices for Farmers",
-                    "reduced-spoilage": "Reduced Spoilage",
-                    "active-farmers": "Active Farmers",
-                    "verified-buyers": "Verified Buyers",
-                    
-                    // Listings Section
-                    "fresh-produce": "Fresh Produce Listings",
-                    "all-categories": "All Categories",
-                    "vegetables": "Vegetables",
-                    "fruits": "Fruits",
-                    "grains": "Grains",
-                    "dairy": "Dairy",
-                    "all-quality": "All Quality Grades",
-                    "organic": "Organic",
-                    "premium": "Premium",
-                    "standard": "Standard",
-                    "search-location": "Search by location...",
-                    "apply-filters": "Apply Filters",
-                    "clear-filters": "Clear Filters",
-                    "show-more": "Show More Products",
-                    
-                    // How It Works
-                    "how-it-works-title": "How FarmLink Works",
-                    "step1-title": "Create Listing",
-                    "step1-text": "Farmers list their produce with quality grading and quantity details.",
-                    "step2-title": "Browse & Select",
-                    "step2-text": "Buyers browse available produce and add items to their cart.",
-                    "step3-title": "Match Logistics",
-                    "step3-text": "Select from available cold-chain and transportation options.",
-                    "step4-title": "Secure Payment",
-                    "step4-text": "Complete transactions with built-in dispute resolution.",
-                    
-                    // About Section
-                    "why-choose": "Why Choose FarmLink",
-                    "better-prices": "Better Prices",
-                    "better-prices-text": "Eliminate middlemen and get fair prices for your produce.",
-                    "logistics": "Logistics Support",
-                    "logistics-text": "Access to reliable cold-chain and transportation options.",
-                    "quality-assurance": "Quality Assurance",
-                    "quality-assurance-text": "Graded listings and dispute resolution for quality issues.",
-                    "cooperative-pooling": "Cooperative Pooling",
-                    "cooperative-pooling-text": "Small farmers can pool resources for better bargaining power.",
-                    
-                    // Contact Section
-                    "contact-title": "Contact Us",
-                    "get-in-touch": "Get in Touch",
-                    "your-name": "Your Name",
-                    "your-email": "Your Email",
-                    "your-message": "Your Message",
-                    "send-message": "Send Message",
-                    
-                    // Footer
-                    "quick-links": "Quick Links",
-                    "legal": "Legal",
-                    "privacy-policy": "Privacy Policy",
-                    "terms-of-service": "Terms of Service",
-                    "connect": "Connect",
-                    
-                    // Modals
-                    "create-listing-title": "Create New Listing",
-                    "your-name": "Your Name",
-                    "product-name": "Product Name",
-                    "category": "Category",
-                    "select-category": "Select Category",
-                    "quantity-kg": "Quantity (kg)",
-                    "price-kg": "Price per kg (₹)",
-                    "quality": "Quality Grade",
-                    "select-quality": "Select Quality",
-                    "description": "Description",
-                    
-                    // Cart
-                    "your-cart": "Your Cart",
-                    "empty-cart": "Your cart is empty",
-                    "remove": "Remove",
-                    "total": "Total",
-                    "proceed-checkout": "Proceed to Checkout"
-                }
-            };
+            // Language translation data
+const translations = {
+    en: {
+        // Navigation
+        "home": "Home",
+        "listings": "Listings",
+        "how-it-works": "How It Works",
+        "about": "About",
+        "contact": "Contact",
+        "login": "Login",
+        "signup": "Sign Up",
+        "logout": "Logout",
+        
+        // Hero Section
+        "hero-title": "Connect Directly with Buyers",
+        "hero-text": "FarmLink eliminates middlemen, reduces post-harvest losses, and provides better prices for farmers while ensuring quality produce for buyers.",
+        "list-product": "List Your Produce",
+        "find-product": "Find Produce",
+        
+        // Stats Section
+        "higher-prices": "Higher Prices for Farmers",
+        "reduced-spoilage": "Reduced Spoilage",
+        "active-farmers": "Active Farmers",
+        "verified-buyers": "Verified Buyers",
+        
+        // Listings Section
+        "fresh-produce": "Fresh Produce Listings",
+        "all-categories": "All Categories",
+        "vegetables": "Vegetables",
+        "fruits": "Fruits",
+        "grains": "Grains",
+        "dairy": "Dairy",
+        "spices": "Spices",
+        "nuts": "Nuts",
+        "all-quality": "All Quality Grades",
+        "organic": "Organic",
+        "premium": "Premium",
+        "standard": "Standard",
+        "search-location": "Search by location...",
+        "apply-filters": "Apply Filters",
+        "clear-filters": "Clear Filters",
+        "show-more": "Show More Products",
+        
+        // How It Works
+        "how-it-works-title": "How FarmLink Works",
+        "step1-title": "Create Listing",
+        "step1-text": "Farmers list their produce with quality grading and quantity details.",
+        "step2-title": "Browse & Select",
+        "step2-text": "Buyers browse available produce and add items to their cart.",
+        "step3-title": "Match Logistics",
+        "step3-text": "Select from available cold-chain and transportation options.",
+        "step4-title": "Secure Payment",
+        "step4-text": "Complete transactions with built-in dispute resolution.",
+        
+        // About Section
+        "why-choose": "Why Choose FarmLink",
+        "better-prices": "Better Prices",
+        "better-prices-text": "Eliminate middlemen and get fair prices for your produce.",
+        "logistics": "Logistics Support",
+        "logistics-text": "Access to reliable cold-chain and transportation options.",
+        "quality-assurance": "Quality Assurance",
+        "quality-assurance-text": "Graded listings and dispute resolution for quality issues.",
+        "cooperative-pooling": "Cooperative Pooling",
+        "cooperative-pooling-text": "Small farmers can pool resources for better bargaining power.",
+        
+        // Contact Section
+        "contact-title": "Contact Us",
+        "get-in-touch": "Get in Touch",
+        "your-name": "Your Name",
+        "your-email": "Your Email",
+        "your-message": "Your Message",
+        "send-message": "Send Message",
+        
+        // Footer
+        "quick-links": "Quick Links",
+        "legal": "Legal",
+        "privacy-policy": "Privacy Policy",
+        "terms-of-service": "Terms of Service",
+        "connect": "Connect",
+        
+        // Modals
+        "create-listing-title": "Create New Listing",
+        "select-category": "Select Category",
+        "quantity-kg": "Quantity (kg)",
+        "price-kg": "Price per kg (₹)",
+        "select-quality": "Select Quality",
+        "description": "Description",
+        
+        // Cart
+        "your-cart": "Your Cart",
+        "empty-cart": "Your cart is empty",
+        "remove": "Remove",
+        "total": "Total",
+        "proceed-checkout": "Proceed to Checkout"
+    },
+    es: {
+        // Navigation
+        "home": "Inicio",
+        "listings": "Listados",
+        "how-it-works": "Cómo Funciona",
+        "about": "Acerca de",
+        "contact": "Contacto",
+        "login": "Iniciar Sesión",
+        "signup": "Registrarse",
+        "logout": "Cerrar Sesión",
+        
+        // Hero Section
+        "hero-title": "Conéctate Directamente con Compradores",
+        "hero-text": "FarmLink elimina intermediarios, reduce las pérdidas posteriores a la cosecha y ofrece mejores precios a los agricultores mientras garantiza productos de calidad para los compradores.",
+        "list-product": "Lista Tus Productos",
+        "find-product": "Encontrar Productos",
+        
+        // Stats Section
+        "higher-prices": "Precios Más Altos para Agricultores",
+        "reduced-spoilage": "Pérdidas Reducidas",
+        "active-farmers": "Agricultores Activos",
+        "verified-buyers": "Compradores Verificados",
+        
+        // Listings Section
+        "fresh-produce": "Listados de Productos Frescos",
+        "all-categories": "Todas las Categorías",
+        "vegetables": "Vegetales",
+        "fruits": "Frutas",
+        "grains": "Granos",
+        "dairy": "Lácteos",
+        "spices": "Especias",
+        "nuts": "Frutos Secos",
+        "all-quality": "Todos los Grados de Calidad",
+        "organic": "Orgánico",
+        "premium": "Premium",
+        "standard": "Estándar",
+        "search-location": "Buscar por ubicación...",
+        "apply-filters": "Aplicar Filtros",
+        "clear-filters": "Limpiar Filtros",
+        "show-more": "Mostrar Más Productos",
+        
+        // How It Works
+        "how-it-works-title": "Cómo Funciona FarmLink",
+        "step1-title": "Crear Listado",
+        "step1-text": "Los agricultores listan sus productos con clasificación de calidad y detalles de cantidad.",
+        "step2-title": "Navegar y Seleccionar",
+        "step2-text": "Los compradores navegan por los productos disponibles y agregan artículos a su carrito.",
+        "step3-title": "Coincidir Logística",
+        "step3-text": "Seleccione entre opciones disponibles de cadena de frío y transporte.",
+        "step4-title": "Pago Seguro",
+        "step4-text": "Complete transacciones con resolución de disputas incorporada.",
+        
+        // About Section
+        "why-choose": "Por Qué Elegir FarmLink",
+        "better-prices": "Mejores Precios",
+        "better-prices-text": "Elimine intermediarios y obtenga precios justos para sus productos.",
+        "logistics": "Soporte Logístico",
+        "logistics-text": "Acceso a opciones confiables de cadena de frío y transporte.",
+        "quality-assurance": "Garantía de Calidad",
+        "quality-assurance-text": "Listados clasificados y resolución de disputas por problemas de calidad.",
+        "cooperative-pooling": "Agrupación Cooperativa",
+        "cooperative-pooling-text": "Los pequeños agricultores pueden agrupar recursos para un mejor poder de negociación.",
+        
+        // Contact Section
+        "contact-title": "Contáctenos",
+        "get-in-touch": "Ponerse en Contacto",
+        "your-name": "Tu Nombre",
+        "your-email": "Tu Correo Electrónico",
+        "your-message": "Tu Mensaje",
+        "send-message": "Enviar Mensaje",
+        
+        // Footer
+        "quick-links": "Enlaces Rápidos",
+        "legal": "Legal",
+        "privacy-policy": "Política de Privacidad",
+        "terms-of-service": "Términos de Servicio",
+        "connect": "Conectar",
+        
+        // Modals
+        "create-listing-title": "Crear Nuevo Listado",
+        "select-category": "Seleccionar Categoría",
+        "quantity-kg": "Cantidad (kg)",
+        "price-kg": "Precio por kg (₹)",
+        "select-quality": "Seleccionar Calidad",
+        "description": "Descripción",
+        
+        // Cart
+        "your-cart": "Tu Carrito",
+        "empty-cart": "Tu carrito está vacío",
+        "remove": "Eliminar",
+        "total": "Total",
+        "proceed-checkout": "Proceder al Pago"
+    },
+    fr: {
+        // Navigation
+        "home": "Accueil",
+        "listings": "Annonces",
+        "how-it-works": "Comment ça Marche",
+        "about": "À Propos",
+        "contact": "Contact",
+        "login": "Connexion",
+        "signup": "S'inscrire",
+        "logout": "Déconnexion",
+        
+        // Hero Section
+        "hero-title": "Connectez-vous Directement avec les Acheteurs",
+        "hero-text": "FarmLink élimine les intermédiaires, réduit les pertes après récolte et offre de meilleurs prix aux agriculteurs tout en garantissant des produits de qualité aux acheteurs.",
+        "list-product": "Lister Vos Produits",
+        "find-product": "Trouver des Produits",
+        
+        // Stats Section
+        "higher-prices": "Prix Plus Élevés pour les Agriculteurs",
+        "reduced-spoilage": "Détérioration Réduite",
+        "active-farmers": "Agriculteurs Actifs",
+        "verified-buyers": "Acheteurs Vérifiés",
+        
+        // Listings Section
+        "fresh-produce": "Annonces de Produits Frais",
+        "all-categories": "Toutes Catégories",
+        "vegetables": "Légumes",
+        "fruits": "Fruits",
+        "grains": "Céréales",
+        "dairy": "Produits Laitiers",
+        "spices": "Épices",
+        "nuts": "Noix",
+        "all-quality": "Toutes Qualités",
+        "organic": "Biologique",
+        "premium": "Premium",
+        "standard": "Standard",
+        "search-location": "Rechercher par localisation...",
+        "apply-filters": "Appliquer Filtres",
+        "clear-filters": "Effacer Filtres",
+        "show-more": "Afficher Plus de Produits",
+        
+        // How It Works
+        "how-it-works-title": "Comment Fonctionne FarmLink",
+        "step1-title": "Créer une Annonce",
+        "step1-text": "Les agriculteurs listent leurs produits avec classement de qualité et détails de quantité.",
+        "step2-title": "Parcourir et Sélectionner",
+        "step2-text": "Les acheteurs parcourent les produits disponibles et ajoutent des articles à leur panier.",
+        "step3-title": "Apparier Logistique",
+        "step3-text": "Sélectionnez parmi les options disponibles de chaîne du froid et de transport.",
+        "step4-title": "Paiement Sécurisé",
+        "step4-text": "Complétez les transactions avec résolution de litiges intégrée.",
+        
+        // About Section
+        "why-choose": "Pourquoi Choisir FarmLink",
+        "better-prices": "Meilleurs Prix",
+        "better-prices-text": "Éliminez les intermédiaires et obtenez des prix équitables pour vos produits.",
+        "logistics": "Support Logistique",
+        "logistics-text": "Accès à des options fiables de chaîne du froid et de transport.",
+        "quality-assurance": "Assurance Qualité",
+        "quality-assurance-text": "Annonces classées et résolution de litiges pour problèmes de qualité.",
+        "cooperative-pooling": "Regroupement Coopératif",
+        "cooperative-pooling-text": "Les petits agriculteurs peuvent regrouper des ressources pour un meilleur pouvoir de négociation.",
+        
+        // Contact Section
+        "contact-title": "Contactez-nous",
+        "get-in-touch": "Entrer en Contact",
+        "your-name": "Votre Nom",
+        "your-email": "Votre Email",
+        "your-message": "Votre Message",
+        "send-message": "Envoyer le Message",
+        
+        // Footer
+        "quick-links": "Liens Rapides",
+        "legal": "Légal",
+        "privacy-policy": "Politique de Confidentialité",
+        "terms-of-service": "Conditions d'Utilisation",
+        "connect": "Connecter",
+        
+        // Modals
+        "create-listing-title": "Créer une Nouvelle Annonce",
+        "select-category": "Sélectionner Catégorie",
+        "quantity-kg": "Quantité (kg)",
+        "price-kg": "Prix par kg (₹)",
+        "select-quality": "Sélectionner Qualité",
+        "description": "Description",
+        
+        // Cart
+        "your-cart": "Votre Panier",
+        "empty-cart": "Votre panier est vide",
+        "remove": "Supprimer",
+        "total": "Total",
+        "proceed-checkout": "Procéder au Paiement"
+    },
+    hi: {
+        // Navigation
+        "home": "होम",
+        "listings": "लिस्टिंग",
+        "how-it-works": "कैसे काम करता है",
+        "about": "अबाउट",
+        "contact": "संपर्क",
+        "login": "लॉगिन",
+        "signup": "साइनअप",
+        "logout": "लॉगआउट",
+        
+        // Hero Section
+        "hero-title": "सीधे खरीदारों से जुड़ें",
+        "hero-text": "FarmLink मध्यस्थों को खत्म करता है, कटाई के बाद के नुकसान को कम करता है, और किसानों के लिए बेहतर कीमतें प्रदान करता है while खरीदारों के लिए गुणवत्तापूर्ण उपज सुनिश्चित करता है।",
+        "list-product": "अपनी उपज सूचीबद्ध करें",
+        "find-product": "उपज खोजें",
+        
+        // Stats Section
+        "higher-prices": "किसानों के लिए उच्च कीमतें",
+        "reduced-spoilage": "कम बर्बादी",
+        "active-farmers": "सक्रिय किसान",
+        "verified-buyers": "सत्यापित खरीदार",
+        
+        // Listings Section
+        "fresh-produce": "ताजी उपज की सूची",
+        "all-categories": "सभी श्रेणियाँ",
+        "vegetables": "सब्जियां",
+        "fruits": "फल",
+        "grains": "अनाज",
+        "dairy": "डेयरी",
+        "spices": "मसाले",
+        "nuts": "मेवे",
+        "all-quality": "सभी गुणवत्ता ग्रेड",
+        "organic": "ऑर्गेनिक",
+        "premium": "प्रीमियम",
+        "standard": "मानक",
+        "search-location": "स्थान के अनुसार खोजें...",
+        "apply-filters": "फ़िल्टर लागू करें",
+        "clear-filters": "फ़िल्टर साफ़ करें",
+        "show-more": "और उत्पाद दिखाएं",
+        
+        // How It Works
+        "how-it-works-title": "FarmLink कैसे काम करता है",
+        "step1-title": "लिस्टिंग बनाएं",
+        "step1-text": "किसान गुणवत्ता ग्रेडिंग और मात्रा विवरण के साथ अपनी उपज सूचीबद्ध करते हैं।",
+        "step2-title": "ब्राउज़ करें और चुनें",
+        "step2-text": "खरीदार उपलब्ध उपज को ब्राउज़ करते हैं और आइटम को अपनी गाड़ी में जोड़ते हैं।",
+        "step3-title": "लॉजिस्टिक्स मिलाएं",
+        "step3-text": "उपलब्ध कोल्ड-चेन और परिवहन विकल्पों में से चुनें।",
+        "step4-title": "सुरक्षित भुगतान",
+        "step4-text": "अंतर्निहित विवाद समाधान के साथ लेनदेन पूरा करें।",
+        
+        // About Section
+        "why-choose": "FarmLink क्यों चुनें",
+        "better-prices": "बेहतर कीमतें",
+        "better-prices-text": "मध्यस्थों को खत्म करें और अपनी उपज के लिए उचित कीमतें प्राप्त करें।",
+        "logistics": "लॉजिस्टिक्स सहायता",
+        "logistics-text": "विश्वसनीय कोल्ड-चेन और परिवहन विकल्पों तक पहुंच।",
+        "quality-assurance": "गुणवत्ता आश्वासन",
+        "quality-assurance-text": "गुणवत्ता मुद्दों के लिए ग्रेडेड लिस्टिंग और विवाद समाधान।",
+        "cooperative-pooling": "सहकारी पूलिंग",
+        "cooperative-pooling-text": "छोटे किसान बेहतर सौदेबाजी की शक्ति के लिए संसाधनों को पूल कर सकते हैं।",
+        
+        // Contact Section
+        "contact-title": "हमसे संपर्क करें",
+        "get-in-touch": "संपर्क में रहें",
+        "your-name": "आपका नाम",
+        "your-email": "आपका ईमेल",
+        "your-message": "आपका संदेश",
+        "send-message": "संदेश भेजें",
+        
+        // Footer
+        "quick-links": "त्वरित लिंक",
+        "legal": "कानूनी",
+        "privacy-policy": "गोपनीयता नीति",
+        "terms-of-service": "सेवा की शर्तें",
+        "connect": "कनेक्ट करें",
+        
+        // Modals
+        "create-listing-title": "नई लिस्टिंग बनाएं",
+        "select-category": "श्रेणी चुनें",
+        "quantity-kg": "मात्रा (किग्रा)",
+        "price-kg": "कीमत प्रति किग्रा (₹)",
+        "select-quality": "गुणवत्ता चुनें",
+        "description": "विवरण",
+        
+        // Cart
+        "your-cart": "आपकी गाड़ी",
+        "empty-cart": "आपकी गाड़ी खाली है",
+        "remove": "हटाएं",
+        "total": "कुल",
+        "proceed-checkout": "चेकआउट पर आगे बढ़ें"
+    },
+    ta: {
+        // Navigation
+        "home": "முகப்பு",
+        "listings": "பட்டியல்கள்",
+        "how-it-works": "எவ்வாறு இது செயல்படுகிறது",
+        "about": "எங்களைப் பற்றி",
+        "contact": "தொடர்பு",
+        "login": "உள்நுழைய",
+        "signup": "பதிவு செய்ய",
+        "logout": "வெளியேறு",
+        
+        // Hero Section
+        "hero-title": "நேரடியாக வாங்குபவர்களுடன் இணைக்கவும்",
+        "hero-text": "FarmLink மத்தரவர்களை நீக்குகிறது, அறுவடைக்குப் பின் இழப்புகளைக் குறைக்கிறது, மற்றும் விவசாயிகளுக்கு சிறந்த விலைகளை வழங்குகிறது while வாங்குபவர்களுக்கு தரமான பொருட்களை உறுதி செய்கிறது.",
+        "list-product": "உங்கள் பொருட்களை பட்டியலிடுங்கள்",
+        "find-product": "பொருட்களை கண்டுபிடி",
+        
+        // Stats Section
+        "higher-prices": "விவசாயிகளுக்கு உயர்ந்த விலைகள்",
+        "reduced-spoilage": "குறைக்கப்பட்ட கெட்டுப்போதல்",
+        "active-farmers": "செயலில் உள்ள விவசாயிகள்",
+        "verified-buyers": "சரிபார்க்கப்பட்ட வாங்குபவர்கள்",
+        
+        // Listings Section
+        "fresh-produce": "புதிய பொருட்களின் பட்டியல்கள்",
+        "all-categories": "அனைத்து வகைகள்",
+        "vegetables": "காய்கறிகள்",
+        "fruits": "பழங்கள்",
+        "grains": "தானியங்கள்",
+        "dairy": "பால் பொருட்கள்",
+        "spices": "மசாலாப் பொருட்கள்",
+        "nuts": "கொட்டைகள்",
+        "all-quality": "அனைத்து தர தரங்கள்",
+        "organic": "கரிம",
+        "premium": "பிரீமியம்",
+        "standard": "தரநிலை",
+        "search-location": "இடத்தின் படி தேடு...",
+        "apply-filters": "வடிகட்டிகளைப் பயன்படுத்து",
+        "clear-filters": "வடிகட்டிகளை அழி",
+        "show-more": "மேலும் பொருட்களைக் காட்டு",
+        
+        // How It Works
+        "how-it-works-title": "FarmLink எவ்வாறு செயல்படுகிறது",
+        "step1-title": "பட்டியலை உருவாக்கவும்",
+        "step1-text": "விவசாயிகள் தர தரப்படுத்தல் மற்றும் அளவு விவரங்களுடன் தங்கள் பொருட்களை பட்டியலிடுகிறார்கள்.",
+        "step2-title": "உலாவி மற்றும் தேர்ந்தெடு",
+        "step2-text": "வாங்குபவர்கள் கிடைக்கக்கூடிய பொருட்களை உலாவி தங்கள் வண்டியில் பொருட்களைச் சேர்க்கிறார்கள்.",
+        "step3-title": "லாஜிஸ்டிக்ஸை பொருத்தவும்",
+        "step3-text": "கிடைக்கக்கூடிய குளிர் சங்கிலி மற்றும் போக்குவரத்து விருப்பங்களிலிருந்து தேர்ந்தெடுக்கவும்.",
+        "step4-title": "பாதுகாப்பான கட்டணம்",
+        "step4-text": "உள்ளமைக்கப்பட்ட சர்ச்சை தீர்வுடன் பரிவர்த்தனைகளை முடிக்கவும்.",
+        
+        // About Section
+        "why-choose": "ஏன் FarmLink ஐ தேர்ந்தெடுக்க வேண்டும்",
+        "better-prices": "சிறந்த விலைகள்",
+        "better-prices-text": "மத்தரவர்களை நீக்கி உங்கள் பொருட்களுக்கு நியாயமான விலைகளைப் பெறுங்கள்.",
+        "logistics": "லாஜிஸ்டிக்ஸ் ஆதரவு",
+        "logistics-text": "நம்பகமான குளிர் சங்கிலி மற்றும் போக்குவரத்து விருப்பங்களுக்கான அணுகல்.",
+        "quality-assurance": "தர உத்தரவாதம்",
+        "quality-assurance-text": "தரம் சம்பந்தப்பட்ட சிக்கல்களுக்கு தரப்படுத்தப்பட்ட பட்டியல்கள் மற்றும் சர்ச்சை தீர்வு.",
+        "cooperative-pooling": "கூட்டுறவு பூலிங்",
+        "cooperative-pooling-text": "சிறிய விவசாயிகள் சிறந்த பேரம் பேசும் சக்திக்காக வளங்களை ஒன்றாக்கலாம்.",
+        
+        // Contact Section
+        "contact-title": "எங்களை தொடர்பு கொள்ள",
+        "get-in-touch": "தொடர்பில் இருங்கள்",
+        "your-name": "உங்கள் பெயர்",
+        "your-email": "உங்கள் மின்னஞ்சல்",
+        "your-message": "உங்கள் செய்தி",
+        "send-message": "செய்தி அனுப்பவும்",
+        
+        // Footer
+        "quick-links": "விரைவு இணைப்புகள்",
+        "legal": "சட்டப்பூர்வ",
+        "privacy-policy": "தனியுரிமைக் கொள்கை",
+        "terms-of-service": "சேவை விதிமுறைகள்",
+        "connect": "இணைக்கவும்",
+        
+        // Modals
+        "create-listing-title": "புதிய பட்டியலை உருவாக்கவும்",
+        "select-category": "வகையைத் தேர்ந்தெடு",
+        "quantity-kg": "அளவு (கிலோ)",
+        "price-kg": "கிலோவுக்கு விலை (₹)",
+        "select-quality": "தரத்தைத் தேர்ந்தெடு",
+        "description": "விளக்கம்",
+        
+        // Cart
+        "your-cart": "உங்கள் வண்டி",
+        "empty-cart": "உங்கள் வண்டி காலியாக உள்ளது",
+        "remove": "அகற்று",
+        "total": "மொத்தம்",
+        "proceed-checkout": "பில்கட்டுதலைத் தொடரவும்"
+    }
+};
 
             // Global variables
             let cart = [];
@@ -3081,107 +3512,107 @@ function getImageForProduct(productName, category) {
                 changeLanguage(savedLanguage);
             }
 
+            // Mobile menu functionality - URGENT FIX
+function setupMobileMenu() {
+    console.log('Setting up mobile menu...');
+    
+    const menuBtn = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-nav-menu');
+    
+    if (!menuBtn || !mobileMenu) {
+        console.error('Menu elements missing!');
+        return;
+    }
+    
+    console.log('Menu elements found');
+    
+    // Make sure menu is initially hidden
+    mobileMenu.style.display = 'none';
+    
+    // Add click event to menu button
+    menuBtn.onclick = function(e) {
+        e.stopPropagation();
+        console.log('Menu clicked, current display:', mobileMenu.style.display);
+        
+        if (mobileMenu.style.display === 'block') {
+            // Close menu
+            mobileMenu.style.display = 'none';
+            this.innerHTML = '<i class="fas fa-bars"></i>';
+        } else {
+            // Open menu
+            mobileMenu.style.display = 'block';
+            this.innerHTML = '<i class="fas fa-times"></i>';
+        }
+    };
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.style.display = 'none';
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+    });
+    
+    // Close menu when clicking links
+    const menuLinks = mobileMenu.querySelectorAll('a');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            mobileMenu.style.display = 'none';
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+    });
+    
+    // Mobile login button
+    const mobileLogin = document.getElementById('mobile-login-btn');
+    if (mobileLogin) {
+        mobileLogin.onclick = function() {
+            mobileMenu.style.display = 'none';
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            openModal(loginModal);
+        };
+    }
+    
+    // Mobile signup button
+    const mobileSignup = document.getElementById('mobile-signup-btn');
+    if (mobileSignup) {
+        mobileSignup.onclick = function() {
+            mobileMenu.style.display = 'none';
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            openModal(loginModal);
             
+            // Switch to signup tab
+            document.querySelector('[data-tab="login"]').classList.remove('active');
+            document.querySelector('[data-tab="signup"]').classList.add('active');
+            document.getElementById('login-tab').classList.remove('active');
+            document.getElementById('signup-tab').classList.add('active');
+        };
+    }
+}
+            
+// Initialize the application
+function init() {
+    listings = [...sampleListings];
+    loadListings();
+    setupEventListeners();
+    setupMobileMenu();
+    setupSmoothScrolling();
+    updateCartUI();
+    initLanguage();
+    initPaymentGateway(); // This line is important
+    
+    // Set today's date as default for manufactured date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('manufactured-date').value = today;
+    
+    // Set default expiry date (7 days from today)
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    document.getElementById('expiry-date').value = nextWeek.toISOString().split('T')[0];
+}
 
-            // Initialize the page
-            function init() {
-                listings = [...sampleListings];
-                loadListings();
-                setupEventListeners();
-                setupMobileMenu();
-                setupSmoothScrolling();
-                updateCartUI();
-                initLanguage();
-                
-                // Set today's date as default for manufactured date
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('manufactured-date').value = today;
-                
-                // Set default expiry date (7 days from today)
-                const nextWeek = new Date();
-                nextWeek.setDate(nextWeek.getDate() + 7);
-                document.getElementById('expiry-date').value = nextWeek.toISOString().split('T')[0];
-            }
-
-            // Mobile menu functionality
-            function setupMobileMenu() {
-                if (menuToggle && mobileNavMenu) {
-                    // Toggle mobile menu
-                    menuToggle.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const isVisible = mobileNavMenu.style.display === 'block';
-                        mobileNavMenu.style.display = isVisible ? 'none' : 'block';
-                        const icon = this.querySelector('i');
-                        if (isVisible) {
-                            icon.classList.remove('fa-times');
-                            icon.classList.add('fa-bars');
-                        } else {
-                            icon.classList.remove('fa-bars');
-                            icon.classList.add('fa-times');
-                        }
-                    });
-                    
-                    // Close menu when clicking outside
-                    document.addEventListener('click', function(e) {
-                        if (!menuToggle.contains(e.target) && !mobileNavMenu.contains(e.target)) {
-                            mobileNavMenu.style.display = 'none';
-                            const icon = menuToggle.querySelector('i');
-                            if (icon) {
-                                icon.classList.remove('fa-times');
-                                icon.classList.add('fa-bars');
-                            }
-                        }
-                    });
-                    
-                    // Close menu when clicking a link
-                    const mobileLinks = mobileNavMenu.querySelectorAll('a');
-                    mobileLinks.forEach(link => {
-                        link.addEventListener('click', function() {
-                            mobileNavMenu.style.display = 'none';
-                            const icon = menuToggle.querySelector('i');
-                            if (icon) {
-                                icon.classList.remove('fa-times');
-                                icon.classList.add('fa-bars');
-                            }
-                        });
-                    });
-                    
-                    // Mobile auth buttons functionality
-                    if (mobileLoginBtn) {
-                        mobileLoginBtn.addEventListener('click', function() {
-                            openModal(loginModal);
-                            mobileNavMenu.style.display = 'none';
-                            const icon = menuToggle.querySelector('i');
-                            if (icon) {
-                                icon.classList.remove('fa-times');
-                                icon.classList.add('fa-bars');
-                            }
-                        });
-                    }
-                    
-                    if (mobileSignupBtn) {
-                        mobileSignupBtn.addEventListener('click', function() {
-                            openModal(loginModal);
-                            // Switch to signup tab
-                            document.querySelectorAll('.tab-btn').forEach(btn => {
-                                btn.classList.remove('active');
-                            });
-                            document.querySelectorAll('.tab-content').forEach(content => {
-                                content.classList.remove('active');
-                            });
-                            document.querySelector('[data-tab="signup"]').classList.add('active');
-                            document.getElementById('signup-tab').classList.add('active');
-                            
-                            mobileNavMenu.style.display = 'none';
-                            const icon = menuToggle.querySelector('i');
-                            if (icon) {
-                                icon.classList.remove('fa-times');
-                                icon.classList.add('fa-bars');
-                            }
-                        });
-                    }
-                }
-            }
+// Call init() to start the application
+init();
+           
 
             // Load listings into the grid
             function loadListings(showAll = false) {
@@ -3762,20 +4193,66 @@ function getImageForProduct(productName, category) {
                     }, 1500);
                 });
                 
-                // Shipping form submission
-                if (shippingForm) {
-                    shippingForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        
-                        const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
-                        showNotification('Order placed successfully!', 'success');
-                        
-                        cart = [];
-                        updateCartUI();
-                        closeModal(checkoutModal);
-                        this.reset();
-                    });
-                }
+              // Shipping form submission - Payment Gateway integration
+if (shippingForm) {
+    shippingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate form
+        if (!validateShippingForm()) {
+            return;
+        }
+        
+        // Get selected payment method
+        const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+        if (!selectedPayment) {
+            showNotification('Please select a payment method', 'error');
+            return;
+        }
+        
+        const selectedPaymentMethod = selectedPayment.value;
+        const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+        
+        // Open payment gateway
+        openPaymentGateway(selectedPaymentMethod, totalAmount);
+    });
+}// Validate Shipping Form
+function validateShippingForm() {
+    const name = document.getElementById('full-name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const pincode = document.getElementById('pincode').value.trim();
+    
+    if (!name || name.length < 3) {
+        showNotification('Please enter a valid name (min 3 characters)', 'error');
+        return false;
+    }
+    
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(phone)) {
+        showNotification('Please enter a valid 10-digit mobile number', 'error');
+        return false;
+    }
+    
+    if (!address || address.length < 10) {
+        showNotification('Please enter complete delivery address', 'error');
+        return false;
+    }
+    
+    if (!city || city.length < 2) {
+        showNotification('Please enter valid city name', 'error');
+        return false;
+    }
+    
+    const pincodeRegex = /^\d{6}$/;
+    if (!pincodeRegex.test(pincode)) {
+        showNotification('Please enter valid 6-digit PIN code', 'error');
+        return false;
+    }
+    
+    return true;
+}
             }
 
             // Apply filters to listings
@@ -3839,10 +4316,1568 @@ function getImageForProduct(productName, category) {
                 
                 document.getElementById('checkout-total-price').textContent = `₹${total.toFixed(2)}`;
             }
+// REPLACE your existing payment gateway section with this fixed version
 
-            // Initialize the application
-            init();
+// Payment Gateway Variables
+let selectedPaymentMethod = '';
+let paymentTimer = null;
+let paymentTimeLeft = 300;
+let transactionId = '';
+
+// Initialize Payment Gateway - Call this in your main init() function
+function initPaymentGateway() {
+    const shippingForm = document.getElementById('shipping-form');
+    
+    if (!shippingForm) {
+        console.error('Shipping form not found');
+        return;
+    }
+    
+    // Handle shipping form submission
+    shippingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submitted');
+        
+        // Validate form
+        if (!validateShippingForm()) {
+            return;
+        }
+        
+        // Get selected payment method
+        const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+        if (!selectedPayment) {
+            showNotification('Please select a payment method', 'error');
+            return;
+        }
+        
+        selectedPaymentMethod = selectedPayment.value;
+        console.log('Selected payment method:', selectedPaymentMethod);
+        
+        const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+        
+        // Open payment gateway
+        openPaymentGateway(selectedPaymentMethod, totalAmount);
+    });
+    
+    // Close payment modal button
+    const closePaymentBtn = document.getElementById('close-payment');
+    if (closePaymentBtn) {
+        closePaymentBtn.addEventListener('click', function() {
+            closeModal(document.getElementById('payment-modal'));
+            resetPaymentGateway();
         });
+    }
+}
+
+// Validate Shipping Form
+function validateShippingForm() {
+    const name = document.getElementById('full-name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const pincode = document.getElementById('pincode').value.trim();
+    
+    if (!name || name.length < 3) {
+        showNotification('Please enter a valid name (min 3 characters)', 'error');
+        return false;
+    }
+    
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(phone)) {
+        showNotification('Please enter a valid 10-digit mobile number', 'error');
+        return false;
+    }
+    
+    if (!address || address.length < 10) {
+        showNotification('Please enter complete delivery address', 'error');
+        return false;
+    }
+    
+    if (!city || city.length < 2) {
+        showNotification('Please enter valid city name', 'error');
+        return false;
+    }
+    
+    const pincodeRegex = /^\d{6}$/;
+    if (!pincodeRegex.test(pincode)) {
+        showNotification('Please enter valid 6-digit PIN code', 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+// Open Payment Gateway
+function openPaymentGateway(method, amount) {
+    console.log('Opening payment gateway:', method, amount);
+    
+    const paymentModal = document.getElementById('payment-modal');
+    
+    if (!paymentModal) {
+        console.error('Payment modal not found');
+        return;
+    }
+    
+    // Generate transaction ID
+    transactionId = 'FARM' + Date.now() + Math.floor(Math.random() * 1000);
+    
+    // Close checkout modal
+    closeModal(document.getElementById('checkout-modal'));
+    
+    // Load appropriate payment interface
+    switch(method) {
+        case 'upi':
+            loadUPIInterface(amount);
+            break;
+        case 'card':
+            loadCardInterface(amount);
+            break;
+        case 'netbanking':
+            loadNetBankingInterface(amount);
+            break;
+        case 'cod':
+            loadCODInterface(amount);
+            break;
+        default:
+            loadUPIInterface(amount);
+    }
+    
+    // Open payment modal
+    openModal(paymentModal);
+    startPaymentTimer();
+}
+
+// Load UPI Payment Interface
+function loadUPIInterface(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway upi-interface">
+            <div class="payment-header">
+                <h3>UPI Payment</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Scan QR code or pay via UPI apps</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p><strong>Transaction ID:</strong> ${transactionId}</p>
+                <p><strong>UPI ID:</strong> farmlink.market@icici</p>
+            </div>
+            
+            <div class="qr-code-container" style="text-align: center; margin: 30px 0;">
+                <div style="width: 200px; height: 200px; background: #f5f5f5; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 2px solid #ddd;">
+                    <i class="fas fa-qrcode" style="font-size: 80px; color: #666;"></i>
+                </div>
+                <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                    Scan QR code to pay
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0; padding: 10px; background: #fff3cd; border-radius: 8px;">
+                <i class="fas fa-clock"></i> Time remaining: 
+                <span style="font-weight: bold; color: #856404;" id="payment-timer">05:00</span>
+            </div>
+            
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0;">
+    <button class="btn upi-app-btn phonepe-btn" id="phonepe-btn" 
+            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
+                   background: #5F259F; color: white; border: none; border-radius: 10px; cursor: pointer; 
+                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(95, 37, 159, 0.2);">
+        <i class="fas fa-mobile-alt" style="font-size: 1.5rem;"></i>
+        <span>PhonePe</span>
+    </button>
+    <button class="btn upi-app-btn gpay-btn" id="gpay-btn" 
+            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
+                   background: #4285F4; color: white; border: none; border-radius: 10px; cursor: pointer; 
+                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(66, 133, 244, 0.2);">
+        <i class="fab fa-google" style="font-size: 1.5rem;"></i>
+        <span>GPay</span>
+    </button>
+    <button class="btn upi-app-btn paytm-btn" id="paytm-btn" 
+            style="padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
+                   background: #1BA6F1; color: white; border: none; border-radius: 10px; cursor: pointer; 
+                   transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(27, 166, 241, 0.2);">
+        <i class="fas fa-wallet" style="font-size: 1.5rem;"></i>
+        <span>Paytm</span>
+    </button>
+</div>
+            
+            <div style="margin: 20px 0;">
+                <input type="text" class="form-control" id="upi-id-input" 
+                       placeholder="Enter your UPI ID (e.g., 9876543210@upi)" 
+                       style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; margin-bottom: 10px;">
+                <button class="btn btn-primary" id="pay-via-upi-btn" style="width: 100%;">
+                    Pay via UPI ID
+                </button>
+            </div>
+            
+            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <i class="fas fa-info-circle" style="color: #1976d2;"></i>
+                <span style="color: #1565c0; margin-left: 10px;">
+                    You will be redirected to your UPI app for payment confirmation
+                </span>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-outline" id="cancel-payment-btn" style="flex: 1;">
+                    Cancel Payment
+                </button>
+                <button class="btn btn-secondary" id="i-have-paid-btn" style="flex: 1;">
+                    I have Paid
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Attach event listeners after creating the HTML
+    setTimeout(() => {
+        const phonePeBtn = document.getElementById('phonepe-btn');
+        const gPayBtn = document.getElementById('gpay-btn');
+        const paytmBtn = document.getElementById('paytm-btn');
+        const payViaUPIBtn = document.getElementById('pay-via-upi-btn');
+        const cancelBtn = document.getElementById('cancel-payment-btn');
+        const iHavePaidBtn = document.getElementById('i-have-paid-btn');
+        
+        if (phonePeBtn) phonePeBtn.addEventListener('click', () => openUPIApp('phonepe'));
+        if (gPayBtn) gPayBtn.addEventListener('click', () => openUPIApp('gpay'));
+        if (paytmBtn) paytmBtn.addEventListener('click', () => openUPIApp('paytm'));
+        if (payViaUPIBtn) payViaUPIBtn.addEventListener('click', verifyUPIID);
+        if (cancelBtn) cancelBtn.addEventListener('click', () => {
+            closeModal(document.getElementById('payment-modal'));
+            resetPaymentGateway();
+        });
+        if (iHavePaidBtn) iHavePaidBtn.addEventListener('click', () => showUPIPINScreen(amount));
+    }, 100);
+}
+
+// Open UPI App
+function openUPIApp(appName) {
+    const paymentContent = document.getElementById('payment-content');
+    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Opening ${appName === 'phonepe' ? 'PhonePe' : appName === 'gpay' ? 'Google Pay' : 'Paytm'}...</h3>
+            <p style="color: #666; margin-top: 10px;">Redirecting to UPI app for payment</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showUPIPINScreen(amount);
+    }, 2000);
+}
+
+// Verify UPI ID
+function verifyUPIID() {
+    const upiId = document.getElementById('upi-id-input').value.trim();
+    
+    if (!upiId || !upiId.includes('@')) {
+        showNotification('Please enter a valid UPI ID (e.g., 9876543210@upi)', 'error');
+        return;
+    }
+    
+    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    openUPIApp('manual');
+}
+
+// Show UPI PIN Screen - FIXED VERSION
+function showUPIPINScreen(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Enter UPI PIN</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Confirm payment on your UPI app</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>To:</strong> FarmLink Marketplace</p>
+                <p><strong>UPI ID:</strong> farmlink.market@icici</p>
+                <p><strong>Amount:</strong> ₹${amount.toFixed(2)}</p>
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 30px 0;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-1" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-2" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-3" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-4" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-5" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="password" class="pin-box" maxlength="1" readonly id="pin-6" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+            </div>
+            
+            <div style="max-width: 300px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="1" style="padding: 20px; font-size: 18px;">1</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="2" style="padding: 20px; font-size: 18px;">2</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="3" style="padding: 20px; font-size: 18px;">3</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="4" style="padding: 20px; font-size: 18px;">4</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="5" style="padding: 20px; font-size: 18px;">5</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="6" style="padding: 20px; font-size: 18px;">6</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px;">
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="7" style="padding: 20px; font-size: 18px;">7</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="8" style="padding: 20px; font-size: 18px;">8</button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="9" style="padding: 20px; font-size: 18px;">9</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                    <button type="button" class="btn btn-outline" id="clear-pin-btn" style="padding: 20px;">
+                        <i class="fas fa-backspace"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline pin-btn" data-digit="0" style="padding: 20px; font-size: 18px;">0</button>
+                    <button type="button" class="btn btn-primary" id="verify-pin-btn" style="padding: 20px;">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <i class="fas fa-lock" style="color: #2e7d32;"></i>
+                <span style="color: #1b5e20; margin-left: 10px;">
+                    Your UPI PIN is secure and encrypted
+                </span>
+            </div>
+        </div>
+    `;
+    
+    // Initialize PIN variables
+    window.currentPinIndex = 0;
+    window.pinDigits = ['', '', '', '', '', ''];
+    window.isPinProcessing = false; // Add flag to prevent double clicks
+    
+    // Add CSS to prevent text selection
+    const style = document.createElement('style');
+    style.textContent = `
+        .pin-btn {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            touch-action: manipulation;
+        }
+        .pin-btn:active {
+            transform: scale(0.95);
+            transition: transform 0.1s;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Attach event listeners to PIN buttons - FIXED VERSION
+    setTimeout(() => {
+        const pinButtons = document.querySelectorAll('.pin-btn');
+        pinButtons.forEach(btn => {
+            // Remove any existing listeners first
+            btn.removeEventListener('click', handlePinClick);
+            // Add new listener
+            btn.addEventListener('click', handlePinClick);
+        });
+        
+        const clearBtn = document.getElementById('clear-pin-btn');
+        if (clearBtn) {
+            clearBtn.removeEventListener('click', clearPin);
+            clearBtn.addEventListener('click', clearPin);
+        }
+        
+        const verifyBtn = document.getElementById('verify-pin-btn');
+        if (verifyBtn) {
+            verifyBtn.removeEventListener('click', verifyUPIPIN);
+            verifyBtn.addEventListener('click', verifyUPIPIN);
+        }
+    }, 100);
+}
+
+// NEW: Separate handler function to prevent multiple events
+function handlePinClick() {
+    if (window.isPinProcessing) return; // Prevent multiple clicks
+    
+    const digit = this.getAttribute('data-digit');
+    window.isPinProcessing = true;
+    
+    // Add a small delay to ensure single click
+    setTimeout(() => {
+        addPinDigit(digit);
+        window.isPinProcessing = false;
+    }, 10);
+}
+
+// Updated Add PIN Digit function
+function addPinDigit(digit) {
+    // Prevent if already have 6 digits
+    if (window.currentPinIndex >= 6) return;
+    
+    const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+    if (!pinInput) return;
+    
+    pinInput.value = '•';
+    window.pinDigits[window.currentPinIndex] = digit;
+    window.currentPinIndex++;
+    
+    // Auto-submit when 6 digits entered
+    if (window.currentPinIndex === 6) {
+        setTimeout(() => {
+            verifyUPIPIN();
+        }, 300);
+    }
+}
+
+// Clear PIN function
+function clearPin() {
+    if (window.currentPinIndex > 0) {
+        window.currentPinIndex--;
+        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+        if (pinInput) {
+            pinInput.value = '';
+            window.pinDigits[window.currentPinIndex] = '';
+        }
+    }
+}
+
+// Verify UPI PIN function
+function verifyUPIPIN() {
+    const pin = window.pinDigits.join('');
+    
+    if (pin.length !== 6) {
+        showNotification('Please enter 6-digit UPI PIN', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Processing Payment...</h3>
+            <p style="color: #666; margin-top: 10px;">Please wait while we verify your transaction</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+
+// Add PIN Digit
+function addPinDigit(digit) {
+    if (window.currentPinIndex < 6) {
+        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+        pinInput.value = '•';
+        window.pinDigits[window.currentPinIndex] = digit;
+        window.currentPinIndex++;
+        
+        if (window.currentPinIndex === 6) {
+            setTimeout(() => {
+                verifyUPIPIN();
+            }, 300);
+        }
+    }
+}
+
+// Clear PIN
+function clearPin() {
+    if (window.currentPinIndex > 0) {
+        window.currentPinIndex--;
+        const pinInput = document.getElementById(`pin-${window.currentPinIndex + 1}`);
+        if (pinInput) pinInput.value = '';
+        window.pinDigits[window.currentPinIndex] = '';
+    }
+}
+
+// Verify UPI PIN
+function verifyUPIPIN() {
+    const pin = window.pinDigits.join('');
+    
+    if (pin.length !== 6) {
+        showNotification('Please enter 6-digit UPI PIN', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Processing Payment...</h3>
+            <p style="color: #666; margin-top: 10px;">Please wait while we verify your transaction</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+// Load Card Interface
+function loadCardInterface(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Card Payment</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Enter your card details securely</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p><strong>Transaction ID:</strong> ${transactionId}</p>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Card Number</label>
+                    <input type="text" id="card-number" class="form-control" 
+                           placeholder="1234 5678 9012 3456" maxlength="19"
+                           style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Card Holder Name</label>
+                    <input type="text" id="card-name" class="form-control" 
+                           placeholder="JOHN DOE"
+                           style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%; text-transform: uppercase;">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Expiry Date</label>
+                        <input type="text" id="card-expiry" class="form-control" 
+                               placeholder="MM/YY" maxlength="5"
+                               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">CVV</label>
+                        <input type="password" id="card-cvv" class="form-control" 
+                               placeholder="123" maxlength="3"
+                               style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; width: 100%;">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
+                    <i class="fab fa-cc-visa" style="font-size: 32px; color: #1a1f71;"></i>
+                    <i class="fab fa-cc-mastercard" style="font-size: 32px; color: #eb001b;"></i>
+                    <i class="fab fa-cc-amex" style="font-size: 32px; color: #0061a8;"></i>
+                    <i class="fas fa-credit-card" style="font-size: 32px; color: #666;"></i>
+                </div>
+                
+                <button class="btn btn-primary" id="process-card-btn" style="width: 100%; padding: 14px; font-size: 16px;">
+                    Pay ₹${amount.toFixed(2)}
+                </button>
+            </div>
+            
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <i class="fas fa-lock" style="color: #2e7d32;"></i>
+                <span style="color: #1b5e20; margin-left: 10px;">
+                    Your payment details are secured with 256-bit SSL encryption
+                </span>
+            </div>
+        </div>
+    `;
+    
+    // Attach event listeners after creating HTML
+    setTimeout(() => {
+        // Card number formatting
+        const cardNumberInput = document.getElementById('card-number');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = formatted.substring(0, 19);
+            });
+        }
+        
+        // Expiry date formatting
+        const expiryInput = document.getElementById('card-expiry');
+        if (expiryInput) {
+            expiryInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value.substring(0, 5);
+            });
+        }
+        
+        // Process card payment button
+        const processBtn = document.getElementById('process-card-btn');
+        if (processBtn) {
+            processBtn.addEventListener('click', () => processCardPayment(amount));
+        }
+    }, 100);
+}
+
+// Process Card Payment
+function processCardPayment(amount) {
+    const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+    const cardName = document.getElementById('card-name').value.trim();
+    const cardExpiry = document.getElementById('card-expiry').value;
+    const cardCVV = document.getElementById('card-cvv').value;
+    
+    if (!cardNumber || cardNumber.length < 16) {
+        showNotification('Please enter valid 16-digit card number', 'error');
+        return;
+    }
+    
+    if (!cardName) {
+        showNotification('Please enter card holder name', 'error');
+        return;
+    }
+    
+    if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+        showNotification('Please enter valid expiry date (MM/YY)', 'error');
+        return;
+    }
+    
+    if (!cardCVV || cardCVV.length !== 3) {
+        showNotification('Please enter valid 3-digit CVV', 'error');
+        return;
+    }
+    
+    showCardOTPScreen(amount);
+}
+
+// Show Card OTP Screen
+function showCardOTPScreen(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Enter OTP</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>OTP sent to your registered mobile</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p>OTP sent to mobile ending with ••••1234</p>
+                <p><strong>Valid for:</strong> <span style="color: #f44336; font-weight: bold;" id="otp-timer">02:00</span></p>
+            </div>
+            
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 30px 0;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-1" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-2" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-3" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-4" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-5" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+                <input type="text" class="otp-box" maxlength="1" id="otp-6" style="width: 50px; height: 50px; text-align: center; font-size: 24px; border: 2px solid #ddd; border-radius: 8px;">
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn btn-outline" id="resend-otp-btn" style="flex: 1;">
+                    <i class="fas fa-redo"></i> Resend OTP
+                </button>
+                <button class="btn btn-primary" id="verify-otp-btn" style="flex: 1;">
+                    Verify & Pay
+                </button>
+            </div>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        // Auto-move to next input
+        const otpBoxes = document.querySelectorAll('.otp-box');
+        otpBoxes.forEach((box, index) => {
+            box.addEventListener('input', function() {
+                if (this.value.length === 1 && index < 5) {
+                    otpBoxes[index + 1].focus();
+                }
+            });
+            
+            box.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                    otpBoxes[index - 1].focus();
+                }
+            });
+        });
+        
+        // Focus first box
+        otpBoxes[0].focus();
+        
+        // Resend OTP button
+        const resendBtn = document.getElementById('resend-otp-btn');
+        if (resendBtn) resendBtn.addEventListener('click', resendCardOTP);
+        
+        // Verify OTP button
+        const verifyBtn = document.getElementById('verify-otp-btn');
+        if (verifyBtn) verifyBtn.addEventListener('click', verifyCardOTP);
+        
+        // Start timer
+        startOTPTimer();
+    }, 100);
+}
+
+// Move to next OTP input
+function moveToNextOTP(input, nextIndex) {
+    if (input.value.length === 1 && nextIndex < 6) {
+        document.getElementById(`otp-${nextIndex + 1}`).focus();
+    }
+}
+
+// Start OTP Timer
+function startOTPTimer() {
+    let otpTimeLeft = 120;
+    
+    const timerInterval = setInterval(() => {
+        otpTimeLeft--;
+        
+        const minutes = Math.floor(otpTimeLeft / 60);
+        const seconds = otpTimeLeft % 60;
+        
+        const timerElement = document.getElementById('otp-timer');
+        if (timerElement) {
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        if (otpTimeLeft <= 0) {
+            clearInterval(timerInterval);
+        }
+    }, 1000);
+}
+
+// Resend Card OTP
+function resendCardOTP() {
+    showNotification('OTP has been resent to your mobile', 'success');
+    startOTPTimer();
+}
+
+// Verify Card OTP
+function verifyCardOTP() {
+    const otp = Array.from({length: 6}, (_, i) => {
+        const input = document.getElementById(`otp-${i + 1}`);
+        return input ? input.value : '';
+    }).join('');
+    
+    if (otp.length !== 6) {
+        showNotification('Please enter complete 6-digit OTP', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Processing Payment...</h3>
+            <p style="color: #666; margin-top: 10px;">Your transaction is being verified</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+// Load Net Banking Interface
+function loadNetBankingInterface(amount) {
+    const banks = [
+        { id: 'sbi', name: 'State Bank of India' },
+        { id: 'hdfc', name: 'HDFC Bank' },
+        { id: 'icici', name: 'ICICI Bank' },
+        { id: 'axis', name: 'Axis Bank' },
+        { id: 'kotak', name: 'Kotak Mahindra Bank' },
+        { id: 'pnb', name: 'Punjab National Bank' }
+    ];
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Net Banking</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+                <p>Select your bank</p>
+            </div>
+            
+            <div class="merchant-details">
+                <p><strong>Merchant:</strong> FarmLink Marketplace</p>
+                <p><strong>Transaction ID:</strong> ${transactionId}</p>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                ${banks.map(bank => `
+                    <label class="bank-option" style="display: block; padding: 15px; margin-bottom: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s;" data-bank="${bank.id}">
+                        <input type="radio" name="bank" id="${bank.id}" style="margin-right: 10px;">
+                        <i class="fas fa-university" style="color: #4CAF50; margin-right: 10px;"></i>
+                        <span style="font-weight: 500;">${bank.name}</span>
+                    </label>
+                `).join('')}
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn btn-outline" id="back-btn" style="flex: 1;">
+                    Back
+                </button>
+                <button class="btn btn-primary" id="netbanking-btn" disabled style="flex: 1;">
+                    Continue to Bank
+                </button>
+            </div>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        // Bank selection
+        const bankOptions = document.querySelectorAll('.bank-option');
+        const netbankingBtn = document.getElementById('netbanking-btn');
+        
+        bankOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const bankId = this.getAttribute('data-bank');
+                document.querySelectorAll('input[name="bank"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                document.getElementById(bankId).checked = true;
+                if (netbankingBtn) netbankingBtn.disabled = false;
+                
+                // Highlight selected
+                bankOptions.forEach(opt => {
+                    opt.style.borderColor = '#ddd';
+                    opt.style.background = 'white';
+                });
+                this.style.borderColor = '#4CAF50';
+                this.style.background = '#f1f8f4';
+            });
+        });
+        
+        // Back button
+        const backBtn = document.getElementById('back-btn');
+        if (backBtn) {
+            backBtn.addEventListener('click', () => {
+                closeModal(document.getElementById('payment-modal'));
+                resetPaymentGateway();
+            });
+        }
+        
+        // Continue to bank button
+        if (netbankingBtn) {
+            netbankingBtn.addEventListener('click', processNetBanking);
+        }
+    }, 100);
+}
+
+// Select Bank
+function selectBank(bankId) {
+    document.querySelectorAll('input[name="bank"]').forEach(radio => {
+        radio.checked = false;
+    });
+    
+    document.getElementById(bankId).checked = true;
+    document.getElementById('netbanking-btn').disabled = false;
+}
+
+// Process Net Banking
+function processNetBanking() {
+    const selectedBank = document.querySelector('input[name="bank"]:checked');
+    
+    if (!selectedBank) {
+        showNotification('Please select a bank', 'error');
+        return;
+    }
+    
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="spinner-border" role="status" style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h3>Redirecting to Bank...</h3>
+            <p style="color: #666; margin-top: 10px;">You will be redirected to your bank's secure portal</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        showPaymentResult(true);
+    }, 3000);
+}
+
+// Load COD Interface
+function loadCODInterface(amount) {
+    const paymentContent = document.getElementById('payment-content');
+    
+    paymentContent.innerHTML = `
+        <div class="payment-gateway">
+            <div class="payment-header">
+                <h3>Cash on Delivery</h3>
+                <div class="payment-amount-display">₹${amount.toFixed(2)}</div>
+            </div>
+            
+            <div style="text-align: center; padding: 40px;">
+                <div style="width: 100px; height: 100px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <i class="fas fa-money-bill-wave" style="font-size: 48px; color: #4CAF50;"></i>
+                </div>
+                <h4 style="margin-bottom: 10px;">Order Confirmed!</h4>
+                <p style="color: #666;">Pay ₹${amount.toFixed(2)} when your order is delivered.</p>
+                
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left;">
+                    <p><strong>Order ID:</strong> ${transactionId}</p>
+                </div>
+                
+                <div style="text-align: left; margin: 20px 0;">
+                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> No advance payment required</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Pay cash to delivery executive</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Get invoice and receipt</p>
+                </div>
+                
+                <button class="btn btn-primary" id="confirm-cod-btn" style="width: 100%; margin-top: 20px; padding: 14px; font-size: 16px;">
+                    Confirm Order
+                </button>
+            </div>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        const confirmBtn = document.getElementById('confirm-cod-btn');
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', completeCODPayment);
+        }
+    }, 100);
+}
+
+// Complete COD Payment
+function completeCODPayment() {
+    showPaymentResult(true, 'cod');
+}
+
+// Show Payment Result - FIXED VERSION
+function showPaymentResult(success, paymentType = 'online') {
+    const paymentContent = document.getElementById('payment-content');
+    const amount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    
+    if (success) {
+        // Save order data to global variable BEFORE showing the screen
+        window.lastSuccessfulOrder = {
+            transaction_id: transactionId,
+            customer: {
+                name: document.getElementById('full-name')?.value || 'Customer',
+                phone: document.getElementById('phone')?.value || 'N/A',
+                address: document.getElementById('address')?.value || 'N/A',
+                city: document.getElementById('city')?.value || 'N/A',
+                pincode: document.getElementById('pincode')?.value || 'N/A'
+            },
+            payment_method: selectedPaymentMethod,
+            cart: cart.map(item => ({
+                title: item.title,
+                quantity: item.quantity,
+                price: item.price,
+                quality: item.quality
+            })),
+            amount: amount
+        };
+        
+        console.log('Order saved for invoice:', window.lastSuccessfulOrder);
+        
+        paymentContent.innerHTML = `
+            <div style="text-align: center; padding: 40px;">
+                <div style="width: 100px; height: 100px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <i class="fas fa-check-circle" style="font-size: 60px; color: #4CAF50;"></i>
+                </div>
+                <h4 style="margin-bottom: 10px; color: #2e7d32;">Payment Successful!</h4>
+                <p style="color: #666;">Your order has been confirmed ${paymentType === 'cod' ? 'and will be delivered soon' : 'and payment is complete'}.</p>
+                
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left;">
+                    <p><strong>Transaction ID:</strong> ${transactionId}</p>
+                </div>
+                
+                <div style="text-align: left; margin: 20px 0;">
+                    <p style="margin: 10px 0;"><i class="fas fa-receipt" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Amount:</strong> ₹${amount.toFixed(2)}</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-credit-card" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Payment Method:</strong> ${getPaymentMethodName()}</p>
+                    <p style="margin: 10px 0;"><i class="fas fa-shipping-fast" style="color: #4CAF50; margin-right: 10px;"></i> <strong>Delivery:</strong> within 12 hours</p>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button class="btn btn-outline" id="download-invoice-now-btn" style="flex: 1;">
+                        <i class="fas fa-download"></i> Download Invoice
+                    </button>
+                    <button class="btn btn-primary" id="continue-shopping-now-btn" style="flex: 1;">
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Clear cart
+        cart = [];
+        updateCartUI();
+        
+        // Attach event listeners IMMEDIATELY
+        attachPaymentSuccessListeners();
+        
+    } else {
+        // Failed payment handler (keep your existing code)
+        // ...
+    }
+}
+
+// New function to attach event listeners
+function attachPaymentSuccessListeners() {
+    // Wait a tiny bit to ensure DOM is ready
+    setTimeout(() => {
+        const downloadBtn = document.getElementById('download-invoice-now-btn');
+        const continueBtn = document.getElementById('continue-shopping-now-btn');
+        
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', function() {
+                console.log('Download Invoice button clicked');
+                if (window.lastSuccessfulOrder) {
+                    console.log('Generating invoice for:', window.lastSuccessfulOrder);
+                    generateCleanPDFInvoice(window.lastSuccessfulOrder);
+                } else {
+                    console.error('No order data found');
+                    showNotification('No order data found. Please place an order first.', 'error');
+                }
+            });
+        }
+        
+        if (continueBtn) {
+            continueBtn.addEventListener('click', function() {
+                console.log('Continue Shopping button clicked');
+                completeCheckoutProcess();
+            });
+        }
+    }, 100);
+}
+
+// Simplified PDF Generation - WORKS EVERY TIME
+function generateCleanPDFInvoice(orderData) {
+    try {
+        console.log('Generating invoice for:', orderData);
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Title
+        doc.setFontSize(20);
+        doc.text('FarmLink Invoice', 20, 20);
+        
+        doc.setFontSize(12);
+        doc.text('Direct Farmer to Buyer Marketplace', 20, 30);
+        doc.text('Tirunelvelli, Agriculture City', 20, 37);
+        doc.text('support@farmlink.com | +91 9840994649', 20, 44);
+        
+        // Invoice Details
+        doc.text(`Invoice Date: ${new Date().toLocaleDateString()}`, 20, 55);
+        doc.text(`Invoice #: INV-${Date.now()}`, 20, 62);
+        doc.text(`Order ID: ${orderData.transaction_id}`, 20, 69);
+        
+        // Customer Info
+        doc.text('Bill To:', 20, 85);
+        doc.text(`Name: ${orderData.customer.name}`, 20, 92);
+        doc.text(`Phone: ${orderData.customer.phone}`, 20, 99);
+        doc.text(`Address: ${orderData.customer.address}`, 20, 106);
+        doc.text(`${orderData.customer.city} - ${orderData.customer.pincode}`, 20, 113);
+        
+        // Table Header
+        doc.setFillColor(76, 175, 80);
+        doc.rect(20, 125, 170, 10, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.text('Product', 25, 132);
+        doc.text('Qty', 100, 132);
+        doc.text('Price', 130, 132);
+        doc.text('Total', 160, 132);
+        
+        // Table Rows
+        doc.setTextColor(0, 0, 0);
+        let yPos = 140;
+        let grandTotal = 0;
+        
+        if (orderData.cart && orderData.cart.length > 0) {
+            orderData.cart.forEach(item => {
+                const quantity = item.quantity || 1;
+                const price = item.price || 0;
+                const total = quantity * price;
+                grandTotal += total;
+                
+                doc.text(item.title.substring(0, 30), 25, yPos);
+                doc.text(quantity.toString(), 100, yPos);
+                doc.text(price.toFixed(2), 130, yPos);
+                doc.text(total.toFixed(2), 160, yPos);
+                
+                yPos += 10;
+            });
+        }
+        
+        // Totals
+        const gst = grandTotal * 0.05;
+        const finalTotal = grandTotal + gst;
+        
+        doc.setFont(undefined, 'bold');
+        doc.text('Subtotal:', 130, yPos + 10);
+        doc.text(grandTotal.toFixed(2), 160, yPos + 10);
+        
+        doc.text('GST (5%):', 130, yPos + 20);
+        doc.text(gst.toFixed(2), 160, yPos + 20);
+        
+        doc.text('Grand Total:', 130, yPos + 30);
+        doc.text(finalTotal.toFixed(2), 160, yPos + 30);
+        
+        // Footer
+        doc.setFont(undefined, 'normal');
+        doc.setFontSize(10);
+        doc.text('All amounts in Indian Rupees', 20, 280);
+        doc.text('Thank you for shopping with FarmLink!', 20, 287);
+        
+        // Save
+        doc.save(`invoice-${orderData.transaction_id}.pdf`);
+        
+        showNotification('Invoice downloaded successfully!', 'success');
+        
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        showNotification('Error generating invoice. Please try again.', 'error');
+    }
+}
+
+// Get Payment Method Name
+function getPaymentMethodName() {
+    switch(selectedPaymentMethod) {
+        case 'upi': return 'UPI Payment';
+        case 'card': return 'Credit/Debit Card';
+        case 'netbanking': return 'Net Banking';
+        case 'cod': return 'Cash on Delivery';
+        default: return 'Online Payment';
+    }
+}
+
+// Start Payment Timer
+function startPaymentTimer() {
+    clearInterval(paymentTimer);
+    paymentTimeLeft = 300;
+    
+    paymentTimer = setInterval(() => {
+        paymentTimeLeft--;
+        
+        const minutes = Math.floor(paymentTimeLeft / 60);
+        const seconds = paymentTimeLeft % 60;
+        
+        const timerElement = document.getElementById('payment-timer');
+        if (timerElement) {
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (paymentTimeLeft <= 60) {
+                timerElement.style.color = '#f44336';
+            }
+        }
+        
+        if (paymentTimeLeft <= 0) {
+            clearInterval(paymentTimer);
+            showNotification('Payment timeout. Please try again.', 'error');
+            resetPaymentGateway();
+        }
+    }, 1000);
+}
+
+// Complete Checkout Process
+function completeCheckoutProcess() {
+    closeModal(document.getElementById('payment-modal'));
+    resetPaymentGateway();
+    document.getElementById('shipping-form').reset();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showNotification('Order placed successfully! Thank you for shopping with FarmLink.', 'success');
+}
+
+// UPDATED: Fixed downloadInvoice function - Use actual cart data
+function downloadInvoice() {
+    console.log('=== DOWNLOAD INVOICE STARTED ===');
+    
+    // Get cart data from the GLOBAL cart variable
+    let cartData = [];
+    
+    if (window.cart && window.cart.length > 0) {
+        console.log('Using global cart variable:', window.cart);
+        cartData = window.cart;
+    } else {
+        console.warn('Cart is empty! Please add items to cart first');
+        showNotification('Your cart is empty. Add items before downloading invoice.', 'error');
+        return;
+    }
+    
+    // Get customer information from checkout form
+    const customerInfo = {
+        name: document.getElementById('full-name')?.value || 'Customer',
+        phone: document.getElementById('phone')?.value || 'N/A',
+        address: document.getElementById('address')?.value || 'N/A',
+        city: document.getElementById('city')?.value || 'N/A',
+        pincode: document.getElementById('pincode')?.value || 'N/A'
+    };
+    
+    // Get transaction ID and payment method
+    const transactionId = window.transactionId || 'FARM' + Date.now();
+    const paymentMethod = window.selectedPaymentMethod || 'UPI';
+    
+    // Create order data with ACTUAL cart items
+    const orderData = {
+        transaction_id: transactionId,
+        customer: customerInfo,
+        payment_method: paymentMethod,
+        cart: cartData.map(item => ({
+            title: item.title,
+            quantity: item.quantity, // Use cart quantity
+            price: item.price,
+            quality: item.quality
+        })),
+        timestamp: new Date().toISOString(),
+        status: 'paid'
+    };
+    
+    console.log('Order data for invoice:', orderData);
+    
+    // Call generatePDFInvoice with REAL data
+    generatePDFInvoice(orderData);
+}
+// Add this function to see where cart data is stored
+function debugCartData() {
+    console.log('=== DEBUG CART DATA ===');
+    console.log('1. Global cart variable:', window.cart);
+    console.log('2. LocalStorage cart:', localStorage.getItem('cart'));
+    console.log('3. Session cart:', sessionStorage.getItem('cart'));
+    console.log('4. Checkout page cart:', document.querySelectorAll('.checkout-item').length);
+    console.log('=== END DEBUG ===');
+}
+
+// Call this before downloadInvoice
+debugCartData();
+
+// Helper function to calculate total from cart
+function calculateTotal(cartItems) {
+    let total = 0;
+    cartItems.forEach(item => {
+        const itemTotal = (item.price || 0) * (item.quantity || 0);
+        const gst = itemTotal * 0.05;
+        total += itemTotal + gst;
+    });
+    return total;
+}
+
+function generatePDFInvoiceWithRupeeSymbol(orderData) {
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        // Use a standard font that supports basic characters
+        pdf.setFont('courier'); // Courier font is most reliable
+        pdf.setFontSize(10);
+        
+        // Company Header
+        pdf.setFontSize(20);
+        pdf.setTextColor(76, 175, 80);
+        pdf.text('FarmLink', 20, 20);
+        pdf.setFontSize(14);
+        pdf.text('TAX INVOICE', 150, 20);
+        
+        pdf.setFontSize(10);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text('Direct Farmer to Buyer Marketplace', 20, 30);
+        pdf.text('Tirunelvelli, Agriculture City', 20, 37);
+        pdf.text('support@farmlink.com | +91 9840994649', 20, 44);
+        
+        // Use "Rs." instead of rupee symbol
+        const currencySymbol = 'Rs. ';
+        
+        // ... rest of the code similar to above, but use:
+        // pdf.text(`${currencySymbol}${price.toFixed(2)}`, 120, yPos);
+        
+        // OR use "INR" prefix
+        const currencyPrefix = 'INR ';
+        
+        // ... use currencyPrefix + number
+        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+// Add this function to your index.html JavaScript
+function openInvoiceWindow(orderData) {
+    // Convert order data to URL parameters
+    const jsonData = encodeURIComponent(JSON.stringify(orderData));
+    const url = `invoice.html?data=${jsonData}`;
+    
+    // Open invoice in new window
+    window.open(url, '_blank', 'width=900,height=700,scrollbars=yes');
+}
+
+// Function to save order to backend
+async function saveOrderToBackend(orderData) {
+    try {
+        const response = await fetch('http://localhost:5000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log('Order saved to backend:', result.order);
+            // Open invoice with backend-generated ID
+            openInvoiceWindow(result.order);
+            return result.order;
+        } else {
+            console.error('Failed to save order:', result.error);
+            // Fallback to local invoice generation
+            generatePDFInvoice(orderData);
+        }
+    } catch (error) {
+        console.error('Error saving order to backend:', error);
+        // Fallback to local invoice generation
+        generatePDFInvoice(orderData);
+    }
+}
+
+// Update the shipping form submission - REMOVE automatic download
+shippingForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log('Form submitted');
+    
+    // Validate form
+    if (!validateShippingForm()) {
+        return;
+    }
+    
+    // Get selected payment method
+    const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+    if (!selectedPayment) {
+        showNotification('Please select a payment method', 'error');
+        return;
+    }
+    
+    selectedPaymentMethod = selectedPayment.value;
+    console.log('Selected payment method:', selectedPaymentMethod);
+    
+    const totalAmount = parseFloat(document.getElementById('checkout-total-price').textContent.replace('₹', ''));
+    
+    // Open payment gateway (NO invoice download here)
+    openPaymentGateway(selectedPaymentMethod, totalAmount);
+    
+    // Save order data for later (not downloading yet)
+    window.pendingOrderData = {
+        customer: {
+            name: document.getElementById('full-name').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            city: document.getElementById('city').value.trim(),
+            pincode: document.getElementById('pincode').value.trim()
+        },
+        cart: cart,
+        total: totalAmount
+    };
+});
+
+
+function testInvoiceGeneration() {
+    // Create sample order data
+    const testOrderData = {
+        transaction_id: 'FARM1766411958915943',
+        customer: {
+            name: 'vel raj',
+            phone: '9003676711',
+            address: '3/86-1 west yadhavar street pudukottai',
+            city: 'thoothukudi',
+            pincode: '628103'
+        },
+        payment_method: 'upi',
+        cart: [
+            {
+                title: 'Fresh Tomatoes',
+                quantity: 2,
+                price: 35.00,
+                quality: 'Grade A'
+            },
+            {
+                title: 'premium apples',
+                quantity: 3,
+                price: 230.00,
+                quality: 'Organic'
+            },
+            {
+                title: 'Onions',
+                quantity: 1.5,
+                price: 25.00,
+                quality: 'Regular'
+            }
+        ]
+    };
+    
+    console.log('=== TESTING INVOICE GENERATION ===');
+    generatePDFInvoice(testOrderData);
+}
+
+// Call this function to test
+// testInvoiceGeneration();
+// Method 2: Open invoice in new window (Fallback method)
+function openInvoiceWindow(orderData) {
+    try {
+        // Create invoice HTML content
+        const invoiceHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Invoice - ${orderData.transaction_id}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    .invoice { max-width: 800px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; }
+                    .header { text-align: center; margin-bottom: 30px; }
+                    .details { margin: 20px 0; }
+                    .item { display: flex; justify-content: space-between; margin: 5px 0; }
+                    .total { border-top: 2px solid #333; padding-top: 10px; margin-top: 20px; }
+                    @media print { button { display: none; } }
+                </style>
+            </head>
+            <body>
+                <div class="invoice">
+                    <div class="header">
+                        <h2>FarmLink Marketplace</h2>
+                        <h3>Invoice</h3>
+                    </div>
+                    
+                    <div class="details">
+                        <p><strong>Invoice #:</strong> INV-FL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}</p>
+                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        <p><strong>Customer:</strong> ${orderData.customer.name}</p>
+                        <p><strong>Phone:</strong> ${orderData.customer.phone}</p>
+                        <p><strong>Address:</strong> ${orderData.customer.address}, ${orderData.customer.city} - ${orderData.customer.pincode}</p>
+                        <p><strong>Order ID:</strong> ${orderData.transaction_id}</p>
+                        <p><strong>Payment Method:</strong> ${orderData.payment_method.toUpperCase()}</p>
+                    </div>
+                    
+                    <h4>Items:</h4>
+                    ${orderData.cart.map(item => `
+                        <div class="item">
+                            <span>${item.quantity} kg × ${item.title} @ ₹${item.price}/kg</span>
+                            <span>₹${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    `).join('')}
+                    
+                    <div class="total">
+                        <div class="item">
+                            <strong>Total Amount:</strong>
+                            <strong>₹${orderData.total.toFixed(2)}</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <p>Thank you for shopping with FarmLink!</p>
+                        <p>Contact: +91 9840994649 | support@farmlink.com</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="window.print()">Print Invoice</button>
+                    <button onclick="window.close()">Close</button>
+                </div>
+            </body>
+            </html>
+        `;
+        
+        // Open in new window
+        const invoiceWindow = window.open('', '_blank');
+        invoiceWindow.document.write(invoiceHTML);
+        invoiceWindow.document.close();
+        
+    } catch (error) {
+        console.error('Error opening invoice window:', error);
+        showNotification('Could not generate invoice. Please contact support.', 'error');
+    }
+}
+
+// Method 3: Simple text invoice (Alternative fallback)
+function generateTextInvoice(orderData) {
+    let invoiceText = `
+        =========================================
+                    FARM LINK INVOICE
+        =========================================
+        
+        Invoice #: INV-FL-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}
+        Date: ${new Date().toLocaleDateString()}
+        Order ID: ${orderData.transaction_id}
+        
+        -------------------------------
+        CUSTOMER INFORMATION
+        -------------------------------
+        Name: ${orderData.customer.name}
+        Phone: ${orderData.customer.phone}
+        Address: ${orderData.customer.address}
+        City: ${orderData.customer.city} - ${orderData.customer.pincode}
+        Payment Method: ${orderData.payment_method.toUpperCase()}
+        
+        -------------------------------
+        ORDER ITEMS
+        -------------------------------
+    `;
+    
+    orderData.cart.forEach(item => {
+        invoiceText += `${item.quantity} kg × ${item.title} @ ₹${item.price}/kg = ₹${(item.price * item.quantity).toFixed(2)}\n`;
+    });
+    
+    invoiceText += `
+        -------------------------------
+        TOTAL: ₹${orderData.total.toFixed(2)}
+        -------------------------------
+        
+        Thank you for shopping with FarmLink!
+        Contact: +91 9840994649 | support@farmlink.com
+        
+        =========================================
+    `;
+    
+    // Create and download text file
+    const blob = new Blob([invoiceText], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `invoice-${orderData.transaction_id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+// Change Payment Method
+function changePaymentMethod() {
+    closeModal(document.getElementById('payment-modal'));
+    openModal(document.getElementById('checkout-modal'));
+    resetPaymentGateway();
+}
+
+// Reset Payment Gateway
+function resetPaymentGateway() {
+    clearInterval(paymentTimer);
+    selectedPaymentMethod = '';
+    transactionId = '';
+    paymentTimeLeft = 300;
+}
+
+// Add CSS for spinner animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
+        
+            // Initialize the application
+            init(// In your existing init() function, add:
+function init() {
+    // ... your existing code ...
+    
+    // Initialize payment gateway
+    initPaymentGateway();
+});
+            
+        }); 
+       
     </script>
 </body>
 </html>
